@@ -1,6 +1,7 @@
 package org.gwings.client.demo;
 
 import org.gwings.client.ui.GPlotable;
+import org.gwings.client.ui.GTable;
 import org.gwings.client.ui.GTableModel;
 import org.gwings.client.ui.impl.DefaultGTable;
 
@@ -27,7 +28,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @since 04/02/2007
  */
 public class TableDemoComposite extends Composite {
-	private DefaultGTable table;
+	private GTable table;
 
 	private class TestPlotable implements GPlotable {
 		private String string;
@@ -62,7 +63,7 @@ public class TableDemoComposite extends Composite {
 		model.appendLine(plotable2);
 
 		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.add(table);
+		vPanel.add(table.getTableView());
 
 		initWidget(vPanel);
 	}
