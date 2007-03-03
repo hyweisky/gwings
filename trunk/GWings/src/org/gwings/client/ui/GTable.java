@@ -1,6 +1,6 @@
 package org.gwings.client.ui;
 
-import com.google.gwt.user.client.ui.HTMLTable;
+import com.google.gwt.user.client.ui.FlexTable;
 
 /**
  * 
@@ -38,6 +38,6 @@ public interface GTable {
 	 * Returns the View of the GTable.
 	 * @return Returns the view part of the MVC.
 	 */
-	public HTMLTable getTableView();
+	public FlexTable getTableView();
 
 }
