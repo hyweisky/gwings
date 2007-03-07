@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
+
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -24,8 +25,9 @@ import com.google.gwt.user.client.ui.TabPanel;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
 public class GWingsDemo implements EntryPoint, WindowResizeListener {
 	private TabPanel panel;
@@ -37,24 +39,25 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		Window.addWindowResizeListener(this);
 
 		panel = new TabPanel();
-		Composite cp = new TableDemoComposite(); 
-		
-		panel.add(cp, "GTable");
-		panel.add(new HTML("TESTE"),"teste");
+		Composite cp = new TableDemoComposite();
+
+		panel.add(cp, "Table");
+		panel.add(new HTML("TESTE"), "teste");
+		panel.add(new ListSelectorComposite(), "Selector");
 		
 		DeferredCommand.add(new Command() {
 			public void execute() {
 				int width = Window.getClientWidth();
 				int height = Window.getClientHeight();
-				
+
 				onWindowResized(width, height);
 				panel.selectTab(0);
 			}
 		});
-		
+
 		RootPanel.get().add(panel);
 	}
-	
+
 	public void onWindowResized(int width, int height) {
 		panel.setPixelSize(width - 10, height - 10);
 	}
