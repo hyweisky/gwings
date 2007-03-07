@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="GWings" default="compile" basedir=".">
+	<description>
+	    GWings build file.  
+  		This is used to package up your project as a jar, if you want to distribute it.
+	</description>
+	
+	<property name="dist" location="dist"/>
+	<property name="lib" location="lib"/>
+	
+	<!-- set classpath -->
+	<path id="project.class.path">
+		<pathelement path="${java.class.path}/" />
+		<pathelement path="${lib}/gwt-user.jar" />
+		<pathelement path="${lib}/gwt-dev-windows.jar"/>
+		<pathelement path="${lib}/gwt-widgets.jar"/>
+		<pathelement path="${lib}/junit.jar"/>
+		
+	</path>
+
+	<target name="compile" description="Compile src to bin">
+		<mkdir dir="bin" />
+		<javac srcdir="src:test" destdir="bin" includes="**" debug="on" debuglevel="lines,vars,source" source="1.4">
+			<classpath refid="project.class.path" />
+		</javac>
+	</target>
+
+	<target name="package" depends="compile" description="Package up the project as a jar">
+		<mkdir dir="${dist}"/>
+		<jar destfile="${dist}/GWings.jar">
+			<fileset dir="bin">
+				<include name="**/*.class" />
+			</fileset>
+			<!-- Get everything; source, modules, html files -->
+			<fileset dir="src">
+				<include name="**" />
+			</fileset>
+			<fileset dir="test">
+				<include name="**" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<!-- Delete the bin directory tree -->
+		<delete file="${dist}/GWings.jar" />
+		<delete>
+			<fileset dir="bin" includes="**/*.class" />
+		</delete>
+	</target>
+
+	<target name="all" depends="package" />
+
+</project>
