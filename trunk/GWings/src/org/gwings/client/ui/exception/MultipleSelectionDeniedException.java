@@ -1,8 +1,4 @@
-package org.gwings.client.ui.impl;
-
-import org.gwings.client.ui.GSlider;
-import com.google.gwt.user.client.ui.Composite;
-
+package org.gwings.client.ui.exception;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -20,8 +16,10 @@ import com.google.gwt.user.client.ui.Composite;
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
  *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public class DefaultGSlider extends Composite implements GSlider {
+public class MultipleSelectionDeniedException extends Exception {
+
+	private static final long serialVersionUID = -6402598151540557100L;
 
 }

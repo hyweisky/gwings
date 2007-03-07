@@ -6,11 +6,11 @@ package org.gwings.client.ui.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gwings.client.ui.GColumnRenderer;
-import org.gwings.client.ui.GPlotable;
-import org.gwings.client.ui.GTableModel;
-import org.gwings.client.ui.GTableModelEvent;
-import org.gwings.client.ui.GTableModelListener;
+import org.gwings.client.ui.ColumnRenderer;
+import org.gwings.client.ui.Plotable;
+import org.gwings.client.ui.TableModel;
+import org.gwings.client.ui.TableModelEvent;
+import org.gwings.client.ui.TableModelListener;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -29,16 +29,16 @@ import org.gwings.client.ui.GTableModelListener;
  * @author Marcelo Emanoel
  * @since 04/02/2007
  */
-public class DefaultGTableModel implements GTableModel {
+public class DefaultTableModel implements TableModel {
 	private List colunas;
 	private List linhas;
 	private List listeners;
 
 	private class Column {
 		private String name;
-		private GColumnRenderer type;
+		private ColumnRenderer type;
 
-		public Column(String name, GColumnRenderer type) {
+		public Column(String name, ColumnRenderer type) {
 
 			setName(name);
 			setType(type);
@@ -54,12 +54,12 @@ public class DefaultGTableModel implements GTableModel {
 			this.name = name;
 		}
 
-		public GColumnRenderer getType() {
+		public ColumnRenderer getType() {
 
 			return this.type;
 		}
 
-		public void setType(GColumnRenderer type) {
+		public void setType(ColumnRenderer type) {
 
 			this.type = type;
 		}
@@ -71,25 +71,25 @@ public class DefaultGTableModel implements GTableModel {
 		}
 	}
 
-	public DefaultGTableModel() {
+	public DefaultTableModel() {
 
 		this(new ArrayList(), new ArrayList());
 	}
 
-	public DefaultGTableModel(List linhas, List colunas) {
+	public DefaultTableModel(List linhas, List colunas) {
 
 		listeners = new ArrayList();
 		this.colunas = colunas;
 		this.linhas = linhas;
 	}
 
-	public void addColumn(String columnName, GColumnRenderer type) {
+	public void addColumn(String columnName, ColumnRenderer type) {
 
 		Column column = new Column(columnName, type);
 		if (!colunas.contains(column)) {
 			colunas.add(column);
 			int index = colunas.indexOf(column);
-			GTableModelEvent evt = makeEvent();
+			TableModelEvent evt = makeEvent();
 			evt.setColumn(index);
 			fireColumnAdded(evt);
 		}
@@ -100,16 +100,16 @@ public class DefaultGTableModel implements GTableModel {
 		addColumn(column, makeColumnType());
 	}
 
-	public void addLine(int index, GPlotable line) {
+	public void addLine(int index, Plotable line) {
 
 		linhas.add(index, line);
 		
-		GTableModelEvent evt = makeEvent();
+		TableModelEvent evt = makeEvent();
 		evt.setRow(index);
 		fireRowAdded(evt);
 	}
 
-	public void appendLine(GPlotable line) {
+	public void appendLine(Plotable line) {
 		addLine(linhas.size(), line);
 	}
 
@@ -117,14 +117,14 @@ public class DefaultGTableModel implements GTableModel {
 
 		linhas.clear();
 		colunas.clear();
-		GTableModelEvent evt = makeEvent();
+		TableModelEvent evt = makeEvent();
 		fireClearedAll(evt);
 	}
 
 	public void clearRows() {
 
 		linhas.clear();
-		GTableModelEvent evt = makeEvent();
+		TableModelEvent evt = makeEvent();
 		fireRowsCleared(evt);
 
 	}
@@ -142,15 +142,15 @@ public class DefaultGTableModel implements GTableModel {
 		return "";
 	}
 
-	public GColumnRenderer getColumnRenderer(int column) {
+	public ColumnRenderer getColumnRenderer(int column) {
 
 		Column col = (Column) colunas.get(column);
 		return col.getType();
 	}
 
-	public GColumnRenderer getColumnRenderer(String columnName) {
+	public ColumnRenderer getColumnRenderer(String columnName) {
 
-		GColumnRenderer defaultType = makeColumnType();
+		ColumnRenderer defaultType = makeColumnType();
 		Column coluna = new Column(columnName, defaultType);
 		for (int i = 0; i < colunas.size(); i++) {
 			Column col = (Column) colunas.get(i);
@@ -161,10 +161,10 @@ public class DefaultGTableModel implements GTableModel {
 		return defaultType;
 	}
 
-	public GPlotable getLine(int line) {
+	public Plotable getLine(int line) {
 		
 		if (line >= 0 && linhas.size() > line) {
-			return (GPlotable) linhas.get(line);
+			return (Plotable) linhas.get(line);
 		}
 		return null;
 	}
@@ -177,7 +177,7 @@ public class DefaultGTableModel implements GTableModel {
 	public String removeColumn(int column) {
 
 		Column coluna = (Column) colunas.remove(column);
-		GTableModelEvent evt = makeEvent();
+		TableModelEvent evt = makeEvent();
 		evt.setColumn(column);
 		fireColumnRemoved(evt);
 		return coluna.getName();
@@ -190,17 +190,17 @@ public class DefaultGTableModel implements GTableModel {
 		if (index != -1) {
 			colunas.remove(coluna);
 
-			GTableModelEvent evt = makeEvent();
+			TableModelEvent evt = makeEvent();
 			evt.setColumn(index);
 			fireColumnRemoved(evt);
 		}
 	}
 
-	public GPlotable removeLine(int line) {
+	public Plotable removeLine(int line) {
 
 		if (line < linhas.size()) {
-			GPlotable plotable = (GPlotable) linhas.remove(line);
-			GTableModelEvent evt = makeEvent();
+			Plotable plotable = (Plotable) linhas.remove(line);
+			TableModelEvent evt = makeEvent();
 			evt.setRow(line);
 			fireLineRemoved(evt);
 			return plotable;
@@ -208,35 +208,35 @@ public class DefaultGTableModel implements GTableModel {
 		return null;
 	}
 
-	public void removeLine(GPlotable line) {
+	public void removeLine(Plotable line) {
 
 		if (linhas.contains(line)) {
 			int indice = linhas.indexOf(line);
 			linhas.remove(indice);
 
-			GTableModelEvent evt = makeEvent();
+			TableModelEvent evt = makeEvent();
 			evt.setRow(indice);
 			fireLineRemoved(evt);
 		}
 	}
 
-	public void removeTableModelListener(GTableModelListener l) {
+	public void removeTableModelListener(TableModelListener l) {
 
 		listeners.remove(l);
 	}
 
-	public void addTableModelListener(GTableModelListener l) {
+	public void addTableModelListener(TableModelListener l) {
 
 		listeners.add(l);
 	}
 
-	public void setColumnRenderer(int column, GColumnRenderer type) {
+	public void setColumnRenderer(int column, ColumnRenderer type) {
 
 		Column coluna = (Column) colunas.get(column);
 		coluna.setType(type);
 	}
 
-	public void setColumnRenderer(String columnName, GColumnRenderer type) {
+	public void setColumnRenderer(String columnName, ColumnRenderer type) {
 
 		Column coluna = new Column(columnName, makeColumnType());
 		int index = colunas.indexOf(coluna);
@@ -251,68 +251,68 @@ public class DefaultGTableModel implements GTableModel {
 	/**
 	 * @return
 	 */
-	private GTableModelEvent makeEvent() {
+	private TableModelEvent makeEvent() {
 
-		GTableModelEvent evt = new GTableModelEvent(this);
+		TableModelEvent evt = new TableModelEvent(this);
 		return evt;
 	}
 
 	/**
 	 * @return
 	 */
-	private GColumnRenderer makeColumnType() {
+	private ColumnRenderer makeColumnType() {
 
-		return new DefaultGColumnType();
+		return new DefaultColumnType();
 	}
 
 	/*
 	 * Fire events methods!
 	 */
 
-	private void fireRowAdded(GTableModelEvent evt) {
+	private void fireRowAdded(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.rowAdded(evt);
 		}
 	}
 
-	private void fireColumnAdded(GTableModelEvent evt) {
+	private void fireColumnAdded(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.columnAdded(evt);
 		}
 	}
 
-	private void fireClearedAll(GTableModelEvent evt) {
+	private void fireClearedAll(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.tableCleared(evt);
 		}
 	}
 
-	private void fireRowsCleared(GTableModelEvent evt) {
+	private void fireRowsCleared(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.rowsCleared(evt);
 		}
 	}
 
-	private void fireColumnRemoved(GTableModelEvent evt) {
+	private void fireColumnRemoved(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.columnRemoved(evt);
 		}
 	}
 
-	private void fireLineRemoved(GTableModelEvent evt) {
+	private void fireLineRemoved(TableModelEvent evt) {
 
 		for (int i = 0; i < listeners.size(); i++) {
-			GTableModelListener listener = (GTableModelListener) listeners.get(i);
+			TableModelListener listener = (TableModelListener) listeners.get(i);
 			listener.rowRemoved(evt);
 		}
 	}
