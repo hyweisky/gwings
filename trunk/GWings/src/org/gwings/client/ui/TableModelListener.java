@@ -15,58 +15,58 @@ package org.gwings.client.ui;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
- * 
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public interface GTableModelListener {
+public interface TableModelListener {
 	/**
 	 * Fired when the rows and columns are cleared.
 	 * 
 	 * @param evt
 	 */
-	public void tableCleared(GTableModelEvent evt);
+	public void tableCleared(TableModelEvent evt);
 
 	/**
 	 * Fired when the rows are cleared.
 	 * 
 	 * @param evt
 	 */
-	public void rowsCleared(GTableModelEvent evt);
+	public void rowsCleared(TableModelEvent evt);
 
 	/**
 	 * Fired when the content of a row is changed.
 	 * 
 	 * @param evt
 	 */
-	public void rowChanged(GTableModelEvent evt);
+	public void rowChanged(TableModelEvent evt);
 
 	/**
 	 * Fired when a row is inserted.
 	 * 
 	 * @param evt
 	 */
-	public void rowAdded(GTableModelEvent evt);
+	public void rowAdded(TableModelEvent evt);
 
 	/**
 	 * Fired when a row is removed.
 	 * 
 	 * @param evt
 	 */
-	public void rowRemoved(GTableModelEvent evt);
+	public void rowRemoved(TableModelEvent evt);
 
 	/**
 	 * Fired when a column is inserted.
 	 * 
 	 * @param evt
 	 */
-	public void columnAdded(GTableModelEvent evt);
+	public void columnAdded(TableModelEvent evt);
 
 	/**
 	 * Fired when a column is removed.
 	 * 
 	 * @param evt
 	 */
-	public void columnRemoved(GTableModelEvent evt);
+	public void columnRemoved(TableModelEvent evt);
 
 }

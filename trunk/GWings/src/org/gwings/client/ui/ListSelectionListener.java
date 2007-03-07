@@ -1,8 +1,4 @@
-/**
- * 
- */
 package org.gwings.client.ui;
-
 
 /**
  * 
@@ -19,36 +15,18 @@ package org.gwings.client.ui;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public class GTableModelEvent {
-	private static final int NONE_SELECTION = -1;
-	private GTableModel source;
-	private int column;
-	private int row;
+public interface ListSelectionListener {
+
+	public void itemSelected(int originalPosition);
+
+	public void itemDeselected(int originalPosition);
 	
-	public GTableModelEvent(GTableModel source){
-		this.source = source;
-		this.column = NONE_SELECTION;
-		this.row = NONE_SELECTION;
-	}
-
-	public GTableModel getSource() {
-		return this.source;
-	}
-
-	public int getColumn() {
-		return column;
-	}
-	public void setColumn(int column){
-		this.column = column;
-	}
-
-	public int getRow() {
-		return this.row;
-	}
-	public void setRow(int row){
-		this.row = row;
-	}
+	public void multipleSelectionEnabled();
+	
+	public void multipleSelectionDisabled();
+	
 }

@@ -1,6 +1,6 @@
 package org.gwings.client.ui;
 
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.Composite;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,16 +16,10 @@ import com.google.gwt.user.client.ui.Widget;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public interface GColumnRenderer {
-	
-	/**
-	 * Returns a widget to render properly a determinated object.
-	 * @param value The value that should be used with the renderer.
-	 * @return A widget to render a value. 
-	 */
-	public Widget renderType(Object value);
+public class Slider extends Composite{
 
 }

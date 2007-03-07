@@ -18,11 +18,11 @@ package org.gwings.client.ui;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
- * 
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public interface GTableModel {
+public interface TableModel {
 
 	/**
 	 * Adds a column to the model specifying the renderer to be used with it.
@@ -32,7 +32,7 @@ public interface GTableModel {
 	 * @param renderer
 	 *            This object will render properly the values of this column.
 	 */
-	public void addColumn(String columnName, GColumnRenderer renderer);
+	public void addColumn(String columnName, ColumnRenderer renderer);
 
 	/**
 	 * Adds a column to the model. This column will use the default renderer.
@@ -97,7 +97,7 @@ public interface GTableModel {
 	 * 
 	 * @return the respective column renderer
 	 */
-	public GColumnRenderer getColumnRenderer(int column);
+	public ColumnRenderer getColumnRenderer(int column);
 
 	/**
 	 * Returns the column renderer of the specified column.
@@ -106,7 +106,7 @@ public interface GTableModel {
 	 *            The name of the column.
 	 * @return the respective column renderer
 	 */
-	public GColumnRenderer getColumnRenderer(String columnName);
+	public ColumnRenderer getColumnRenderer(String columnName);
 
 	/**
 	 * Sets the renderer of the column.
@@ -121,7 +121,7 @@ public interface GTableModel {
 	 * @param renderer
 	 *            The proper renderer for the column.
 	 */
-	public void setColumnRenderer(int column, GColumnRenderer renderer);
+	public void setColumnRenderer(int column, ColumnRenderer renderer);
 
 	/**
 	 * Sets the renderer of the column.
@@ -131,7 +131,7 @@ public interface GTableModel {
 	 * @param renderer
 	 *            The proper renderer for the column.
 	 */
-	public void setColumnRenderer(String columnName, GColumnRenderer renderer);
+	public void setColumnRenderer(String columnName, ColumnRenderer renderer);
 
 	/**
 	 * Append a line to the model.
@@ -139,7 +139,7 @@ public interface GTableModel {
 	 * @param line
 	 *            The line to be added.
 	 */
-	public void appendLine(GPlotable line);
+	public void appendLine(Plotable line);
 
 	/**
 	 * Inserts a line at the specified index.
@@ -149,7 +149,7 @@ public interface GTableModel {
 	 * @param line
 	 *            The new line.
 	 */
-	public void addLine(int index, GPlotable line);
+	public void addLine(int index, Plotable line);
 
 	/**
 	 * Removes the specified line of the model.
@@ -158,7 +158,7 @@ public interface GTableModel {
 	 *            The number of the line to be removed.
 	 * @return The object represented by that line.
 	 */
-	public GPlotable removeLine(int lineNumber);
+	public Plotable removeLine(int lineNumber);
 
 	/**
 	 * Removes the specified object of the model.
@@ -166,7 +166,7 @@ public interface GTableModel {
 	 * @param line
 	 *            The object represented by the line.
 	 */
-	public void removeLine(GPlotable line);
+	public void removeLine(Plotable line);
 
 	/**
 	 * Returns the object represented by the line.
@@ -175,7 +175,7 @@ public interface GTableModel {
 	 *            The number of the line representing the object.
 	 * @return The object represented.
 	 */
-	public GPlotable getLine(int lineNumber);
+	public Plotable getLine(int lineNumber);
 
 	/**
 	 * Returns the current row count of the model.
@@ -195,7 +195,7 @@ public interface GTableModel {
 	 * @param theListener
 	 *            The listener of this model.
 	 */
-	public void addTableModelListener(GTableModelListener theListener);
+	public void addTableModelListener(TableModelListener theListener);
 
 	/**
 	 * Removes a specified listener of this model.
@@ -203,7 +203,7 @@ public interface GTableModel {
 	 * @param theListener
 	 *            The listener to be removed.
 	 */
-	public void removeTableModelListener(GTableModelListener theListener);
+	public void removeTableModelListener(TableModelListener theListener);
 
 	// public Object getValueAt(int rowIndex, int columnIndex);
 	// public void setValueAt(Object aValue, int rowIndex, int columnIndex);
