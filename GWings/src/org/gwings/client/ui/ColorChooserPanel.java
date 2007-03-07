@@ -1,9 +1,6 @@
-/**
- * 
- */
 package org.gwings.client.ui;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.Composite;
 
 /**
  * 
@@ -20,13 +17,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
+ * @since 07/03/2007
  */
-public interface GPlotable extends IsSerializable {
-	/**
-	 * Returns a plotable representation of the object.
-	 * @return An array of objects representing the object.
-	 */
-	public Object[] plot();
+public class ColorChooserPanel extends Composite{
+
 }

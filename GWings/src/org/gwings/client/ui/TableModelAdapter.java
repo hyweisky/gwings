@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.gwings.client.ui;
 
 /**
@@ -18,19 +15,17 @@ package org.gwings.client.ui;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
- * 
+ *
  * @author Marcelo Emanoel
- * @since 04/02/2007
- * 
- * A convenience class that implements the Adapter Pattern.
+ * @since 07/03/2007
  */
-public class GTableModelAdapter implements GTableModelListener {
+public class TableModelAdapter implements TableModelListener {
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#columnAdded(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void columnAdded(GTableModelEvent evt) {
+	public void columnAdded(TableModelEvent evt) {
 
 	}
 
@@ -39,7 +34,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#columnRemoved(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void columnRemoved(GTableModelEvent evt) {
+	public void columnRemoved(TableModelEvent evt) {
 
 	}
 
@@ -48,7 +43,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowAdded(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowAdded(GTableModelEvent evt) {
+	public void rowAdded(TableModelEvent evt) {
 
 	}
 
@@ -57,7 +52,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowChanged(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowChanged(GTableModelEvent evt) {
+	public void rowChanged(TableModelEvent evt) {
 
 	}
 
@@ -66,7 +61,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowRemoved(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowRemoved(GTableModelEvent evt) {
+	public void rowRemoved(TableModelEvent evt) {
 
 	}
 
@@ -75,7 +70,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowsCleared(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowsCleared(GTableModelEvent evt) {
+	public void rowsCleared(TableModelEvent evt) {
 
 	}
 
@@ -84,7 +79,7 @@ public class GTableModelAdapter implements GTableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#tableCleared(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void tableCleared(GTableModelEvent evt) {
+	public void tableCleared(TableModelEvent evt) {
 
 	}
 
