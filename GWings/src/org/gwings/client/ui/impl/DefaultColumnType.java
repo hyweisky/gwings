@@ -2,7 +2,8 @@ package org.gwings.client.ui.impl;
 
 import java.util.Date;
 
-import org.gwings.client.ui.GColumnRenderer;
+import org.gwings.client.ui.ColumnRenderer;
+import org.gwtwidgets.client.util.SimpleDateFormat;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Marcelo Emanoel
  * @since 04/02/2007
  */
-public class DefaultGColumnType implements GColumnRenderer{
+public class DefaultColumnType implements ColumnRenderer{
 
 	public Widget renderType(Object value) {
 		String type = GWT.getTypeName(value);
@@ -39,7 +40,8 @@ public class DefaultGColumnType implements GColumnRenderer{
 			}
 			if(type.equals("java.util.Date")){
 				Date dt = (Date) value;
-				return new HTML(dt.getDate()+"/"+dt.getMonth()+"/"+dt.getYear());
+				SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+				return new HTML(fmt.format(dt));
 			}
 		}
 		
