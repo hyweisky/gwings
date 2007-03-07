@@ -1,9 +1,7 @@
 package org.gwings.client.demo;
 
-import org.gwings.client.ui.GPlotable;
-import org.gwings.client.ui.GTable;
-import org.gwings.client.ui.GTableModel;
-import org.gwings.client.ui.impl.DefaultGTable;
+import org.gwings.client.ui.Table;
+import org.gwings.client.ui.TableModel;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -28,42 +26,26 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @since 04/02/2007
  */
 public class TableDemoComposite extends Composite {
-	private GTable table;
+	private Table table;
 
-	private class TestPlotable implements GPlotable {
-		private String string;
-		private Boolean bool;
-
-		public TestPlotable(String st, Boolean b) {
-
-			this.string = st;
-			this.bool = b;
-		}
-
-		public Object[] plot() {
-
-			return new Object[] { string, bool };
-		}
-
-	}
 
 	public TableDemoComposite() {
 
-		table = new DefaultGTable();
+		table = new Table();
 
-		GTableModel model = table.getTableModel();
+		TableModel model = table.getTableModel();
 
 		model.addColumn("String");
 		model.addColumn("Boolean value");
 
-		TestPlotable plotable = new TestPlotable("true", Boolean.TRUE);
-		TestPlotable plotable2 = new TestPlotable("false", Boolean.FALSE);
+		SimplePlotable plotable = new SimplePlotable("true", Boolean.TRUE);
+		SimplePlotable plotable2 = new SimplePlotable("false", Boolean.FALSE);
 
 		model.appendLine(plotable);
 		model.appendLine(plotable2);
 
 		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.add(table.getTableView());
+		vPanel.add(table);
 
 		initWidget(vPanel);
 	}

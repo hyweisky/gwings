@@ -1,8 +1,6 @@
 package org.gwings.client.demo;
 
-import org.gwings.client.ui.Slider;
-
-import com.google.gwt.user.client.ui.Composite;
+import org.gwings.client.ui.Plotable;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -22,11 +20,22 @@ import com.google.gwt.user.client.ui.Composite;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class GSliderDemoComposite extends Composite {
-	private Slider slider;
+public class SimplePlotable implements Plotable {
+	private String stringValue;
+	private Boolean booleanValue;
 
-	public GSliderDemoComposite() {
-		slider = new Slider();
-		initWidget(slider);
+	public SimplePlotable() {
+		this("", Boolean.FALSE);
 	}
+
+	public SimplePlotable(String stringValue, Boolean booleanValue) {
+
+		this.stringValue = stringValue;
+		this.booleanValue = booleanValue;
+	}
+
+	public Object[] plot() {
+		return new Object[] { stringValue, booleanValue };
+	}
+
 }
