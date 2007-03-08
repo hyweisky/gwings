@@ -13,9 +13,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
+import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -37,8 +40,8 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class ListSelector extends Composite implements ListSelectionListener {
 	public static final int DEFAULT_VISIBLE_ITENS = 10;
-	private Label labelAvailableCaption;
-	private Label labelSelectedCaption;
+	private HTML labelAvailableCaption;
+	private HTML labelSelectedCaption;
 	private Button multipleSelectButton;
 	private Button multipleDeselectButton;
 	private Button selectButton;
@@ -55,13 +58,14 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	public ListSelector(){
 		initialize();
 		setupUI();
+		setupStyles();
 		setupListeners();
 	}
 	
 	private void initialize() {
 		layout = new FlexTable();
-		labelAvailableCaption = new Label("availableCaption");
-		labelSelectedCaption = new Label("selectedCaption");
+		labelAvailableCaption = new HTML("availableCaption", true);
+		labelSelectedCaption = new HTML("selectedCaption", true);
 		multipleSelectButton = new Button(" &gt;&gt; ");
 		multipleDeselectButton = new Button(" &lt;&lt; ");
 		selectButton = new Button(" &gt; ");
@@ -74,11 +78,30 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		setMultipleSelectionEnabled(true);
 	}
 
+	private void setupStyles() {
+		setStyleName("org_gwings_ListSelector");
+		labelAvailableCaption.setStyleName("availableLabel");
+		labelSelectedCaption.setStyleName("selectedLabel");
+		multipleSelectButton.setStyleName("multipleSelectButton");
+		multipleDeselectButton.setStyleName("multipleDeselectButton");
+		selectButton.setStyleName("selectButton");
+		deselectButton.setStyleName("deselectButton");
+		availableListItens.setStyleName("availableItens");
+		selectedListItens.setStyleName("selectedItens");
+	}
+	
 	private void setupUI() {
 		initWidget(layout);
 		
+		VerticalAlignmentConstant middle = VerticalPanel.ALIGN_MIDDLE;
+		HorizontalAlignmentConstant center = HorizontalPanel.ALIGN_CENTER;
 		VerticalPanel selectButtonsPanel = new VerticalPanel();
 		VerticalPanel deselectButtonsPanel = new VerticalPanel();
+
+		selectButtonsPanel.setHorizontalAlignment(center);
+		selectButtonsPanel.setVerticalAlignment(middle);
+		deselectButtonsPanel.setHorizontalAlignment(center);
+		deselectButtonsPanel.setVerticalAlignment(middle);
 		
 		selectButtonsPanel.add(multipleSelectButton);
 		selectButtonsPanel.add(selectButton);
@@ -89,30 +112,42 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		deselectButtonsPanel.setSpacing(2);
 		
 		layout.setWidget(1, 1, labelAvailableCaption);
-		layout.setWidget(1, 6, labelSelectedCaption);
+		layout.setWidget(1, 5, labelSelectedCaption);
 		layout.setWidget(2, 1, availableListItens);
-		layout.setWidget(2, 6, selectedListItens);
-		layout.setWidget(3, 3, selectButtonsPanel);
-		layout.setWidget(5, 3, deselectButtonsPanel);
+		layout.setWidget(2, 5, selectedListItens);
+		layout.setWidget(3, 2, selectButtonsPanel);
+		layout.setWidget(5, 2, deselectButtonsPanel);
 		layout.insertRow(6);
 		layout.insertCell(6, 0);
-		layout.insertCell(1, 7);
+		layout.insertCell(1, 6);
 		
-		layout.getFlexCellFormatter().setRowSpan(2, 1, 9);
-		layout.getFlexCellFormatter().setRowSpan(2, 6, 9);
+		layout.getFlexCellFormatter().setRowSpan(2, 1, 7);
+		layout.getFlexCellFormatter().setRowSpan(2, 5, 7);
+		layout.getCellFormatter().setAlignment(3, 2, center, middle);
+		layout.getCellFormatter().setAlignment(5, 2, center, middle);
+		layout.getCellFormatter().setAlignment(1, 1, center, middle);
+		layout.getCellFormatter().setAlignment(1, 5, center, middle);
 		
-		multipleSelectButton.setSize("100%", "100%");
-		multipleDeselectButton.setSize("100%", "100%");
-		selectButton.setSize("100%", "100%");
-		deselectButton.setSize("100%", "100%");
+		
+//		selectButtonsPanel.setBorderWidth(1);
+//		deselectButtonsPanel.setBorderWidth(1);
+		
+		
+		
+//		multipleSelectButton.setSize("100%", "100%");
+//		multipleDeselectButton.setSize("100%", "100%");
+//		selectButton.setSize("100%", "100%");
+//		deselectButton.setSize("100%", "100%");
 		availableListItens.setWidth("100%");
 		selectedListItens.setWidth("100%");
+		selectButtonsPanel.setSize("100%", "100%");
+		deselectButtonsPanel.setSize("100%", "100%");
 		
 		DeferredCommand.add(new Command() {
 			public void execute() {
 				List availableItens = model.getAvailableItens();
 				for(int i = 0; i < availableItens.size(); i++){
-					availableListItens.addItem(availableItens.get(i).toString(),"#");
+					availableListItens.addItem(availableItens.get(i).toString());
 					String style = (i % 2 == 0 ? "odd" : "even");
 					availableListItens.setStyleName(i, style);
 				}
@@ -204,7 +239,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	public void setSelectCaption(String selectCaption){
 		if(selectCaption != null && !selectCaption.equals("")){
 			this.selectedCaption = selectCaption;
-			this.labelSelectedCaption.setText(selectCaption);
+			this.labelSelectedCaption.setHTML(selectCaption);
 		}
 	}
 	
@@ -220,7 +255,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	public void setAvailableCaption(String availableCaption){
 		if(availableCaption != null && !availableCaption.equals("")){
 			this.availableCaption = availableCaption;
-			this.labelAvailableCaption.setText(availableCaption);
+			this.labelAvailableCaption.setHTML(availableCaption);
 		}
 	}
 	/**
@@ -244,12 +279,23 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		String itemText = selectedListItens.getItemText(originalPosition);
 		selectedListItens.removeItem(originalPosition);
 		availableListItens.addItem(itemText);
+		setItemStyleName(availableListItens);
 	}
 
 	public void itemSelected(int originalPosition) {
 		String itemText = availableListItens.getItemText(originalPosition);
 		availableListItens.removeItem(originalPosition);
 		selectedListItens.addItem(itemText);
+		setItemStyleName(selectedListItens);
+	}
+
+	/**
+	 * 
+	 */
+	private void setItemStyleName(StylableListBox list) {
+		int nextInsert = list.getItemCount()-1;
+		String styleName = (nextInsert % 2 != 0? "even": "odd");
+		list.setStyleName(nextInsert, styleName);
 	}
 
 	public void multipleSelectionDisabled() {

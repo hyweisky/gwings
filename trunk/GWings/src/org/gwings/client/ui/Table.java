@@ -29,6 +29,7 @@ public class Table extends FlexTable implements TableModelListener {
 
 	private static final int HEADER = 0;
 	private TableModel tableModel;
+	private boolean zebraMode;
 
 	public Table() {
 		this(new DefaultTableModel());
@@ -37,8 +38,8 @@ public class Table extends FlexTable implements TableModelListener {
 	public Table(TableModel model) {
 		setTableModel(model);
 		insertRow(HEADER);
-		// tableView.setBorderWidth(1);
-		setStyleName("org-gwings-gtable");
+		setStyleName("org_gwings_Table");
+		setZebraMode(true);
 	}
 
 	/**
@@ -87,14 +88,27 @@ public class Table extends FlexTable implements TableModelListener {
 		Plotable plotable = model.getLine(row);
 
 		Object[] line = plotable.plot();
-		insertRow(row + 1);
+		int nextRow = row + 1;
+		insertRow(nextRow);
+		getRowFormatter().addStyleName(nextRow, "row");
+		if(isZebraMode()){
+			updateRowStyle(nextRow);
+		}
 		for (int i = 0; i < line.length; i++) {
 			ColumnRenderer columnType = model.getColumnRenderer(i);
 			Widget widget = columnType.renderType(line[i]);
-			setWidget(row + 1, i, widget);
-			getFlexCellFormatter().setAlignment(row + 1, i,
+			setWidget(nextRow, i, widget);
+			getFlexCellFormatter().setAlignment(nextRow, i,
 					VerticalPanel.ALIGN_CENTER, VerticalPanel.ALIGN_MIDDLE);
 		}
+	}
+
+	/**
+	 * @param row
+	 */
+	private void updateRowStyle(int row) {
+		String style = (row % 2 != 0 ? "even" : "odd");
+		getRowFormatter().addStyleName(row, style);
 	}
 
 	public void rowChanged(TableModelEvent evt) {
@@ -121,5 +135,42 @@ public class Table extends FlexTable implements TableModelListener {
 		}
 		clear();
 	}
+
+	/**
+	 * @return the zebraMode
+	 */
+	public boolean isZebraMode() {
+		return zebraMode;
+	}
+
+	/**
+	 * @param zebraMode the zebraMode to set
+	 */
+	public void setZebraMode(boolean zebraMode) {
+		if(!this.zebraMode && zebraMode){
+			enableZebraMode();
+		}
+		else{
+			disableZebraMode();
+		}
+		this.zebraMode = zebraMode;
+	}
+	private void enableZebraMode() {
+		if(getRowCount() > 1){
+			for(int i = 1; i < getRowCount(); i++){
+				updateRowStyle(i);
+			}
+		}
+	}
+
+	private void disableZebraMode() {
+		if(getRowCount() > 1){
+			for(int i = 1; i < getRowCount(); i++){
+				String styleName = (i % 2 != 0 ? "even" : "odd");
+				getRowFormatter().removeStyleName(i, styleName);
+			}
+		}
+	}
+
 
 }
