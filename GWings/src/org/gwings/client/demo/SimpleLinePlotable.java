@@ -1,6 +1,10 @@
 package org.gwings.client.demo;
 
+import java.util.Date;
+
 import org.gwings.client.ui.Plotable;
+
+import com.google.gwt.user.client.ui.Image;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -20,22 +24,25 @@ import org.gwings.client.ui.Plotable;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class SimplePlotable implements Plotable {
-	private String stringValue;
-	private Boolean booleanValue;
+public class SimpleLinePlotable implements Plotable {
+	private Boolean marked;
+	private Image image;
+	private String name;
+	private Date value;
 
-	public SimplePlotable() {
-		this("", Boolean.FALSE);
+	public SimpleLinePlotable() {
+		this(Boolean.FALSE, new Image(), "",new Date());
 	}
 
-	public SimplePlotable(String stringValue, Boolean booleanValue) {
-
-		this.stringValue = stringValue;
-		this.booleanValue = booleanValue;
+	public SimpleLinePlotable(Boolean marked, Image img, String stringValue, Date value) {
+		this.marked = marked;
+		this.image = img;
+		this.name = stringValue;
+		this.value = value;
 	}
 
 	public Object[] plot() {
-		return new Object[] { stringValue, booleanValue };
+		return new Object[] { marked, image, name , value};
 	}
 
 }
