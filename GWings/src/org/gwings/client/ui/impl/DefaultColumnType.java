@@ -8,6 +8,7 @@ import org.gwtwidgets.client.util.SimpleDateFormat;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 /**
  * 
@@ -42,6 +43,10 @@ public class DefaultColumnType implements ColumnRenderer{
 				Date dt = (Date) value;
 				SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 				return new HTML(fmt.format(dt));
+			}
+			if(type.equals("com.google.gwt.user.client.ui.Image")){
+				Image image = (Image) value;
+				return image;
 			}
 		}
 		
