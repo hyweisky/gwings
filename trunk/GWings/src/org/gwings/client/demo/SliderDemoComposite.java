@@ -3,6 +3,7 @@ package org.gwings.client.demo;
 import org.gwings.client.ui.Slider;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockPanel;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -22,11 +23,30 @@ import com.google.gwt.user.client.ui.Composite;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class GSliderDemoComposite extends Composite {
+public class SliderDemoComposite extends Composite {
+	private DockPanel layout;
 	private Slider slider;
 
-	public GSliderDemoComposite() {
+	public SliderDemoComposite() {
+		initialize();
+		setupUI();
+	}
+
+	/**
+	 * 
+	 */
+	private void initialize() {
 		slider = new Slider();
-		initWidget(slider);
+		layout = new DockPanel();
+	}
+	private void setupUI() {
+		initWidget(layout);
+		slider.setSize("300px", "10px");
+		layout.setHorizontalAlignment(DockPanel.ALIGN_CENTER);
+		layout.setVerticalAlignment(DockPanel.ALIGN_MIDDLE);
+		
+		layout.add(slider, DockPanel.CENTER);
+		layout.setSize("100%", "100%");
+		layout.setBorderWidth(1);
 	}
 }

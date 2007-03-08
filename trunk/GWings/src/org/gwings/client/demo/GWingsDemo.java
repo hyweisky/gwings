@@ -5,9 +5,9 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TabPanel;
 
 /**
@@ -39,11 +39,10 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		Window.addWindowResizeListener(this);
 
 		panel = new TabPanel();
-		Composite cp = new TableDemoComposite();
 
-		panel.add(cp, "Table");
-		panel.add(new HTML("TESTE"), "teste");
+		panel.add(new TableDemoComposite(), "Table");
 		panel.add(new ListSelectorComposite(), "Selector");
+		panel.add(new SliderDemoComposite(), "Slider");
 		
 		DeferredCommand.add(new Command() {
 			public void execute() {
@@ -55,6 +54,19 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 			}
 		});
 
+		panel.addTabListener(new TabListener() {
+		
+			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
+				int index = panel.getDeckPanel().getVisibleWidget();
+				panel.getDeckPanel().getWidget(index).setStyleName("selected");
+			}
+		
+			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
+				return true;
+			}
+		
+		});
+		
 		RootPanel.get().add(panel);
 	}
 
