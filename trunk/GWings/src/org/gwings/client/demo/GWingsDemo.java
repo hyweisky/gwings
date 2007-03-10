@@ -42,7 +42,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 
 		panel.add(new TableDemoComposite(), "Table");
 		panel.add(new ListSelectorComposite(), "Selector");
-		panel.add(new SliderDemoComposite(), "Slider");
+		//panel.add(new SliderDemoComposite(), "Slider");
 		
 		DeferredCommand.add(new Command() {
 			public void execute() {

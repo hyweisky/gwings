@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , Luciano Broussal <luciano.broussal AT gmail.com>
  *
  * @author Marcelo Emanoel
  * @since 07/03/2007
@@ -145,18 +145,27 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		
 		DeferredCommand.add(new Command() {
 			public void execute() {
-				List availableItens = model.getAvailableItens();
+				List availableItens = model.getAvailableItems();
 				for(int i = 0; i < availableItens.size(); i++){
 					availableListItens.addItem(availableItens.get(i).toString());
-					String style = (i % 2 == 0 ? "odd" : "even");
-					availableListItens.setStyleName(i, style);
 				}
+                updateItemsStyles(availableItens , availableListItens);
 			}
 		
 		});
 //		layout.setBorderWidth(1);
 	}
+    
+    
 
+    
+    private void updateItemsStyles(List list , StylableListBox listBox) {
+        for(int i = 0; i < list.size(); i++){
+            String style = (i % 2 == 0 ? "odd" : "even");
+            listBox.setStyleName(i, style);
+        }
+    }
+    
 	private void setupListeners() {
 		
 		ClickListener selectListener = new ClickListener() {
@@ -180,9 +189,9 @@ public class ListSelector extends Composite implements ListSelectionListener {
 				if(availableListItens.isMultipleSelect()){
 					List positions = new ArrayList();
 					for(int i = 0; i < availableListItens.getItemCount(); i++){
-						if(availableListItens.isItemSelected(i)){
+//						if(availableListItens.isItemSelected(i)){
 							positions.add(new Integer(i));
-						}
+//					}
 					}
 					int[] itemPositions = new int[positions.size()];
 					for(int i = 0; i < positions.size();i++){
@@ -202,9 +211,10 @@ public class ListSelector extends Composite implements ListSelectionListener {
 				if(selectedListItens.isMultipleSelect()){
 					List positions = new ArrayList();
 					for(int i = 0; i < selectedListItens.getItemCount(); i++){
-						if(selectedListItens.isItemSelected(i)){
+					
+//                        if(selectedListItens.isItemSelected(i)){
 							positions.add(new Integer(i));
-						}
+//						}
 					}
 					int[] itemPositions = new int[positions.size()];
 					for(int i = 0; i < positions.size();i++){
@@ -279,24 +289,29 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		String itemText = selectedListItens.getItemText(originalPosition);
 		selectedListItens.removeItem(originalPosition);
 		availableListItens.addItem(itemText);
-		setItemStyleName(availableListItens);
+//		setItemStyleName(availableListItens);
+        updateItemsStyles(model.getAvailableItems() , availableListItens);
+        updateItemsStyles(model.getSelectedItems() , selectedListItens);
 	}
 
 	public void itemSelected(int originalPosition) {
 		String itemText = availableListItens.getItemText(originalPosition);
 		availableListItens.removeItem(originalPosition);
 		selectedListItens.addItem(itemText);
-		setItemStyleName(selectedListItens);
+		//setItemStyleName(selectedListItens);
+        updateItemsStyles(model.getAvailableItems() , availableListItens);
+        System.out.println(availableListItens);
+        updateItemsStyles(model.getSelectedItems() , selectedListItens);
+        System.out.println(selectedListItens);
+      
 	}
 
-	/**
-	 * 
-	 */
-	private void setItemStyleName(StylableListBox list) {
-		int nextInsert = list.getItemCount()-1;
-		String styleName = (nextInsert % 2 != 0? "even": "odd");
-		list.setStyleName(nextInsert, styleName);
-	}
+//	
+//	private void setItemStyleName(StylableListBox list) {
+//		int nextInsert = list.getItemCount()-1;
+//		String styleName = (nextInsert % 2 != 0? "even": "odd");
+//		list.setStyleName(nextInsert, styleName);
+//	}
 
 	public void multipleSelectionDisabled() {
 		showMultipleButtons(false);
