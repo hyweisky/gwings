@@ -33,7 +33,7 @@ import com.google.gwt.user.client.ui.ListBox;
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , <luciano.broussal AT gmail.com>
  *
  * @author Marcelo Emanoel
  * @since 07/03/2007
@@ -46,7 +46,7 @@ public class StylableListBox extends ListBox {
 	
 	public void setStyleName(int index, String styleName){
 		 Element option = DOM.getChild(getElement(), index);
-		 setStyleName(option, styleName, true);
+        DOM.setAttribute(option, "className", styleName);
 	}
 	public String getStyleName(int index){
 		Element option = DOM.getChild(getElement(), index);
