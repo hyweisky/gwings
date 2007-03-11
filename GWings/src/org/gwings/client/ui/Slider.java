@@ -69,7 +69,7 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		initialize(horizontal);
 		setupUI();
 		setupListeners();
-		placeCursorVertically();
+		placeCursor();
 	}
 	
 	public Slider(){
@@ -97,7 +97,7 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		layout.setCellSpacing(0);
 		layout.setCellPadding(0);
 		
-		layout.setBorderWidth(1);
+//		layout.setBorderWidth(1);
 	}
 
 	private void updateUI() {
@@ -208,17 +208,18 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		int value;
 		int max = getMaxValue().intValue();
 		int min = getMinValue().intValue();
+		int inc = getIncrement().intValue();
 		
 		if(isHorizontal()){
 			value = (((pos - xMin)*(max-min))/(xMax - xMin)) + min;
-			setValue(new Integer(value));
 		}
 		else{
 			value = (((pos - yMin)*(max - min))/(yMax - yMin)) + min;
 		}
+		setValue(new Integer(value));
 	}
 	
-	private void placeCursorVertically() {
+	private void placeCursor() {
 		DeferredCommand.add(new Command() {
 			public void execute() {
 				int leftPosition;
