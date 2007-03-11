@@ -1,0 +1,41 @@
+.org_gwings_Spinner {
+}
+.org_gwings_Spinner .field:disabled {
+	background-color: #CCDAF0;
+	color: black;
+	
+	font-family: sans-serif;
+	font-size: x-small;
+	font-style: normal;
+	
+	border-style: solid;
+	border-width:1px;
+	border-color:gray;
+	
+	vertical-align:middle;
+	height: 20px;
+}
+.org_gwings_Spinner .incrementButton,
+.org_gwings_Spinner .decrementButton{
+	background-image: url("../pics/spinner/button.gif");
+	
+	border-style: solid;
+	border-width:1px;
+	border-color:gray;
+	
+	font-weight: bold;
+	font-family: sans-serif;
+	text-align: center;
+	vertical-align: middle; 
+
+	height: 20px;
+}
+.numberStyle, 
+.dateStyle{
+	font-family: sans-serif;
+	font-size: x-small;
+	font-weight: bold;
+	font-style: normal;
+	
+	color: black;
+}

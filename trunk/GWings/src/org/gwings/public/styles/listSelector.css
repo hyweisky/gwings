@@ -2,7 +2,7 @@
 	ListSelector Styles
 */
 .org_gwings_ListSelector{
-	background-color: white;
+	background-color: #CCDAF0;
 	border-style: solid;
 	border-width: thin;
 	border-color: black;
@@ -19,13 +19,14 @@
 .org_gwings_ListSelector .multipleDeselectButton,
 .org_gwings_ListSelector .selectButton,
 .org_gwings_ListSelector .deselectButton{
-	color: maroon;
+	color: black;
 	background-image: url('../pics/listSelector/button.gif');
 	background-position: center;
 	font-size: small;
 	font-weight: bold;
 	width: 30px;
 	height: 30px;
+	border: none;
 }
 .org_gwings_ListSelector .availableItens,
 .org_gwings_ListSelector .selectedItens{

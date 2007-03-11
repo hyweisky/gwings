@@ -1,3 +1,6 @@
 .cursor{
 	background-color: transparent;
 }
+.layout{
+	vertical-align: bottom;
+}
