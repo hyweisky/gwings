@@ -20,12 +20,12 @@ import org.gwings.client.ui.impl.IntegerBoundModel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 /**
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -38,10 +38,10 @@ import com.google.gwt.user.client.ui.Widget;
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , <luciano.broussal AT gmail.com>
  *
- * @author Marcelo Emanoel
- * @since 08/03/2007
+ * @author Marcelo Emanoel, Luciano Broussal
+ * @since 07/03/2007
  */
 public class Spinner extends SimplePanel {
 	
@@ -66,8 +66,8 @@ public class Spinner extends SimplePanel {
 	
 	private void initialize() {
 		field = new TextBox();
-		incrementButton = new Button("+");
-		decrementButton = new Button("-");
+		incrementButton = new Button("");
+		decrementButton = new Button("");
 		layout = new FlexTable();
 	}
 
@@ -76,7 +76,7 @@ public class Spinner extends SimplePanel {
 		field.setTextAlignment(TextBox.ALIGN_RIGHT);
 		field.setEnabled(false);
 		
-		HorizontalPanel buttonPanel = new HorizontalPanel();
+        VerticalPanel buttonPanel = new VerticalPanel();
 		buttonPanel.add(incrementButton);
 		buttonPanel.add(decrementButton);
 		buttonPanel.setSpacing(0);
