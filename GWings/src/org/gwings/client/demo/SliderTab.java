@@ -65,7 +65,7 @@ public class SliderTab extends AbstractDemoPanel {
 		horizontalSlider.setMaxValue(new Integer(30));
 		horizontalSlider.setMinValue(new Integer(0));
 		horizontalSlider.setValue(new Integer(20));
-		horizontalSlider.setIncrement(new Integer(1));
+		horizontalSlider.setIncrement(new Integer(10));
 		
 		horizontalValueBox.setText(horizontalSlider.getValue().toString());
 	}
@@ -82,7 +82,7 @@ public class SliderTab extends AbstractDemoPanel {
 		
 		
 //		layout.setSize("100%", "100%");
-		layout.setBorderWidth(1);
+//		layout.setBorderWidth(1);
 	}
 
 	private void setupListeners() {
@@ -113,6 +113,7 @@ public class SliderTab extends AbstractDemoPanel {
 				submitHorizontalChange();
 			}
 		});
+		
 	}
 	
 	public FlexTable getProperties() {
