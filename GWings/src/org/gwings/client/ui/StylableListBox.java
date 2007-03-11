@@ -46,7 +46,7 @@ public class StylableListBox extends ListBox {
 	
 	public void setStyleName(int index, String styleName){
 		 Element option = DOM.getChild(getElement(), index);
-		 setStyleName(option, styleName, true);
+        DOM.setAttribute(option, "className", styleName);
 	}
 	public String getStyleName(int index){
 		Element option = DOM.getChild(getElement(), index);
