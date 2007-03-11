@@ -37,7 +37,7 @@ public class DefaultListSelectionModel implements ListSelectorModel {
 		listenerCollection = new ListSelectionListenerCollection();
 		setAvailableItems(new ArrayList());
 		setSelectedItems(new ArrayList());
-		setMultipleSelectionEnabled(false);
+//		setMultipleSelectionEnabled(false);
 	}
 	
 	public void addListSelectionListener(ListSelectionListener listener){
@@ -63,9 +63,9 @@ public class DefaultListSelectionModel implements ListSelectorModel {
 	}
 
 	public void select(int[] positions) throws MultipleSelectionDeniedException {
-		if(!isMultipleSelectionEnabled()){
-			throw new MultipleSelectionDeniedException();
-		}
+//		if(!isMultipleSelectionEnabled()){
+//			throw new MultipleSelectionDeniedException();
+//		}
 //		Arrays.sort(positions);
 		for(int i = positions.length; i > 0; i--){
 			select(positions[i-1]);
@@ -80,9 +80,9 @@ public class DefaultListSelectionModel implements ListSelectorModel {
 
 	public void deselect(int[] positions)
 			throws MultipleSelectionDeniedException {
-		if(!isMultipleSelectionEnabled()){
-			throw new MultipleSelectionDeniedException();
-		}
+//		if(!isMultipleSelectionEnabled()){
+//			throw new MultipleSelectionDeniedException();
+//		}
 //		Arrays.sort(positions);
 		for(int i = positions.length; i > 0 ; i--){
 			deselect(i-1);
@@ -97,14 +97,14 @@ public class DefaultListSelectionModel implements ListSelectorModel {
 		return this.availableItens;
 	}
 	
-	public void setMultipleSelectionEnabled(boolean multipleSelectionEnabled) {
-		this.multipleSelectionEnabled = multipleSelectionEnabled;
-		if(multipleSelectionEnabled){
-			listenerCollection.fireMultipleSelectionEnabled();
-		}
-		else
-			listenerCollection.fireMultipleSelectionDisabled();
-	}
+//	public void setMultipleSelectionEnabled(boolean multipleSelectionEnabled) {
+//		this.multipleSelectionEnabled = multipleSelectionEnabled;
+//		if(multipleSelectionEnabled){
+//			listenerCollection.fireMultipleSelectionEnabled();
+//		}
+//		else
+//			listenerCollection.fireMultipleSelectionDisabled();
+//	}
 
 	public void setSelectedItems(List selectedItens) {
 		this.selectedItens = selectedItens;
