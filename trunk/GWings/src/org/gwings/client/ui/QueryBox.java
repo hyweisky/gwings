@@ -18,8 +18,11 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SourcesTableEvents;
+import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 
 /**
  * 
@@ -41,49 +44,104 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 07/03/2007
  */
 public class QueryBox extends TextBox {
+
+	private static final String SELECTED_ROW_STYLE = "selected";
+	private static final String RESULTS_STYLE = "results";
+	private static final String QUERY_BOX_STYLE = "org_gwings_QueryBox";
+	private static final String POPUP_STYLE = "org_gwings_QueryBoxPopup";
+	private static final String EVEN_STYLE = "even";
+	private static final String ODD_STYLE = "odd";
+	private static final int NO_SELECTION = -1;
+	
 	private PopupPanel queryPopup;
 	private FlexTable tableResults;
 	private int maxResults;
-
+	private int selectedRow;
+	
 	public QueryBox() {
 		super();
 		initialize();
 		setupUI();
+		setupStyles();
 		setupListeners();
 
 	}
 
+
 	private void initialize() {
 		queryPopup = new PopupPanel();
 		tableResults = new FlexTable();
-		queryPopup.setStyleName("popup");
-		tableResults.setStyleName("results");
 		setMaxResults(10);
-
+		selectedRow = NO_SELECTION;
 	}
 
 	private void setupUI() {
 		queryPopup.setWidth(this.getOffsetWidth() + "px");
 		queryPopup.add(tableResults);
+		tableResults.setWidth("100%");
+	}
+
+	private void setupStyles() {
+		setStyleName(QUERY_BOX_STYLE);
+		queryPopup.setStyleName(POPUP_STYLE);
+		tableResults.setStyleName(RESULTS_STYLE);
 	}
 
 	private void setupListeners() {
 		this.addKeyboardListener(new KeyboardListenerAdapter() {
 			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
-				if (getText().equals("")) {
+				int rowCount = tableResults.getRowCount();
+				RowFormatter formater = tableResults.getRowFormatter();
+				if (hasSelectedLine()) {
+					formater.removeStyleName(selectedRow, SELECTED_ROW_STYLE);
+				}
+				
+				switch (keyCode) {
+				case KEY_DOWN: {
+					int nextRow = selectedRow + 1;
+					selectedRow = (nextRow == rowCount ? 0 : nextRow);
+					formater.setStyleName(selectedRow, SELECTED_ROW_STYLE);
+					break;
+				}
+				case KEY_UP: {
+					int previousRow = selectedRow - 1;
+					selectedRow = (previousRow <= NO_SELECTION ? rowCount -1 : previousRow);
+					formater.setStyleName(selectedRow, SELECTED_ROW_STYLE);
+					break;
+				}
+				case KEY_ENTER:{
+					if(hasSelectedLine()){
+						commit(selectedRow, 0);
+					}
+					else{
+						hideResults();
+					}
+					break;
+				}
+				default:
 					hideResults();
+					break;
 				}
 			}
 
 			public void onKeyDown(Widget sender, char keyCode, int modifiers) {
-				clearTableResults();
+				if(keyCode != KEY_DOWN && keyCode != KEY_UP){
+					clearTableResults();
+				}
 			}
 		});
+		tableResults.addTableListener(new TableListener() {
+			public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+				commit(row, cell);
+			}
+		});
+		
 	}
-
+	
 	private void hideResults() {
 		queryPopup.hide();
 		clearTableResults();
+		selectedRow = -1;
 	}
 
 	/**
@@ -109,7 +167,7 @@ public class QueryBox extends TextBox {
 	}
 
 	public void response(final Collection results) {
-		if (results != null) {
+			if (results != null) {
 			DeferredCommand.add(new Command() {
 				public void execute() {
 					int left = getAbsoluteLeft();
@@ -117,17 +175,38 @@ public class QueryBox extends TextBox {
 					int row = 0;
 					int max = getMaxResults();
 					Iterator it = results.iterator();
-					
+
 					queryPopup.setPopupPosition(left, top);
+					queryPopup
+							.setPixelSize(getOffsetWidth(), getOffsetHeight());
 					queryPopup.show();
 					for (Iterator i = it; i.hasNext() && row < max; row++) {
 						tableResults.setText(row, 0, (String) i.next());
-						String style = (row % 2 == 0 ? "odd" : "even");
+						String style = (row % 2 == 0 ? ODD_STYLE : EVEN_STYLE);
 						tableResults.getRowFormatter().setStyleName(row, style);
 
 					}
 				}
 			});
 		}
+	}
+
+
+	/**
+	 * @param row
+	 * @param cell
+	 */
+	private void commit(int row, int cell) {
+		String text = tableResults.getText(row, cell);
+		setText(text);
+		hideResults();
+	}
+
+
+	/**
+	 * @return
+	 */
+	private boolean hasSelectedLine() {
+		return selectedRow != NO_SELECTION;
 	}
 }

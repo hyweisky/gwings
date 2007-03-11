@@ -52,6 +52,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		panel.add(new ListSelectorTab(), "Selector");
 		panel.add(new SliderTab(), "Slider");
 		panel.add(new SpinnerTab(), "Spinner");
+		panel.add(new QueryBoxTab(), "QueryBox");
 
 		DeferredCommand.add(new Command() {
 			public void execute() {
@@ -59,7 +60,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 				int height = Window.getClientHeight();
 
 				onWindowResized(width, height);
-				panel.selectTab(2);
+				panel.selectTab(0);
 			}
 		});
 
