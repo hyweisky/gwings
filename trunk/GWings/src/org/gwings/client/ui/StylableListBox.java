@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.ListBox;
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , <luciano.broussal AT gmail.com>
  *
- * @author Marcelo Emanoel
+ * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
 public class StylableListBox extends ListBox {
