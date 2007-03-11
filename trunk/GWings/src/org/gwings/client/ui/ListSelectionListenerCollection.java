@@ -1,7 +1,3 @@
-package org.gwings.client.ui;
-
-import java.util.ArrayList;
-import java.util.List;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -16,11 +12,16 @@ import java.util.List;
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , Luciano Broussal <luciano.broussal AT gmail.com>
  *
- * @author Marcelo Emanoel
+ * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
+package org.gwings.client.ui;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListSelectionListenerCollection {
 	private List listSelectionListeners;
 	
@@ -50,16 +51,16 @@ public class ListSelectionListenerCollection {
 		}
 	}
 	
-	public void fireMultipleSelectionEnabled(){
-		for(int i = 0; i < listSelectionListeners.size(); i++){
-			ListSelectionListener listener = (ListSelectionListener) listSelectionListeners.get(i);
-			listener.multipleSelectionEnabled();
-		}
-	}
-	public void fireMultipleSelectionDisabled(){
-		for(int i = 0; i < listSelectionListeners.size(); i++){
-			ListSelectionListener listener = (ListSelectionListener) listSelectionListeners.get(i);
-			listener.multipleSelectionDisabled();
-		}
-	}
+//	public void fireMultipleSelectionEnabled(){
+//		for(int i = 0; i < listSelectionListeners.size(); i++){
+//			ListSelectionListener listener = (ListSelectionListener) listSelectionListeners.get(i);
+//			listener.multipleSelectionEnabled();
+//		}
+//	}
+//	public void fireMultipleSelectionDisabled(){
+//		for(int i = 0; i < listSelectionListeners.size(); i++){
+//			ListSelectionListener listener = (ListSelectionListener) listSelectionListeners.get(i);
+//			listener.multipleSelectionDisabled();
+//		}
+//	}
 }

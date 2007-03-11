@@ -26,7 +26,7 @@ public class ListSelectorTab extends AbstractDemoPanel {
 	private TextBox availableCaptionField;
 	private TextBox selectedCaptionField;
 	private TextBox maxVisibleItens; 
-	private CheckBox multiSelectionEnabled;
+	//private CheckBox multiSelectionEnabled;
 	
 	public ListSelectorTab() {
 		initilize();
@@ -45,9 +45,9 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		availableCaptionField = new TextBox();
 		selectedCaptionField = new TextBox();
 		maxVisibleItens = new TextBox(); 
-		multiSelectionEnabled = new CheckBox();
-		
-		multiSelectionEnabled.setChecked(list.isMultipleSelectionEnabled());
+//		multiSelectionEnabled = new CheckBox();
+//		
+//		multiSelectionEnabled.setChecked(list.isMultipleSelectionEnabled());
 		availableCaptionField.setText(list.getAvailableCaption());
 		selectedCaptionField.setText(list.getSelectedCaption());
 		maxVisibleItens.setText(list.getMaxVisibleItens()+"");
@@ -94,11 +94,11 @@ public class ListSelectorTab extends AbstractDemoPanel {
 				updateSelectedText();
 			}
 		});
-		multiSelectionEnabled.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				list.setMultipleSelectionEnabled(multiSelectionEnabled.isChecked());
-			}
-		});
+//		multiSelectionEnabled.addClickListener(new ClickListener() {
+//			public void onClick(Widget sender) {
+//				list.setMultipleSelectionEnabled(multiSelectionEnabled.isChecked());
+//			}
+//		});
 		maxVisibleItens.addChangeListener(new ChangeListener() {
 			public void onChange(Widget sender) {
 				updateVisibleValues();
@@ -123,10 +123,10 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		flex.setWidget(0, 1, availableCaptionField);
 		flex.setWidget(1, 0, new HTML("Selected Caption"));
 		flex.setWidget(1, 1, selectedCaptionField);
-		flex.setWidget(2, 0, new HTML("Enable multi selection"));
-		flex.setWidget(2, 1, multiSelectionEnabled);
-		flex.setWidget(3,0,new HTML("Max Itens Visible"));
-		flex.setWidget(3, 1, maxVisibleItens);
+//		flex.setWidget(2, 0, new HTML("Enable multi selection"));
+//		flex.setWidget(2, 1, multiSelectionEnabled);
+		flex.setWidget(2,0,new HTML("Max Itens Visible"));
+		flex.setWidget(2, 1, maxVisibleItens);
 		
 		flex.getFlexCellFormatter().setWidth(0, 1, "80%");
 		flex.getFlexCellFormatter().setWidth(1, 0, "80%");

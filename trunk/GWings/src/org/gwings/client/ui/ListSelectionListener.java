@@ -1,5 +1,3 @@
-package org.gwings.client.ui;
-
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -14,19 +12,23 @@ package org.gwings.client.ui;
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , Luciano Broussal <luciano.broussal AT gmail.com>
  *
- * @author Marcelo Emanoel
+ * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
+
+package org.gwings.client.ui;
+
+
 public interface ListSelectionListener {
 
 	public void itemSelected(int originalPosition);
 
 	public void itemDeselected(int originalPosition);
 	
-	public void multipleSelectionEnabled();
-	
-	public void multipleSelectionDisabled();
+//	public void multipleSelectionEnabled();
+//	
+//	public void multipleSelectionDisabled();
 	
 }
