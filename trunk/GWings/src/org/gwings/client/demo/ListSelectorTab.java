@@ -1,0 +1,172 @@
+package org.gwings.client.demo;
+
+import java.util.ArrayList;
+
+import org.gwings.client.ui.ListSelector;
+
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+
+public class ListSelectorTab extends AbstractDemoPanel {
+	private ListSelector list;
+	private DockPanel layout;
+	
+	private TextBox availableCaptionField;
+	private TextBox selectedCaptionField;
+	private TextBox maxVisibleItens; 
+	private CheckBox multiSelectionEnabled;
+	
+	public ListSelectorTab() {
+		initilize();
+		setupUI();
+		setupListeners();
+	}
+
+
+	private void initilize() {
+		list = new ListSelector();
+		layout = new DockPanel();
+		
+		list.setAvailableCaption("These are the itens <br>available");
+		list.setSelectCaption("And these are the <br> selected itens");
+		
+		availableCaptionField = new TextBox();
+		selectedCaptionField = new TextBox();
+		maxVisibleItens = new TextBox(); 
+		multiSelectionEnabled = new CheckBox();
+		
+		multiSelectionEnabled.setChecked(list.isMultipleSelectionEnabled());
+		availableCaptionField.setText(list.getAvailableCaption());
+		selectedCaptionField.setText(list.getSelectedCaption());
+		maxVisibleItens.setText(list.getMaxVisibleItens()+"");
+	}
+
+	private void setupUI() {
+//		initWidget(layout);
+		add(layout);
+
+		ArrayList lista = new ArrayList();
+		for (int i = 0; i < 10; i++) {
+			lista.add(i + "");
+		}
+		list.getModel().setAvailableItens(lista);
+
+		layout.setSize("100%", "100%");
+		layout.add(list, DockPanel.CENTER);
+		layout.setCellHorizontalAlignment(list, HorizontalPanel.ALIGN_CENTER);
+		layout.setCellVerticalAlignment(list, VerticalPanel.ALIGN_MIDDLE);
+	}
+
+	private void setupListeners() {
+		availableCaptionField.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateAvailbleText();
+			}
+		});
+		availableCaptionField.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateAvailbleText();
+				}
+			}
+		});
+		selectedCaptionField.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateSelectedText();
+				}
+			}
+		});
+		selectedCaptionField.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateSelectedText();
+			}
+		});
+		multiSelectionEnabled.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				list.setMultipleSelectionEnabled(multiSelectionEnabled.isChecked());
+			}
+		});
+		maxVisibleItens.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateVisibleValues();
+			}
+		});
+		maxVisibleItens.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateVisibleValues();
+				}
+			}
+		});
+	}
+
+	private void updateAvailbleText() {
+		list.setAvailableCaption(availableCaptionField.getText());
+	}
+
+	public FlexTable getProperties() {
+		FlexTable flex = new FlexTable();
+		flex.setWidget(0, 0, new HTML("Available Caption"));
+		flex.setWidget(0, 1, availableCaptionField);
+		flex.setWidget(1, 0, new HTML("Selected Caption"));
+		flex.setWidget(1, 1, selectedCaptionField);
+		flex.setWidget(2, 0, new HTML("Enable multi selection"));
+		flex.setWidget(2, 1, multiSelectionEnabled);
+		flex.setWidget(3,0,new HTML("Max Itens Visible"));
+		flex.setWidget(3, 1, maxVisibleItens);
+		
+		flex.getFlexCellFormatter().setWidth(0, 1, "80%");
+		flex.getFlexCellFormatter().setWidth(1, 0, "80%");
+		flex.getFlexCellFormatter().setWidth(2, 0, "80%");
+		flex.getFlexCellFormatter().setWidth(3, 0, "80%");
+		
+//		flex.setBorderWidth(1);
+		return flex;
+	}
+
+	public HTML getLinks() {
+		return new HTML("List Selector");
+	}
+
+
+	/**
+	 * 
+	 */
+	private void updateSelectedText() {
+		list.setSelectCaption(selectedCaptionField.getText());
+	}
+
+
+	/**
+	 * 
+	 */
+	private void updateVisibleValues() {
+		try{
+			String text = maxVisibleItens.getText();
+			int value = Integer.parseInt(text);
+			list.setMaxVisibleItens(value);
+		}
+		catch (Exception e) {
+			Window.alert("Please insert an integer greater than zero.");
+			DeferredCommand.add(new Command() {
+				public void execute() {
+					maxVisibleItens.selectAll();
+					maxVisibleItens.setFocus(true);
+				}
+			});
+		}
+	}
+}

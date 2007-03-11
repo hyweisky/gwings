@@ -5,10 +5,14 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
+import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SourcesTabEvents;
 import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * 
@@ -31,7 +35,9 @@ import com.google.gwt.user.client.ui.TabPanel;
  */
 public class GWingsDemo implements EntryPoint, WindowResizeListener {
 	private TabPanel panel;
-
+	private DocStack stack;
+	private DockPanel layout;
+	
 	public void onModuleLoad() {
 
 		Window.enableScrolling(false);
@@ -39,26 +45,31 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		Window.addWindowResizeListener(this);
 
 		panel = new TabPanel();
-
-		panel.add(new TableDemoComposite(), "Table");
-		panel.add(new ListSelectorComposite(), "Selector");
-		//panel.add(new SliderDemoComposite(), "Slider");
+		stack = new DocStack();
+		layout = new DockPanel();
 		
+		panel.add(new TableTab(), "Table");
+		panel.add(new ListSelectorTab(), "Selector");
+		panel.add(new SliderTab(), "Slider");
+		panel.add(new SpinnerTab(), "Spinner");
+
 		DeferredCommand.add(new Command() {
 			public void execute() {
 				int width = Window.getClientWidth();
 				int height = Window.getClientHeight();
 
 				onWindowResized(width, height);
-				panel.selectTab(0);
+				panel.selectTab(2);
 			}
 		});
 
 		panel.addTabListener(new TabListener() {
 		
 			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
-				int index = panel.getDeckPanel().getVisibleWidget();
-				panel.getDeckPanel().getWidget(index).setStyleName("selected");
+				AbstractDemoPanel demoPanel = (AbstractDemoPanel) panel.getWidget(tabIndex);
+				setComponentLinks(demoPanel.getLinks());
+				setProperties(demoPanel.getProperties());
+				stack.showStack(0);
 			}
 		
 			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
@@ -66,11 +77,41 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 			}
 		
 		});
+		layout.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
 		
-		RootPanel.get().add(panel);
+		layout.add(panel, DockPanel.CENTER);
+		layout.add(stack, DockPanel.EAST);
+		
+		layout.setCellWidth(panel, "69%");
+		layout.setCellHeight(panel, "100%");
+		layout.setCellWidth(stack, "39%");
+		layout.setCellHeight(stack, "100%");
+		layout.setSpacing(4);
+		
+		layout.setSize("100%", "100%");
+		panel.setSize("100%", "100%");
+		stack.setSize("100%", "100%");
+		
+		RootPanel.get().add(layout);
+
+//		Slider slider = new Slider();
+//		slider.setSize("300px", "10px");
+//		RootPanel.get().add(slider);
 	}
 
 	public void onWindowResized(int width, int height) {
-		panel.setPixelSize(width - 10, height - 10);
+//		panel.setPixelSize((int) (width*0.79), height - 30);
+//		stack.setPixelSize((int) (width* 0.2), height - 30);
+		layout.setPixelSize(width - 10, height - 10);
 	}
+	
+	public void setProperties(FlexTable propertiesTable){
+		stack.setTableProperties(propertiesTable);
+	}
+	
+	public void setComponentLinks(HTML links){
+		stack.setLinks(links);
+	}
+	
+	
 }
