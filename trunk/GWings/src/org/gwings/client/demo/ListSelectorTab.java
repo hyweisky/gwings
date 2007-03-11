@@ -61,7 +61,7 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		for (int i = 0; i < 10; i++) {
 			lista.add(i + "");
 		}
-		list.getModel().setAvailableItens(lista);
+		list.getModel().setAvailableItems(lista);
 
 		layout.setSize("100%", "100%");
 		layout.add(list, DockPanel.CENTER);
