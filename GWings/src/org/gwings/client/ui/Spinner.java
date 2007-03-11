@@ -18,9 +18,12 @@ package org.gwings.client.ui;
 import org.gwings.client.ui.impl.IntegerBoundModel;
 
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,13 +46,14 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
-public class Spinner extends SimplePanel {
+public class Spinner extends SimplePanel implements SourcesChangeEvents, BoundModelListener{
 	
 	private TextBox field;
 	private Button incrementButton;
 	private Button decrementButton;
 	private FlexTable layout;
 	private BoundModel spinnerModel;
+	private ChangeListenerCollection changeListeners;
 	
 	public Spinner(){
 		this(new IntegerBoundModel());
@@ -129,19 +133,27 @@ public class Spinner extends SimplePanel {
 		setTextValue();
 	}
 	
-	public Object getValue(){
+	public Object getValue() {
 		return getSpinnerModel().getValue();
 	}
-	
-	public void setMinValue(Object minValue){
+
+	public void setMinValue(Object minValue) {
 		getSpinnerModel().setStart(minValue);
 	}
-	
-	public void setMaxValue(Object maxValue){
+
+	public void setMaxValue(Object maxValue) {
 		getSpinnerModel().setFinish(maxValue);
 	}
-	
-	public void setValue(Object value){
+
+	public Object getMinValue() {
+		return getSpinnerModel().getStart();
+	}
+
+	public Object getMaxValue() {
+		return getSpinnerModel().getFinish();
+	}
+
+	public void setValue(Object value) {
 		getSpinnerModel().setValue(value);
 		setTextValue();
 	}
@@ -153,8 +165,28 @@ public class Spinner extends SimplePanel {
 	public void setIncrement(Integer increment) {
 		getSpinnerModel().setIncrement(increment);
 	}
-	
-	public void setLimited(boolean limited){
+
+	public void setLimited(boolean limited) {
 		getSpinnerModel().setLimited(limited);
+	}
+
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
+	}
+
+	public void removeChangeListener(ChangeListener listener) {
+		changeListeners.remove(listener);
+	}
+
+	public void valueDecremented() {
+		changeListeners.fireChange(this);
+	}
+
+	public void valueIncremented() {
+		changeListeners.fireChange(this);
+	}
+
+	public Integer getIncrement() {
+		return (Integer) getSpinnerModel().getIncrement();
 	}
 }
