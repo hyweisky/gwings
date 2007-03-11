@@ -299,9 +299,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		selectedListItens.addItem(itemText);
 		//setItemStyleName(selectedListItens);
         updateItemsStyles(model.getAvailableItems() , availableListItens);
-        System.out.println(availableListItens);
         updateItemsStyles(model.getSelectedItems() , selectedListItens);
-        System.out.println(selectedListItens);
       
 	}
 
