@@ -25,6 +25,7 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -62,7 +63,7 @@ public class SpinnerTab extends AbstractDemoPanel {
 	private TextBox maxNumberValueBox;
 	private TextBox minNumberValueBox;
 	private TextBox incrementValueBox;
-	private CheckBox isUnlimited
+	private CheckBox isNumberUnlimited;
 	
 	
 	public SpinnerTab(){
@@ -89,11 +90,12 @@ public class SpinnerTab extends AbstractDemoPanel {
 		maxNumberValueBox = new TextBox();
 		minNumberValueBox = new TextBox();
 		incrementValueBox = new TextBox();
+		isNumberUnlimited = new CheckBox();
 
 		maxNumberValueBox.setText(numberSpinner.getMaxValue().toString());
 		minNumberValueBox.setText(numberSpinner.getMinValue().toString());
 		incrementValueBox.setText(numberSpinner.getIncrement().toString());
-
+		isNumberUnlimited.setChecked(numberSpinner.isLimited());
 	}
 
 	private void setupUI() {
@@ -154,6 +156,11 @@ public class SpinnerTab extends AbstractDemoPanel {
 				}
 			}
 		});
+		isNumberUnlimited.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
+				numberSpinner.setLimited(isNumberUnlimited.isChecked());
+			}
+		});
 	}
 
 	public FlexTable getProperties() {
@@ -165,8 +172,11 @@ public class SpinnerTab extends AbstractDemoPanel {
 		flex.setWidget(2, 2, maxNumberValueBox);
 		flex.setWidget(3, 1, new Label("Increment Value"));
 		flex.setWidget(3, 2, incrementValueBox);
+		flex.setWidget(4, 1, new Label("Limited"));
+		flex.setWidget(4, 2, isNumberUnlimited);
 		
-		flex.setWidget(4, 0, new Label("Date Spinner"));
+		
+		flex.setWidget(5, 0, new Label("Date Spinner"));
 		return flex;
 	}
 
