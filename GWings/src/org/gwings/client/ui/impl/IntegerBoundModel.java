@@ -10,7 +10,7 @@
  */
 package org.gwings.client.ui.impl;
 
-import org.gwings.client.ui.BoundModel;
+import org.gwings.client.ui.BoundModelEvent;
 
 /**
  * 
@@ -31,16 +31,20 @@ import org.gwings.client.ui.BoundModel;
  * @author Marcelo Emanoel
  * @since 08/03/2007
  */
-public class IntegerBoundModel implements BoundModel {
+public class IntegerBoundModel extends AbstractBoundModel{
 	private int start;
 	private int finish;
 	private int increment;
 	private int value;
+	private boolean limited;
+	
 
 	public IntegerBoundModel() {
+		super();
+		limited = true;
 		start = 0;
 		finish = 0;
-		increment = 0;
+		increment = 1;
 		value = 0;
 	}
 
@@ -82,15 +86,17 @@ public class IntegerBoundModel implements BoundModel {
 
 	public void decrement() {
 		int newValue = value - increment;
-		if (newValue >= start) {
+		if (newValue >= start || !isLimited()){
 			this.value = newValue;
+			fireValueDecremented(new BoundModelEvent(this));
 		}
 	}
 
 	public void increment() {
 		int newValue = value + increment;
-		if (newValue <= finish) {
+		if (newValue <= finish || !isLimited()) {
 			this.value = newValue;
+			fireValueIncremented(new BoundModelEvent(this));
 		}
 	}
 
@@ -104,7 +110,7 @@ public class IntegerBoundModel implements BoundModel {
 		this.increment = theIncrement.intValue();
 	}
 
-	public void setInitialValue(Object initValue) {
+	public void setValue(Object initValue) {
 		Integer theInitValue = (Integer) initValue;
 		this.value = theInitValue.intValue();
 	}
@@ -114,4 +120,15 @@ public class IntegerBoundModel implements BoundModel {
 		this.start = theStart.intValue();
 	}
 
+	public boolean isLimited() {
+		return this.limited;
+	}
+
+	public void setLimited(boolean limited) {
+		this.limited = limited;
+	}
+
+	public String formatValue() {
+		return getValue().toString();
+	}
 }

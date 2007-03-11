@@ -1,6 +1,8 @@
 package org.gwings.client.ui.impl;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.gwings.client.ui.ColumnRenderer;
 import org.gwtwidgets.client.util.SimpleDateFormat;
@@ -9,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 /**
  * 
@@ -47,6 +50,15 @@ public class DefaultColumnType implements ColumnRenderer{
 			if(type.equals("com.google.gwt.user.client.ui.Image")){
 				Image image = (Image) value;
 				return image;
+			}
+			if(type.equals("java.util.List") || 
+			   type.equals("java.util.Collection")){
+				Collection c = (Collection) value;
+				ListBox list = new ListBox();
+				for(Iterator i = c.iterator(); i.hasNext();){
+					list.addItem(i.next().toString());
+				}
+				return list;
 			}
 		}
 		
