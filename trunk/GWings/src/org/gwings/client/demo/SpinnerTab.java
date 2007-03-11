@@ -20,12 +20,20 @@ import java.util.Date;
 import org.gwings.client.ui.Spinner;
 import org.gwings.client.ui.impl.DateBoundModel;
 
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.KeyboardListenerAdapter;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -51,6 +59,11 @@ public class SpinnerTab extends AbstractDemoPanel {
 	private Label labelNumber;
 	private Label labelDate;
 	private DockPanel layout;
+	private TextBox maxNumberValueBox;
+	private TextBox minNumberValueBox;
+	private TextBox incrementValueBox;
+	private CheckBox isUnlimited
+	
 	
 	public SpinnerTab(){
 		initialize();
@@ -72,6 +85,15 @@ public class SpinnerTab extends AbstractDemoPanel {
 		
 		dateSpinner.setSpinnerModel(new DateBoundModel());
 		dateSpinner.setMinValue(new Date());
+		
+		maxNumberValueBox = new TextBox();
+		minNumberValueBox = new TextBox();
+		incrementValueBox = new TextBox();
+
+		maxNumberValueBox.setText(numberSpinner.getMaxValue().toString());
+		minNumberValueBox.setText(numberSpinner.getMinValue().toString());
+		incrementValueBox.setText(numberSpinner.getIncrement().toString());
+
 	}
 
 	private void setupUI() {
@@ -95,14 +117,110 @@ public class SpinnerTab extends AbstractDemoPanel {
 		labelDate.setStyleName("dateStyle");
 	}
 
-	private void setupListeners() {}
+	private void setupListeners() {
+		minNumberValueBox.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateMinNumberValue();
+			}
+		});
+		minNumberValueBox.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateMinNumberValue();
+				}
+			}
+		});
+		maxNumberValueBox.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateMaxNumberValue();
+			}
+		});
+		maxNumberValueBox.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateMaxNumberValue();
+				}
+			}
+		});
+		incrementValueBox.addChangeListener(new ChangeListener() {
+			public void onChange(Widget sender) {
+				updateNumberIncrement();
+			}
+		});
+		incrementValueBox.addKeyboardListener(new KeyboardListenerAdapter() {
+			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
+				if(keyCode == KEY_ENTER){
+					updateNumberIncrement();
+				}
+			}
+		});
+	}
 
 	public FlexTable getProperties() {
-		return new FlexTable();
+		FlexTable flex = new FlexTable();
+		flex.setWidget(0, 0, new Label("Number Spinner"));
+		flex.setWidget(1, 1, new Label("Min Value"));
+		flex.setWidget(1, 2, minNumberValueBox);
+		flex.setWidget(2, 1, new Label("Max Value"));
+		flex.setWidget(2, 2, maxNumberValueBox);
+		flex.setWidget(3, 1, new Label("Increment Value"));
+		flex.setWidget(3, 2, incrementValueBox);
+		
+		flex.setWidget(4, 0, new Label("Date Spinner"));
+		return flex;
 	}
 
 	public HTML getLinks() {
 		return new HTML("Spinner");
+	}
+
+	/**
+	 * 
+	 */
+	private Integer setValue(TextBox field) {
+		try{
+			return new Integer(field.getText());
+		}
+		catch (Exception e) {
+			Window.alert("Please, insert a valid integer.");
+			DeferredCommand.add(new Command() {
+				public void execute() {
+					minNumberValueBox.selectAll();
+					minNumberValueBox.setFocus(true);
+				}
+			});
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 */
+	private void updateMinNumberValue() {
+		Integer value = setValue(minNumberValueBox);
+		if(value != null){
+			numberSpinner.setMinValue(value);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void updateMaxNumberValue() {
+		Integer value = setValue(maxNumberValueBox);
+		if(value != null){
+			numberSpinner.setMaxValue(value);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void updateNumberIncrement() {
+		Integer value = setValue(incrementValueBox);
+		if(value != null){
+			numberSpinner.setIncrement(value);
+		}
 	}
 	
 }

@@ -208,7 +208,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		int value;
 		int max = getMaxValue().intValue();
 		int min = getMinValue().intValue();
-		int inc = getIncrement().intValue();
 		
 		if(isHorizontal()){
 			value = (((pos - xMin)*(max-min))/(xMax - xMin)) + min;
