@@ -36,7 +36,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>, Luciano Broussal <luciano.broussal AT gmail.com>
  *
  * @author Marcelo Emanoel, Luciano Broussal
  * @since 11/03/2007
