@@ -72,8 +72,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
 		deselectButton = new Button(" &lt; ");
 		availableListItens = new StylableListBox();
 		selectedListItens = new StylableListBox();
-		availableListItens.setVisibleItemCount(DEFAULT_VISIBLE_ITENS);
-		selectedListItens.setVisibleItemCount(DEFAULT_VISIBLE_ITENS);
+		setMaxVisibleItens(DEFAULT_VISIBLE_ITENS);
 		setModel(new DefaultListSelectionModel());
 		setMultipleSelectionEnabled(true);
 	}
@@ -239,7 +238,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	/**
 	 * @return the selectCaption
 	 */
-	public String getSelectCaption(){
+	public String getSelectedCaption(){
 		return this.selectedCaption;
 	}
 	
@@ -248,8 +247,8 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	 */
 	public void setSelectCaption(String selectCaption){
 		if(selectCaption != null && !selectCaption.equals("")){
-			this.selectedCaption = selectCaption;
 			this.labelSelectedCaption.setHTML(selectCaption);
+			this.selectedCaption = labelSelectedCaption.getText();
 		}
 	}
 	
@@ -264,8 +263,8 @@ public class ListSelector extends Composite implements ListSelectionListener {
 	 */
 	public void setAvailableCaption(String availableCaption){
 		if(availableCaption != null && !availableCaption.equals("")){
-			this.availableCaption = availableCaption;
 			this.labelAvailableCaption.setHTML(availableCaption);
+			this.availableCaption = labelAvailableCaption.getText();
 		}
 	}
 	/**

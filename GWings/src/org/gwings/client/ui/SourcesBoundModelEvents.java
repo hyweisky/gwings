@@ -1,7 +1,5 @@
 package org.gwings.client.ui;
-
-import com.google.gwt.user.client.ui.Widget;
-/*
+/**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,20 +14,13 @@ import com.google.gwt.user.client.ui.Widget;
  * the License.
  * 
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
+ *
+ * @author Marcelo Emanoel
+ * @since 10/03/2007
  */
-
- /**
-  * 
-  * @author Marcelo Emanoel
-  * @since 07/03/2007
-  */
-public interface ColumnRenderer {
-	
-	/**
-	 * Returns a widget to render properly a determinated object.
-	 * @param value The value that should be used with the renderer.
-	 * @return A widget to render a value. 
-	 */
-	public Widget renderType(Object value);
-
+public interface SourcesBoundModelEvents {
+	public void fireValueIncremented(BoundModelEvent event);
+	public void fireValueDecremented(BoundModelEvent event);
+	public void addBoundModelListener(BoundModelListener listener);
+	public void removeBoundModelListener(BoundModelListener listener);
 }
