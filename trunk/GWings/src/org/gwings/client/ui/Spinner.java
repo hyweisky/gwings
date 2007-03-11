@@ -189,4 +189,8 @@ public class Spinner extends SimplePanel implements SourcesChangeEvents, BoundMo
 	public Integer getIncrement() {
 		return (Integer) getSpinnerModel().getIncrement();
 	}
+
+	public boolean isLimited() {
+		return getSpinnerModel().isLimited();
+	}
 }
