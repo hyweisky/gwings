@@ -53,6 +53,8 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		panel.add(new SliderTab(), "Slider");
 		panel.add(new SpinnerTab(), "Spinner");
 		panel.add(new QueryBoxTab(), "QueryBox");
+		panel.add(new ColorChooserTab(), "Color Chooser");
+		panel.add(new RoundBoxTab(), "Round Box");
 
 		DeferredCommand.add(new Command() {
 			public void execute() {

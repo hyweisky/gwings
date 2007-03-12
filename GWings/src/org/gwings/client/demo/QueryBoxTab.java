@@ -99,7 +99,7 @@ public class QueryBoxTab extends AbstractDemoPanel {
 		layout.setCellHorizontalAlignment(instructions, DockPanel.ALIGN_CENTER);
 		layout.setCellWidth(instructions, "30%");
 		layout.setCellHeight(instructions, "80%");
-		layout.setBorderWidth(1);
+//		layout.setBorderWidth(1);
 	}
 	private void setupStyles() {}
 
