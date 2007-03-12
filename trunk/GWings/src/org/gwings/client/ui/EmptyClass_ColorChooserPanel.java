@@ -21,6 +21,6 @@ import com.google.gwt.user.client.ui.Composite;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class ColorChooserPanel extends Composite{
+public class EmptyClass_ColorChooserPanel extends Composite{
 
 }

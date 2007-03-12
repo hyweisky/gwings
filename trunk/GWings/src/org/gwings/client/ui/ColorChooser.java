@@ -80,8 +80,6 @@ public class ColorChooser extends SimplePanel {
 	}
 	
 	private void setupUI() {
-//		RoundBox roundBox = new RoundBox();
-//		roundBox.setContent(layout);
 		add(layout);
 		
 		layout.setWidget(0, 0, new Label("R"));
@@ -96,7 +94,6 @@ public class ColorChooser extends SimplePanel {
 		layout.getFlexCellFormatter().setRowSpan(0,2,2);
 		
 //		layout.setBorderWidth(1);
-//		add(roundBox);
 	}
 	
 	private void setupStyles() {
@@ -168,53 +165,22 @@ public class ColorChooser extends SimplePanel {
 	}
 	
 	/**
-	 * Adds a color chooser panel to the color chooser.
-	 * 
-	 * @param panel
-	 */
-	public void addChooserPanel(ColorChooserPanel panel) {}
-
-	/**
 	 * Gets the current color value from the color chooser.
 	 * 
 	 * @return
 	 */
 	public Color getColor() {
-		return null;
+		return colorSample.getColor();
 	}
-
-	/**
-	 * Returns the data model that handles color selections.
-	 * 
-	 * @return
-	 */
-	public ColorSelectionModel getSelectionModel() {
-		return null;
-	}
-
-	/**
-	 * Removes the Color Panel specified.
-	 * 
-	 * @param panel
-	 * @return
-	 */
-	public ColorChooserPanel removeChooserPanel(ColorChooserPanel panel) {
-		return null;
-	}
-
-	/**
-	 * Specifies the Color Panels used to choose a color value.
-	 * 
-	 * @param panels
-	 */
-	public void setChooserPanels(ColorChooserPanel[] panels) {}
 
 	/**
 	 * Sets the current color of the color chooser to the specified color.
 	 * 
 	 * @param color
 	 */
-	public void setColor(Color color) {}
+	public void setColor(Color color) {
+		colorSample.setColor(color);
+	}
 
 	/**
 	 * Sets the current color of the color chooser to the specified RGB color.
@@ -223,7 +189,10 @@ public class ColorChooser extends SimplePanel {
 	 * @param g
 	 * @param b
 	 */
-	public void setColor(int r, int g, int b) {}
+	public void setColor(int r, int g, int b) {
+		Color color = new Color(r,g,b);
+		setColor(color);
+	}
 
 	/**
 	 * 

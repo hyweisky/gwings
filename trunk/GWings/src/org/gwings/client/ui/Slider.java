@@ -102,9 +102,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 						int absX = x + cursor.getAbsoluteLeft();
 						int newX = absX - startX;
 						if ((xMin <= newX && newX <= xMax)) {
-							System.out.println("X:"+xMin+"<="+newX+"<="+xMax);
-							System.out.println("Y:"+cursor.getAbsoluteTop());
-							System.out.println("Value:"+getValue());
 							setCursorPosition(newX, startY);
 							updateValue(newX);
 						}
@@ -114,8 +111,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 							int absY = y + cursor.getAbsoluteTop();
 							int newY = absY - startY;
 							if ((yMin <= newY && newY <= yMax)) {
-								System.out.println("X:"+cursor.getAbsoluteLeft());
-								System.out.println("Y:"+yMin+"<="+newY+"<="+yMax);
 								setCursorPosition(startX, newY);
 								updateValue(newY);
 							}
@@ -161,7 +156,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 	private void setupStyles() {
 		setStyleName("org_gwings_Slider");
 		CellFormatter formatter = layout.getCellFormatter();
-		System.out.println("seting up styles");
 		if(isHorizontal()){
 			cursor.setStyleName("horizontalCursor");
 			formatter.setStyleName(0, 0, "horizontalLeading");

@@ -20,7 +20,10 @@ package org.gwings.client.ui;
  */
 public interface SourcesBoundModelEvents {
 	public void fireValueIncremented(BoundModelEvent event);
+
 	public void fireValueDecremented(BoundModelEvent event);
+
 	public void addBoundModelListener(BoundModelListener listener);
+
 	public void removeBoundModelListener(BoundModelListener listener);
 }

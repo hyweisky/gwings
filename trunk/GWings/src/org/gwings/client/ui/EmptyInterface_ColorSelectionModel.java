@@ -1,6 +1,6 @@
 package org.gwings.client.ui;
-
 /**
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -16,8 +16,8 @@ package org.gwings.client.ui;
  * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com>
  *
  * @author Marcelo Emanoel
- * @since 10/03/2007
+ * @since 07/03/2007
  */
-public class BoundEvent {
+public interface EmptyInterface_ColorSelectionModel {
 
 }
