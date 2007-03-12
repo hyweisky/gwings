@@ -8,8 +8,6 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ChangeListener;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -26,7 +24,6 @@ public class ListSelectorTab extends AbstractDemoPanel {
 	private TextBox availableCaptionField;
 	private TextBox selectedCaptionField;
 	private TextBox maxVisibleItens; 
-	//private CheckBox multiSelectionEnabled;
 	
 	public ListSelectorTab() {
 		initilize();
@@ -45,16 +42,13 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		availableCaptionField = new TextBox();
 		selectedCaptionField = new TextBox();
 		maxVisibleItens = new TextBox(); 
-//		multiSelectionEnabled = new CheckBox();
-//		
-//		multiSelectionEnabled.setChecked(list.isMultipleSelectionEnabled());
+
 		availableCaptionField.setText(list.getAvailableCaption());
 		selectedCaptionField.setText(list.getSelectedCaption());
 		maxVisibleItens.setText(list.getMaxVisibleItens()+"");
 	}
 
 	private void setupUI() {
-//		initWidget(layout);
 		add(layout);
 
 		ArrayList lista = new ArrayList();
@@ -94,11 +88,7 @@ public class ListSelectorTab extends AbstractDemoPanel {
 				updateSelectedText();
 			}
 		});
-//		multiSelectionEnabled.addClickListener(new ClickListener() {
-//			public void onClick(Widget sender) {
-//				list.setMultipleSelectionEnabled(multiSelectionEnabled.isChecked());
-//			}
-//		});
+
 		maxVisibleItens.addChangeListener(new ChangeListener() {
 			public void onChange(Widget sender) {
 				updateVisibleValues();
@@ -123,8 +113,6 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		flex.setWidget(0, 1, availableCaptionField);
 		flex.setWidget(1, 0, new HTML("Selected Caption"));
 		flex.setWidget(1, 1, selectedCaptionField);
-//		flex.setWidget(2, 0, new HTML("Enable multi selection"));
-//		flex.setWidget(2, 1, multiSelectionEnabled);
 		flex.setWidget(2,0,new HTML("Max Itens Visible"));
 		flex.setWidget(2, 1, maxVisibleItens);
 		
@@ -133,7 +121,6 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		flex.getFlexCellFormatter().setWidth(2, 0, "80%");
 		flex.getFlexCellFormatter().setWidth(3, 0, "80%");
 		
-//		flex.setBorderWidth(1);
 		return flex;
 	}
 
