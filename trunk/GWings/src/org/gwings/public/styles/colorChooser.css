@@ -1,0 +1,14 @@
+.org_gwings_ColorChooser{
+	font-family: sans-serif;
+	font-size: x-small;
+	font-weight: bolder;
+	
+	border-color: black;
+	border-style: outset;
+	border-width: 1px;
+	
+	background-color: #CCDAF0;
+}
+.org_gwings_ColorChooser .redSlider{}
+.org_gwings_ColorChooser .greenSlider{}
+.org_gwings_ColorChooser .blueSlider{}
