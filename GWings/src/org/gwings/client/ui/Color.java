@@ -1,5 +1,10 @@
 package org.gwings.client.ui;
 
+import com.google.gwt.user.client.ui.ChangeListener;
+import com.google.gwt.user.client.ui.ChangeListenerCollection;
+import com.google.gwt.user.client.ui.SourcesChangeEvents;
+import com.google.gwt.user.client.ui.Widget;
+
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -19,7 +24,7 @@ package org.gwings.client.ui;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class Color {
+public class Color extends Widget implements SourcesChangeEvents{
 
 	private static final int MIN_VALUE = 0;
 
@@ -93,8 +98,10 @@ public class Color {
 	private int red;
 	private int green;
 	private int blue;
+	private ChangeListenerCollection changeListeners;
 	
 	public Color(int r, int g, int b) {
+		changeListeners = new ChangeListenerCollection();
 		setRed(r);
 		setGreen(g);
 		setBlue(b);
@@ -114,6 +121,7 @@ public class Color {
 		if(!inTheRange(blue))
 			throw new RuntimeException("Not in the range.");
 		this.blue = blue;
+		changeListeners.fireChange(this);
 	}
 
 	/**
@@ -131,6 +139,7 @@ public class Color {
 			throw new RuntimeException("Not in the range.");
 		}
 		this.green = green;
+		changeListeners.fireChange(this);
 	}
 
 	/**
@@ -148,6 +157,7 @@ public class Color {
 			throw new RuntimeException("Not in the range.");
 		}
 		this.red = red;
+		changeListeners.fireChange(this);
 	}
 	
 	private boolean inTheRange(int value) {
@@ -173,5 +183,16 @@ public class Color {
 
 	private boolean canBeDarker() {
 		return (getRed() > MIN_VALUE && getGreen() > MIN_VALUE && getBlue() > MIN_VALUE);
+	}
+	public String toString() {
+		return "rgb("+getRed()+","+getGreen()+","+getBlue()+")";
+	}
+
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
+	}
+
+	public void removeChangeListener(ChangeListener listener) {
+		changeListeners.remove(listener);
 	}
 }

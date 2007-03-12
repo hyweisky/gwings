@@ -11,10 +11,10 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ChangeListenerCollection;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.SourcesChangeEvents;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -36,21 +36,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 	
-	private static final String LEFT_IMAGE_URL = "pics/slider/horizontal_left_slider.gif"; 
-	private static final String RIGHT_IMAGE_URL = "pics/slider/horizontal_right_slider.gif"; 
-	private static final String TOP_IMAGE_URL = "pics/slider/vertical_top_slider.gif"; 
-	private static final String BOTTOM_IMAGE_URL = "pics/slider/vertical_bottom_slider.gif"; 
-	private static final String VERTICAL_BAR_IMAGE_URL = "pics/slider/vertical_bar_slider.gif"; 
-	private static final String HORIZONTAL_BAR_IMAGE_URL = "pics/slider/horizontal_bar_slider.gif"; 
-	private static final String HORIZONTAL_CURSOR_IMAGE_URL = "pics/slider/horizontal_slider_cursor.gif";
-	private static final String VERTICAL_CURSOR_IMAGE_URL = "pics/slider/vertical_slider_cursor.gif";
-	
-	private Image left;
-	private Image right;
-	private Image top;
-	private Image bottom;
-	private Image cursor;
-	private HTML bar;
+	private HTML cursor;
 	private FlexTable layout;
 	private boolean dragging;
 	private int startX, startY;
@@ -78,12 +64,7 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 
 	private void initialize(boolean horizontal) {
 		layout = new FlexTable();
-		left = new Image(LEFT_IMAGE_URL);
-		right = new Image(RIGHT_IMAGE_URL);
-		top = new Image(TOP_IMAGE_URL);
-		bottom = new Image(BOTTOM_IMAGE_URL);
-		bar = new HTML();
-		cursor = new Image();
+		cursor = new HTML("<div></div>");
 		
 		changeListenerCollection = new ChangeListenerCollection();
 		
@@ -98,60 +79,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		layout.setCellPadding(0);
 		
 //		layout.setBorderWidth(1);
-	}
-
-	private void updateUI() {
-		int zIndex = DOM.getIntStyleAttribute(layout.getElement(), "zindex");
-		DOM.setIntStyleAttribute(cursor.getElement(), "zindex", ++zIndex);
-		DOM.setStyleAttribute(cursor.getElement(), "position", "absolute");
-
-		String htmlBar;
-		layout.clear();
-		if(isHorizontal()){
-			htmlBar = makeHorizontalBar();
-			cursor.setUrl(HORIZONTAL_CURSOR_IMAGE_URL);
-			
-			layout.setWidget(0, 0, left);
-			layout.setWidget(0, 1, bar);
-			layout.setWidget(0, 2, right);
-			
-			layout.getCellFormatter().setWidth(0, 0, "10px");
-			layout.getCellFormatter().setWidth(0, 2, "10px");
-		}
-		else{
-			htmlBar = makeVerticalBar();
-			cursor.setUrl(VERTICAL_CURSOR_IMAGE_URL);
-
-			layout.setWidget(0, 0, top);
-			layout.setWidget(1, 0, bar);
-			layout.setWidget(2, 0, bottom);
-			
-			layout.getCellFormatter().setHeight(0, 0, "10px");
-			layout.getCellFormatter().setHeight(2, 0, "10px");
-		}
-		bar.setHTML(htmlBar);
-	}
-
-	/**
-	 * @return
-	 */
-	private String makeHorizontalBar() {
-		return makeBar(HORIZONTAL_BAR_IMAGE_URL, "100%","10px");
-	}
-
-	private String makeVerticalBar(){
-		return makeBar(VERTICAL_BAR_IMAGE_URL,"10px","100% ");
-	}
-
-	/**
-	 * @param image
-	 * @return
-	 */
-	private String makeBar(String image, String width, String height) {
-		String theBar = "<div>" +
-		"<img style=\"width:"+width+";height:"+height+";\" src=\""+image+"\"></img>" +
-		"</div>";
-		return theBar;
 	}
 
 	private void setupListeners() {
@@ -204,6 +131,51 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 		});
 	}
 	
+	private void updateUI() {
+		int zIndex = DOM.getIntStyleAttribute(layout.getElement(), "zindex");
+		DOM.setIntStyleAttribute(cursor.getElement(), "zindex", ++zIndex);
+		DOM.setStyleAttribute(cursor.getElement(), "position", "absolute");
+		
+		if(isHorizontal()){
+			layout.setWidget(0, 0, makeDiv());
+			layout.setWidget(0, 1, makeDiv());
+			layout.setWidget(0, 2, makeDiv());
+		}
+		else{
+			layout.setWidget(0, 0, makeDiv());
+			layout.setWidget(1, 0, makeDiv());
+			layout.setWidget(2, 0, makeDiv());
+		}
+		setupStyles();
+	}
+
+	/**
+	 * @return
+	 */
+	private HTML makeDiv() {
+		HTML div = new HTML("<div></div>");
+		div.setSize("100%", "100%");
+		return div;
+	}
+
+	private void setupStyles() {
+		setStyleName("org_gwings_Slider");
+		CellFormatter formatter = layout.getCellFormatter();
+		System.out.println("seting up styles");
+		if(isHorizontal()){
+			cursor.setStyleName("horizontalCursor");
+			formatter.setStyleName(0, 0, "horizontalLeading");
+			formatter.setStyleName(0, 1, "horizontalBar");
+			formatter.setStyleName(0, 2, "horizontalTrailing");
+		}
+		else{
+			cursor.setStyleName("verticalCursor");
+			formatter.setStyleName(0, 0, "verticalLeading");
+			formatter.setStyleName(1, 0, "verticalBar");
+			formatter.setStyleName(2, 0, "verticalTrailing");
+		}
+	}
+
 	private void updateValue(int pos){
 		int value;
 		int max = getMaxValue().intValue();
@@ -223,14 +195,8 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 			public void execute() {
 				int leftPosition;
 				int topPosition;
-				if(isHorizontal()){
-					leftPosition = left.getAbsoluteLeft();
-					topPosition = left.getAbsoluteTop();
-				}
-				else{
-					leftPosition = bottom.getAbsoluteLeft();
-					topPosition = bottom.getAbsoluteTop();
-				}
+				leftPosition = layout.getAbsoluteLeft();
+				topPosition = layout.getAbsoluteTop();
 				setCursorPosition(leftPosition, topPosition);
 				add(cursor);
 			}
@@ -287,13 +253,14 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 				int max = ((Integer)getSliderModel().getFinish()).intValue();
 				int min = ((Integer)getSliderModel().getStart()).intValue();
 				
-				if(isHorizontal()){
-					int x = ((xMax - xMin)*(value - min))/(max - min);
-					setCursorPosition(x, getWidgetTop(cursor));
-				}
-				else{
-					int y = ((yMax - yMin)*(value-min))/(max-min);
-					setCursorPosition(getWidgetLeft(cursor), y);
+				if (max != min) {
+					if (isHorizontal()) {
+						int x = ((xMax - xMin) * (value - min)) / (max - min);
+						setCursorPosition(x, getWidgetTop(cursor));
+					} else {
+						int y = ((yMax - yMin) * (value - min)) / (max - min);
+						setCursorPosition(getWidgetLeft(cursor), y);
+					}
 				}
 			}
 		});
@@ -326,10 +293,6 @@ public class Slider extends AbsolutePanel implements SourcesChangeEvents{
 	 */
 	public void setSliderModel(BoundModel model) {
 		this.sliderModel = model;
-	}
-
-	public void valueChanged(BoundEvent evt) {
-		System.out.println("alterar a posição do cursor!");
 	}
 
 	/**
