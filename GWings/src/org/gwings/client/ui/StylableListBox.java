@@ -1,3 +1,9 @@
+package org.gwings.client.ui;
+
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.ListBox;
+
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,13 +23,6 @@
  * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
-package org.gwings.client.ui;
-
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.ListBox;
-
-
 public class StylableListBox extends ListBox {
 	
 	public StylableListBox(){

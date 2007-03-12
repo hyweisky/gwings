@@ -49,13 +49,6 @@ public interface ListSelectorModel {
 	 */
 	public boolean isMultipleSelectionEnabled();
 
-//	/**
-//	 * Toggle between single or multiple selection of Items.
-//	 * @param multipleSelectionEnabled
-//	 *            the multipleSelectionEnabled to set
-//	 */
-//	public void setMultipleSelectionEnabled(boolean multipleSelectionEnabled);
-
 	/**
 	 * Moves the selected item from the available Items list to the selected
 	 * Items list.

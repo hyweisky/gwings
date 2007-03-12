@@ -1,3 +1,7 @@
+package org.gwings.client.ui;
+
+import java.util.ArrayList;
+
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -17,11 +21,7 @@
  * @author Marcelo Emanoel, Luciano Broussal
  * @since 07/03/2007
  */
-package org.gwings.client.ui;
-
-import java.util.ArrayList;
 import java.util.List;
-
 public class ListSelectionListenerCollection {
 	private List listSelectionListeners;
 	

@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.SourcesTableEvents;
 import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 
 /**
  * 
@@ -47,25 +47,15 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 public class QueryBox extends TextBox {
 
     private static final String SELECTED_ROW_STYLE = "selected";
-
     private static final String RESULTS_STYLE = "results";
-
     private static final String QUERY_BOX_STYLE = "org_gwings_QueryBox";
-
     private static final String POPUP_STYLE = "org_gwings_QueryBoxPopup";
-
     private static final String EVEN_STYLE = "even";
-
     private static final String ODD_STYLE = "odd";
-
     private static final int NO_SELECTION = -1;
-
     private PopupPanel queryPopup;
-
     private FlexTable tableResults;
-
     private int maxResults;
-
     private int selectedRow;
 
     public QueryBox() {
@@ -100,27 +90,22 @@ public class QueryBox extends TextBox {
         this.addKeyboardListener(new KeyboardListenerAdapter() {
             public void onKeyUp(Widget sender, char keyCode, int modifiers) {
                 int rowCount = tableResults.getRowCount();
-                RowFormatter formater = tableResults.getRowFormatter();
-                if (hasSelectedLine()) {
-                    System.out.println("Hide Result2");
-                        tableResults.getFlexCellFormatter().removeStyleName(
-                                selectedRow, 0, SELECTED_ROW_STYLE);
+                FlexCellFormatter flexFormatter = tableResults.getFlexCellFormatter();
+				if (hasSelectedLine()) {
+                    flexFormatter.removeStyleName(selectedRow, 0, SELECTED_ROW_STYLE);
                 }
 
                 switch (keyCode) {
                 case KEY_DOWN: {
                     int nextRow = selectedRow + 1;
                     selectedRow = (nextRow == rowCount ? 0 : nextRow);
-                    tableResults.getFlexCellFormatter().addStyleName(
-                            selectedRow, 0, SELECTED_ROW_STYLE);
+                    flexFormatter.addStyleName(selectedRow, 0, SELECTED_ROW_STYLE);
                     break;
                 }
                 case KEY_UP: {
                      int previousRow = selectedRow - 1;
-                     selectedRow = (previousRow <= NO_SELECTION ? rowCount -1
-                     : previousRow);
-                     tableResults.getFlexCellFormatter().addStyleName(
-                             selectedRow, 0, SELECTED_ROW_STYLE);
+                     selectedRow = (previousRow <= NO_SELECTION ? rowCount -1 : previousRow);
+                     flexFormatter.addStyleName(selectedRow, 0, SELECTED_ROW_STYLE);
                      break;
                 }
                 case KEY_ENTER: {
@@ -139,14 +124,12 @@ public class QueryBox extends TextBox {
 
             public void onKeyDown(Widget sender, char keyCode, int modifiers) {
                 if (keyCode != KEY_DOWN && keyCode != KEY_UP) {
-
                     clearTableResults();
                 }
             }
         });
         tableResults.addTableListener(new TableListener() {
-            public void onCellClicked(SourcesTableEvents sender, int row,
-                    int cell) {
+            public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
                 commit(row, cell);
             }
         });
@@ -185,22 +168,7 @@ public class QueryBox extends TextBox {
         if (results != null) {
             DeferredCommand.add(new Command() {
                 public void execute() {
-                    int left = getAbsoluteLeft();
-                    int top = getAbsoluteTop() + getOffsetHeight() + 1;
-                    int row = 0;
-                    int max = getMaxResults();
-                    Iterator it = results.iterator();
-
-                    queryPopup.setPopupPosition(left, top);
-                    queryPopup
-                            .setPixelSize(getOffsetWidth(), getOffsetHeight());
-                    queryPopup.show();
-                    for (Iterator i = it; i.hasNext() && row < max; row++) {
-                        tableResults.setText(row, 0, (String) i.next());
-                        String style = (row % 2 == 0 ? ODD_STYLE : EVEN_STYLE);
-                        tableResults.getRowFormatter().setStyleName(row, style);
-
-                    }
+                    updateResponse(results);
                 }
             });
         }
@@ -222,4 +190,26 @@ public class QueryBox extends TextBox {
     private boolean hasSelectedLine() {
         return selectedRow != NO_SELECTION;
     }
+
+	/**
+	 * @param results
+	 */
+	private void updateResponse(Collection results) {
+		int left = getAbsoluteLeft();
+		int top = getAbsoluteTop() + getOffsetHeight() + 1;
+		int row = 0;
+		int max = getMaxResults();
+		Iterator it = results.iterator();
+
+		queryPopup.setPopupPosition(left, top);
+		queryPopup.setPixelSize(getOffsetWidth(), getOffsetHeight());
+		queryPopup.show();
+		
+		for (Iterator i = it; i.hasNext() && row < max; row++) {
+		    tableResults.setText(row, 0, (String) i.next());
+		    String style = (row % 2 == 0 ? ODD_STYLE : EVEN_STYLE);
+		    tableResults.getRowFormatter().setStyleName(row, style);
+
+		}
+	}
 }

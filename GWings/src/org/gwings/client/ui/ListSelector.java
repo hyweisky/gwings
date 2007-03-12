@@ -1,22 +1,3 @@
-/**
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- * 
- * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , Luciano Broussal <luciano.broussal AT gmail.com>
- *
- * @author Marcelo Emanoel, Luciano Broussal
- * @since 07/03/2007
- */
 package org.gwings.client.ui;
 
 import java.util.ArrayList;
@@ -39,33 +20,40 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
+/**
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , Luciano Broussal <luciano.broussal AT gmail.com>
+ *
+ * @author Marcelo Emanoel, Luciano Broussal
+ * @since 07/03/2007
+ */
 public class ListSelector extends Composite implements ListSelectionListener {
-    public static final int DEFAULT_VISIBLE_ITENS = 10;
 
+	public static final int DEFAULT_VISIBLE_ITENS = 10;
     private HTML labelAvailableCaption;
-
     private HTML labelSelectedCaption;
-
     private Button multipleSelectButton;
-
     private Button multipleDeselectButton;
-
     private Button selectButton;
-
     private Button deselectButton;
-
     private StylableListBox availableListItens;
-
     private StylableListBox selectedListItens;
-
     private FlexTable layout;
-
     private ListSelectorModel model;
-
     private String availableCaption;
-
     private String selectedCaption;
-
     private int maxVisibleItens;
 
     public ListSelector() {
@@ -142,13 +130,6 @@ public class ListSelector extends Composite implements ListSelectionListener {
         layout.getCellFormatter().setAlignment(1, 1, center, middle);
         layout.getCellFormatter().setAlignment(1, 5, center, middle);
 
-        // selectButtonsPanel.setBorderWidth(1);
-        // deselectButtonsPanel.setBorderWidth(1);
-
-        // multipleSelectButton.setSize("100%", "100%");
-        // multipleDeselectButton.setSize("100%", "100%");
-        // selectButton.setSize("100%", "100%");
-        // deselectButton.setSize("100%", "100%");
         availableListItens.setWidth("100%");
         selectedListItens.setWidth("100%");
         selectButtonsPanel.setSize("100%", "100%");
@@ -179,7 +160,6 @@ public class ListSelector extends Composite implements ListSelectionListener {
 
         ClickListener selectListener = new ClickListener() {
             public void onClick(Widget sender) {
-                // if(availableListItens.isMultipleSelect()){
                 List positions = new ArrayList();
                 for (int i = 0; i < availableListItens.getItemCount(); i++) {
                     if (availableListItens.isItemSelected(i)) {
@@ -196,12 +176,10 @@ public class ListSelector extends Composite implements ListSelectionListener {
                 } catch (MultipleSelectionDeniedException e) {
                     Window.alert(e.getMessage());
                 }
-                // }
             }
         };
         ClickListener deselectListener = new ClickListener() {
             public void onClick(Widget sender) {
-                // if(selectedListItens.isMultipleSelect()){
                 List positions = new ArrayList();
                 for (int i = 0; i < selectedListItens.getItemCount(); i++) {
 
@@ -219,17 +197,13 @@ public class ListSelector extends Composite implements ListSelectionListener {
                 } catch (MultipleSelectionDeniedException e) {
                     Window.alert(e.getMessage());
                 }
-                // }
             }
         };
         ClickListener multipleSelectListener = new ClickListener() {
             public void onClick(Widget sender) {
-                // if(availableListItens.isMultipleSelect()){
                 List positions = new ArrayList();
                 for (int i = 0; i < availableListItens.getItemCount(); i++) {
-                    // if(availableListItens.isItemSelected(i)){
                     positions.add(new Integer(i));
-                    // }
                 }
                 int[] itemPositions = new int[positions.size()];
                 for (int i = 0; i < positions.size(); i++) {
@@ -241,18 +215,13 @@ public class ListSelector extends Composite implements ListSelectionListener {
                 } catch (MultipleSelectionDeniedException e) {
                     Window.alert(e.getMessage());
                 }
-                // }
             }
         };
         ClickListener multipleDeselectListener = new ClickListener() {
             public void onClick(Widget sender) {
-                // if(selectedListItens.isMultipleSelect()){
                 List positions = new ArrayList();
                 for (int i = 0; i < selectedListItens.getItemCount(); i++) {
-
-                    // if(selectedListItens.isItemSelected(i)){
                     positions.add(new Integer(i));
-                    // }
                 }
                 int[] itemPositions = new int[positions.size()];
                 for (int i = 0; i < positions.size(); i++) {
@@ -264,7 +233,6 @@ public class ListSelector extends Composite implements ListSelectionListener {
                 } catch (MultipleSelectionDeniedException e) {
                     Window.alert(e.getMessage());
                 }
-                // }
             }
         };
 
@@ -333,7 +301,6 @@ public class ListSelector extends Composite implements ListSelectionListener {
         String itemText = selectedListItens.getItemText(originalPosition);
         selectedListItens.removeItem(originalPosition);
         availableListItens.addItem(itemText);
-        // setItemStyleName(availableListItens);
         updateItemsStyles(model.getAvailableItems(), availableListItens);
         updateItemsStyles(model.getSelectedItems(), selectedListItens);
     }
@@ -342,35 +309,10 @@ public class ListSelector extends Composite implements ListSelectionListener {
         String itemText = availableListItens.getItemText(originalPosition);
         availableListItens.removeItem(originalPosition);
         selectedListItens.addItem(itemText);
-        // setItemStyleName(selectedListItens);
         updateItemsStyles(model.getAvailableItems(), availableListItens);
         updateItemsStyles(model.getSelectedItems(), selectedListItens);
 
     }
-
-    //	
-    // private void setItemStyleName(StylableListBox list) {
-    // int nextInsert = list.getItemCount()-1;
-    // String styleName = (nextInsert % 2 != 0? "even": "odd");
-    // list.setStyleName(nextInsert, styleName);
-    // }
-
-    // public void multipleSelectionDisabled() {
-    // showMultipleButtons(false);
-    // }
-    //
-    // public void multipleSelectionEnabled() {
-    // showMultipleButtons(true);
-    // }
-
-    // private void showMultipleButtons(boolean show) {
-    // multipleSelectButton.setVisible(show);
-    // multipleDeselectButton.setVisible(show);
-    // multipleSelectButton.setEnabled(show);
-    // multipleDeselectButton.setEnabled(show);
-    // availableListItens.setMultipleSelect(show);
-    // selectedListItens.setMultipleSelect(show);
-    // }
 
     /**
      * @return the model
@@ -396,14 +338,4 @@ public class ListSelector extends Composite implements ListSelectionListener {
     public boolean isMultipleSelectionEnabled() {
         return getModel().isMultipleSelectionEnabled();
     }
-
-    // /**
-    // * Toggle between single or multiple selection of itens.
-    // * @param multipleSelectionEnabled
-    // * the multipleSelectionEnabled to set
-    // */
-    // public void setMultipleSelectionEnabled(boolean
-    // multipleSelectionEnabled){
-    // getModel().setMultipleSelectionEnabled(multipleSelectionEnabled);
-    // }
 }

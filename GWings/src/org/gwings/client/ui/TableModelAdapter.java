@@ -25,62 +25,48 @@ public class TableModelAdapter implements TableModelListener {
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#columnAdded(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void columnAdded(TableModelEvent evt) {
-
-	}
+	public void columnAdded(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#columnRemoved(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void columnRemoved(TableModelEvent evt) {
-
-	}
+	public void columnRemoved(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowAdded(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowAdded(TableModelEvent evt) {
-
-	}
+	public void rowAdded(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowChanged(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowChanged(TableModelEvent evt) {
-
-	}
+	public void rowChanged(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowRemoved(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowRemoved(TableModelEvent evt) {
-
-	}
+	public void rowRemoved(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#rowsCleared(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void rowsCleared(TableModelEvent evt) {
-
-	}
+	public void rowsCleared(TableModelEvent evt) {}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.gwings.client.ui.GTableModelListener#tableCleared(org.gwings.client.ui.GTableModelEvent)
 	 */
-	public void tableCleared(TableModelEvent evt) {
-
-	}
+	public void tableCleared(TableModelEvent evt) {}
 
 }

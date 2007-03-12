@@ -36,12 +36,24 @@ public class Table extends FlexTable implements TableModelListener {
 	}
 
 	public Table(TableModel model) {
+		initialize(model);
+		setupStyles();
+	}
+
+
+	/**
+	 * @param model
+	 */
+	private void initialize(TableModel model) {
 		setTableModel(model);
 		insertRow(HEADER);
-		setStyleName("org_gwings_Table");
 		setZebraMode(true);
 	}
 
+	private void setupStyles() {
+		setStyleName("org_gwings_Table");
+	}
+	
 	/**
 	 * Returns the GTableModel of this GTable.
 	 * 
