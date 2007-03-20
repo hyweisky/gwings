@@ -139,9 +139,16 @@ public class ColorChooser extends SimplePanel {
 	
 	public void updateHexValue(){
 		String hex = "";
-		hex += Integer.toHexString(redSlider.getValue().intValue());
-		hex += Integer.toHexString(greenSlider.getValue().intValue());
-		hex += Integer.toHexString(blueSlider.getValue().intValue());
+		String red = Integer.toHexString(redSlider.getValue().intValue());
+		String green = Integer.toHexString(greenSlider.getValue().intValue());
+		String blue = Integer.toHexString(blueSlider.getValue().intValue());
+
+		hex += red;
+		hex += (hex.length() == 1 ? red : "");
+		hex += green;
+		hex += (hex.length() == 3 ? green : "");
+		hex += blue;
+		hex += (hex.length() == 5 ? blue : "");
 		hexValueBox.setText(hex.toUpperCase());
 	}
 	

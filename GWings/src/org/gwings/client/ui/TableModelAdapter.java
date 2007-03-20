@@ -69,4 +69,6 @@ public class TableModelAdapter implements TableModelListener {
 	 */
 	public void tableCleared(TableModelEvent evt) {}
 
+	public void tableChanged(TableModelEvent evt) {}
+
 }

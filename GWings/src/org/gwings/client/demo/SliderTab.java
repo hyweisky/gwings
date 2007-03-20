@@ -80,8 +80,6 @@ public class SliderTab extends AbstractDemoPanel {
 		layout.setWidget(0, 0, horizontalSlider);
 		layout.setWidget(0, 1, verticalSlider);
 		
-		
-//		layout.setSize("100%", "100%");
 //		layout.setBorderWidth(1);
 	}
 

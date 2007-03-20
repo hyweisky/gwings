@@ -1,0 +1,58 @@
+.org-gwings-PagingBar {
+	background-color: white;
+	border-style: outset;
+	border-width: 1px;
+	border-color: gray;
+	width: 100%;
+}
+
+.org-gwings-PagingBar .fastBackwardButton {
+	background-image: url("../pics/pagingBar/fast_backward.gif");
+	background-color:transparent;
+	background-position: center;
+	border-style:none;
+	width: 14px;
+	height: 15px;
+}
+
+.org-gwings-PagingBar .fastForwardButton {
+	background-image: url("../pics/pagingBar/fast_forward.gif");
+	background-position: center;
+	background-color:transparent;
+	border-style:none;
+	width: 14px;
+	height: 15px;
+}
+
+.org-gwings-PagingBar .backwardButton {
+	background-image: url("../pics/pagingBar/backward.gif");
+	background-position: center;
+	background-color:transparent;
+	border-style:none;
+	width: 14px;
+	height: 15px;
+}
+
+.org-gwings-PagingBar .forwardButton {
+	background-image: url("../pics/pagingBar/forward.gif");
+	background-position: center; 
+	background-color:transparent;
+	border-style:none;
+	height: 15px;;
+	width: 14px;
+}
+
+.org-gwings-PagingBar .navigationLabel {
+	width: 244px;
+	
+	font-family: sans-serif;
+	font-size: x-small;
+	font-style:normal;
+	font-weight:bold;
+	
+	text-align: right;
+	
+	/*border-style: outset;
+	border-color: gray;
+	border-width: 1px;*/
+}

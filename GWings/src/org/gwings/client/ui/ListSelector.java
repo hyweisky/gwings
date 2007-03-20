@@ -7,6 +7,7 @@ import org.gwings.client.ui.exception.MultipleSelectionDeniedException;
 import org.gwings.client.ui.impl.DefaultListSelectionModel;
 
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -337,5 +338,15 @@ public class ListSelector extends Composite implements ListSelectionListener {
      */
     public boolean isMultipleSelectionEnabled() {
         return getModel().isMultipleSelectionEnabled();
+    }
+    
+    /**
+     * Sets whether this widget is enabled.
+     * 
+     * @param enabled <code>true</code> to enable the widget, <code>false</code>
+     *          to disable it
+     */
+    public void setEnabled(boolean enabled) {
+      DOM.setBooleanAttribute(getElement(), "disabled", !enabled);
     }
 }

@@ -3,6 +3,8 @@
  */
 package org.gwings.client.ui;
 
+import java.util.List;
+
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -212,4 +214,10 @@ public interface TableModel {
 	 * Clear the entire model. Removes all rows and columns.
 	 */
 	public void clearAll();
+	
+	/**
+	 * Sets the collection of lines.
+	 * @param lines
+	 */
+	public void setLines(List lines);
 }
