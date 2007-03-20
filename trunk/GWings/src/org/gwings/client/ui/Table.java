@@ -3,6 +3,8 @@ package org.gwings.client.ui;
 import org.gwings.client.ui.impl.DefaultTableModel;
 
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.SourcesTableEvents;
+import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -27,10 +29,11 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class Table extends FlexTable implements TableModelListener {
 
-	private static final int HEADER = 0;
+	public static final int HEADER = 0;
+	public static final int NONE = -1;
 	private TableModel tableModel;
 	private boolean zebraMode;
-
+	private int selectedRow = NONE;
 	public Table() {
 		this(new DefaultTableModel());
 	}
@@ -38,8 +41,24 @@ public class Table extends FlexTable implements TableModelListener {
 	public Table(TableModel model) {
 		initialize(model);
 		setupStyles();
+		setupListeners();
+		
 	}
 
+
+	private void setupListeners() {
+		addTableListener(new TableListener() {
+			public void onCellClicked(SourcesTableEvents sender, int row, int cell) {
+				if(selectedRow != NONE){
+					getRowFormatter().removeStyleName(selectedRow, "selected");
+				}
+				if(row > HEADER ){
+					selectedRow = row;
+					getRowFormatter().addStyleName(row, "selected");
+				}
+			}
+		});
+	}
 
 	/**
 	 * @param model
@@ -120,7 +139,7 @@ public class Table extends FlexTable implements TableModelListener {
 	 */
 	private void updateRowStyle(int row) {
 		String style = (row % 2 != 0 ? "even" : "odd");
-		getRowFormatter().addStyleName(row, style);
+		getRowFormatter().setStyleName(row, style);
 	}
 
 	public void rowChanged(TableModelEvent evt) {
@@ -131,6 +150,11 @@ public class Table extends FlexTable implements TableModelListener {
 	public void rowRemoved(TableModelEvent evt) {
 		int row = evt.getRow();
 		removeRow(row + 1);
+		if(isZebraMode()){
+			for(int i= row+1; i < getRowCount();i++){
+				updateRowStyle(i);
+			}
+		}
 	}
 
 	public void rowsCleared(TableModelEvent evt) {
@@ -184,5 +208,7 @@ public class Table extends FlexTable implements TableModelListener {
 		}
 	}
 
-
+	public void tableChanged(TableModelEvent evt) {
+		tableCleared(evt);
+	}
 }

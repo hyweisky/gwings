@@ -221,17 +221,14 @@ public class DefaultTableModel implements TableModel {
 	}
 
 	public void removeTableModelListener(TableModelListener l) {
-
 		listeners.remove(l);
 	}
 
 	public void addTableModelListener(TableModelListener l) {
-
 		listeners.add(l);
 	}
 
 	public void setColumnRenderer(int column, ColumnRenderer type) {
-
 		Column coluna = (Column) colunas.get(column);
 		coluna.setType(type);
 	}
@@ -317,4 +314,15 @@ public class DefaultTableModel implements TableModel {
 		}
 	}
 
+	public void setLines(List lines) {
+		this.linhas = lines;
+		fireTableChanged(makeEvent());
+	}
+
+	private void fireTableChanged(TableModelEvent event) {
+		for (int i = 0; i < listeners.size(); i++) {
+			TableModelListener listener = (TableModelListener) listeners.get(i);
+			listener.tableChanged(event);
+		}
+	}
 }

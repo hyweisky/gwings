@@ -49,6 +49,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		layout = new DockPanel();
 		
 		panel.add(new TableTab(), "Table");
+		panel.add(new PaginableTableTab(), "Paginable Table");
 		panel.add(new ListSelectorTab(), "Selector");
 		panel.add(new SliderTab(), "Slider");
 		panel.add(new SpinnerTab(), "Spinner");

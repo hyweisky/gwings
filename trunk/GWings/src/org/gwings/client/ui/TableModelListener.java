@@ -68,5 +68,10 @@ public interface TableModelListener {
 	 * @param evt
 	 */
 	public void columnRemoved(TableModelEvent evt);
-
+	
+	/**
+	 * Update the all the table.
+	 * @param evt
+	 */
+	public void tableChanged(TableModelEvent evt);
 }
