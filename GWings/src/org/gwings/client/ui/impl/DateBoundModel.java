@@ -17,7 +17,7 @@ package org.gwings.client.ui.impl;
 
 import java.util.Date;
 
-import org.gwtwidgets.client.util.SimpleDateFormat;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -192,7 +192,7 @@ public class DateBoundModel extends AbstractBoundModel{
 	}
 
 	public String formatValue() {
-		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 		return fmt.format(this.value);
 	}
 }
