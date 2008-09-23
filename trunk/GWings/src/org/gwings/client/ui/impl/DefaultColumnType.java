@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.gwings.client.ui.ColumnRenderer;
-import org.gwtwidgets.client.util.SimpleDateFormat;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
@@ -44,7 +44,7 @@ public class DefaultColumnType implements ColumnRenderer{
 			}
 			if(type.equals("java.util.Date")){
 				Date dt = (Date) value;
-				SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+				DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 				return new HTML(fmt.format(dt));
 			}
 			if(type.equals("com.google.gwt.user.client.ui.Image")){
