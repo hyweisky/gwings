@@ -1,0 +1,29 @@
+.org_gwings_Table{
+	border-collapse: collapse;
+}
+.org_gwings_Table .header{
+	background-image: url(../pics/table/header.gif);
+	background-repeat: repeat-x;
+	
+	text-align: center;
+	
+	cursor: default;
+	font-family: sans-serif;
+	font-size: x-small;
+	font-weight: bold;
+}
+.org_gwings_Table .row{
+	background-color: #CCDAF0;
+	font-family: sans-serif;
+	font-size: xx-small;
+}
+.org_gwings_Table .row td{
+	border: gray 1px solid;
+}
+
+.org_gwings_Table .even{
+	background-color: #CCDAF0;
+}
+.org_gwings_Table .odd{
+	background-color: #A5B4EF;
+}

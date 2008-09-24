@@ -1,0 +1,51 @@
+.org_gwings_Slider {
+}
+
+.org_gwings_Slider .horizontalCursor {
+	background-image: url("../pics/slider/horizontal_cursor.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 20px;
+	height: 30px;
+}
+
+.org_gwings_Slider .horizontalLeading {
+	background-image: url("../pics/slider/horizontal_leading.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 10px;
+	height: 10px;
+}
+
+.org_gwings_Slider .horizontalBar {
+	background-image: url("../pics/slider/horizontal_center.gif");
+	background-repeat: repeat-x;
+	background-position: center;
+	height: 10px;
+	width: 100%;
+}
+
+.org_gwings_Slider .horizontalTrailing {
+	background-image: url("../pics/slider/horizontal_trailing.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 10px;
+	height: 10px;
+}
+
+.org_gwings_Slider .verticalCursor {
+	background-image: url("../pics/slider/vertical_cursor.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 30px;
+	height: 20px;
+}
+
+.org_gwings_Slider .verticalBar {
+	background-image: url("../pics/slider/vertical_center.gif");
+	background-repeat: repeat-y;
+	background-position: center;
+	width: 10px;
+	height: 100%;
+}
+

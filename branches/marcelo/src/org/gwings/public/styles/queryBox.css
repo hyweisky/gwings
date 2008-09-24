@@ -1,0 +1,38 @@
+.org_gwings_QueryBoxPopup{
+}
+.org_gwings_QueryBoxPopup .results{
+	font-family: sans-serif;
+	font-size-adjust: none;
+	font-variant: normal;
+	font-size: x-small;
+}
+.org_gwings_QueryBoxPopup .results .selected{
+	background-color: red;
+}
+.org_gwings_QueryBoxPopup .results .odd{
+	background-color: #A5B4EF;
+}
+.org_gwings_QueryBoxPopup .results .even{
+	background-color: #CCDAF0;
+}
+
+.instructions{
+	color: black;
+	background-color: white;
+	
+	font-family: sans-serif;
+	font-size: smaller;
+	font-style: normal;
+	text-align: left;
+	
+	width: 90%;
+	
+	vertical-align: middle;
+}
+.instructions ul{
+	list-style-type: decimal;
+	list-style-position: outside;
+}
+.instructions P {
+	text-indent: 15px;
+}

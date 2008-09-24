@@ -1,0 +1,58 @@
+.org_gwings_RoundBox{ 
+}
+.org_gwings_RoundBox .nw{
+	background-image:url("../pics/roundBox/roundBox_nw.gif");
+	background-repeat: no-repeat;
+	background-position:bottom right;
+	width: 9px;
+	height: 9px;
+}
+.org_gwings_RoundBox .ne{
+	background-image:url("../pics/roundBox/roundBox_ne.gif");
+	background-repeat: no-repeat;
+	background-position:bottom left;
+	width: 9px;
+	height: 9px;
+}
+.org_gwings_RoundBox .sw{
+	background-image:url("../pics/roundBox/roundBox_sw.gif");
+	background-repeat: no-repeat;
+	background-position:top right;
+	width: 9px;
+	height: 9px;	
+}
+.org_gwings_RoundBox .se{
+	background-image:url("../pics/roundBox/roundBox_se.gif");
+	background-repeat: no-repeat;
+	background-position:top left;
+	width: 9px;
+	height: 9px;	
+}
+.org_gwings_RoundBox .n{
+	background-image:url("../pics/roundBox/roundBox_n.gif");
+	background-repeat: repeat-x;
+	background-position:bottom;
+	width: 25px;
+	height: 9px;
+}
+.org_gwings_RoundBox .s{
+	background-repeat: repeat-x;
+	background-image:url("../pics/roundBox/roundBox_s.gif");
+	background-position:top;
+	width: 25px;
+	height: 9px;
+}
+.org_gwings_RoundBox .w{
+	background-repeat: repeat-y;
+	background-image:url("../pics/roundBox/roundBox_w.gif");
+	background-position:right;
+	width: 9px;
+	height: 25px;
+}
+.org_gwings_RoundBox .e{
+	background-repeat: repeat-y;
+	background-image:url("../pics/roundBox/roundBox_e.gif");
+	background-position:left;
+	width: 9px;
+	height: 25px;
+}

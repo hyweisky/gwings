@@ -1,0 +1,80 @@
+/**
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ * 
+ * Copyright 2007 Marcelo Emanoel B. Diniz <marceloemanoel AT gmail.com> , <luciano.broussal AT gmail.com>
+ *
+ * @author Marcelo Emanoel, Luciano Broussal
+ * @since 07/03/2007
+ */
+
+.org_gwings_Spinner {
+}
+.org_gwings_Spinner .field:disabled {
+	background-color: #CCDAF0;
+	color: black;
+	
+	font-family: sans-serif;
+	font-size: x-small;
+	font-style: normal;
+	
+	border-style: solid;
+	border-width:1px;
+	border-color:gray;
+	
+	vertical-align:middle;
+	height: 20px;
+}
+.org_gwings_Spinner .incrementButton{
+	background-image: url("../images/asc.gif");
+	background-position: center center;
+	background-repeat: no-repeat;
+	border-style: solid;
+	border-width:1px;
+	border-color:gray;
+	
+	font-weight: bold;
+	font-family: sans-serif;
+	font-size:8px;
+	text-align: center;
+	vertical-align: middle; 
+	margin-top:3px;
+	height: 12px;
+	width:15px;
+}
+.org_gwings_Spinner .decrementButton{
+	background-image: url("../images/desc.gif");
+	background-position: center center;
+	background-repeat: no-repeat;
+	border-style: solid;
+	border-width:1px;
+	border-color:gray;
+	
+	font-weight: bold;
+	font-family: sans-serif;
+	font-size:8px;
+	text-align: center;
+	vertical-align: middle; 
+	margin-bottom:3px;
+	height: 12px;
+	width:15px;
+}
+.numberStyle, 
+.dateStyle{
+	font-family: sans-serif;
+	font-size: x-small;
+	font-weight: bold;
+	font-style: normal;
+	
+	color: black;
+}
