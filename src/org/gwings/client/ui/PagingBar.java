@@ -105,7 +105,7 @@ public class PagingBar extends SimplePanel {
 	
 	protected void updateNavigation() {
 		Integer index = pager.pageIndex();
-		Integer total = pager.getTotal();
+		Integer total = pager.getTotalRows();
 		
 		String navigationText = index+"/"+total;
 		navigationLabel.setText(navigationText);
