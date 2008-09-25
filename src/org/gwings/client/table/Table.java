@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
 import com.google.gwt.widgetideas.table.client.FixedWidthGrid;
-import com.google.gwt.widgetideas.table.client.ScrollTable;
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -37,23 +36,23 @@ public class Table extends ScrollTable implements TableModelListener {
     }
 
     public Table(TableModel model) {
-        super(null, null);
+//        super(null, null);
         initialize(model);
         setupStyles();
         setupListeners();
     }
 
     private void setupListeners() {
-        addTableListener(new TableListener() {
+        dataTable.addTableListener(new TableListener() {
 
             public void onCellClicked(SourcesTableEvents sender, int row,
                                       int cell) {
                 if (selectedRow != NONE) {
-                    getRowFormatter().removeStyleName(selectedRow, "selected");
+                    dataTable.getRowFormatter().removeStyleName(selectedRow, "selected");
                 }
                 if (row > HEADER) {
                     selectedRow = row;
-                    getRowFormatter().addStyleName(row, "selected");
+                    dataTable.getRowFormatter().addStyleName(row, "selected");
                 }
             }
         });
@@ -64,7 +63,7 @@ public class Table extends ScrollTable implements TableModelListener {
      */
     private void initialize(TableModel model) {
         setTableModel(model);
-        insertRow(HEADER);
+        dataTable.insertRow(HEADER);
         setZebraMode(true);
     }
 
@@ -96,18 +95,18 @@ public class Table extends ScrollTable implements TableModelListener {
         TableModel model = evt.getSource();
         String columnName = model.getColumnName(evt.getColumn());
         for (int i = 0; i < model.getRowCount(); i++) {
-            addCell(i);
+//            dataTable.addCell(i);
         }
-        int coluna = getCellCount(HEADER);
-        setHTML(HEADER, coluna, columnName);
-        getRowFormatter().setStyleName(HEADER, "header");
+        int coluna = dataTable.getCellCount(HEADER);
+        dataTable.setHTML(HEADER, coluna, columnName);
+        dataTable.getRowFormatter().setStyleName(HEADER, "header");
     }
 
     public void columnRemoved(TableModelEvent evt) {
         TableModel model = evt.getSource();
         int column = evt.getColumn();
         for (int i = HEADER; i < model.getRowCount(); i++) {
-            removeCell(i, column);
+//            dataTable.removeCell(i, column);
         }
     }
 
@@ -119,16 +118,16 @@ public class Table extends ScrollTable implements TableModelListener {
 
         Object[] line = plotable.plot();
         int nextRow = row + 1;
-        insertRow(nextRow);
-        getRowFormatter().addStyleName(nextRow, "row");
+        dataTable.insertRow(nextRow);
+        dataTable.getRowFormatter().addStyleName(nextRow, "row");
         if (isZebraMode()) {
             updateRowStyle(nextRow);
         }
         for (int i = 0; i < line.length; i++) {
             ColumnRenderer columnType = model.getColumnRenderer(i);
             Widget widget = columnType.renderType(line[i]);
-            setWidget(nextRow, i, widget);
-            getFlexCellFormatter().setAlignment(nextRow, i,
+            dataTable.setWidget(nextRow, i, widget);
+            dataTable.getCellFormatter().setAlignment(nextRow, i,
                                                 VerticalPanel.ALIGN_CENTER,
                                                 VerticalPanel.ALIGN_MIDDLE);
         }
@@ -139,7 +138,7 @@ public class Table extends ScrollTable implements TableModelListener {
      */
     private void updateRowStyle(int row) {
         String style = (row % 2 != 0 ? "even" : "odd");
-        getRowFormatter().setStyleName(row, style);
+        dataTable.getRowFormatter().setStyleName(row, style);
     }
 
     public void rowChanged(TableModelEvent evt) {
@@ -149,9 +148,9 @@ public class Table extends ScrollTable implements TableModelListener {
 
     public void rowRemoved(TableModelEvent evt) {
         int row = evt.getRow();
-        removeRow(row + 1);
+        dataTable.removeRow(row + 1);
         if (isZebraMode()) {
-            for (int i = row + 1; i < getRowCount(); i++) {
+            for (int i = row + 1; i < dataTable.getRowCount(); i++) {
                 updateRowStyle(i);
             }
         }
@@ -161,13 +160,13 @@ public class Table extends ScrollTable implements TableModelListener {
         tableCleared(evt);
         TableModel model = evt.getSource();
         for (int i = 0; i < model.getColumnCount(); i++) {
-            setHTML(HEADER, i, model.getColumnName(i));
+            dataTable.setHTML(HEADER, i, model.getColumnName(i));
         }
     }
 
     public void tableCleared(TableModelEvent evt) {
         for (int i = 0; i < evt.getSource().getRowCount(); i++) {
-            removeRow(i + 1);
+            dataTable.removeRow(i + 1);
         }
         clear();
     }
@@ -193,18 +192,18 @@ public class Table extends ScrollTable implements TableModelListener {
     }
 
     private void enableZebraMode() {
-        if (getRowCount() > 1) {
-            for (int i = 1; i < getRowCount(); i++) {
+        if (dataTable.getRowCount() > 1) {
+            for (int i = 1; i < dataTable.getRowCount(); i++) {
                 updateRowStyle(i);
             }
         }
     }
 
     private void disableZebraMode() {
-        if (getRowCount() > 1) {
-            for (int i = 1; i < getRowCount(); i++) {
+        if (dataTable.getRowCount() > 1) {
+            for (int i = 1; i < dataTable.getRowCount(); i++) {
                 String styleName = (i % 2 != 0 ? "even" : "odd");
-                getRowFormatter().removeStyleName(i, styleName);
+                dataTable.getRowFormatter().removeStyleName(i, styleName);
             }
         }
     }
