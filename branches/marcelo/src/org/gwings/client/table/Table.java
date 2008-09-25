@@ -1,5 +1,7 @@
 package org.gwings.client.table;
 
+import org.gwings.client.table.scroll.ScrollTable;
+
 import com.google.gwt.user.client.ui.SourcesTableEvents;
 import com.google.gwt.user.client.ui.TableListener;
 import com.google.gwt.user.client.ui.VerticalPanel;
