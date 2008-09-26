@@ -21,5 +21,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @since 11/03/2007
  */
 public interface QueryBoxServiceAsync {
-	public void getMatches(String pattern, AsyncCallback callback);
+	public void getMatches(String pattern, AsyncCallback<String> callback);
 }

@@ -2,8 +2,8 @@ package org.gwings.client.demo;
 
 import java.util.Date;
 
-import org.gwings.client.ui.Table;
-import org.gwings.client.ui.TableModel;
+import org.gwings.client.table.TableModel;
+import org.gwings.client.table.scroll.ScrollTable;
 
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -41,7 +41,7 @@ public class TableTab extends AbstractDemoPanel {
 	private final HorizontalAlignmentConstant CENTER = HorizontalPanel.ALIGN_CENTER;
 	private final VerticalAlignmentConstant MIDDLE = VerticalPanel.ALIGN_MIDDLE;
 
-	private Table table;
+	private ScrollTable table;
 	private TableModel model;
 	private DockPanel layout;
 	private CheckBox enableZebra;
@@ -54,14 +54,11 @@ public class TableTab extends AbstractDemoPanel {
 	}
 
 	private void initialize() {
-		table = new Table();
+		table = new ScrollTable();
 		layout = new DockPanel();
 		enableZebra = new CheckBox();
 		model = table.getTableModel();
 		
-		table.setZebraMode(false);
-		enableZebra.setChecked(table.isZebraMode());
-
 		setupColumns();
 		makeMockObjects();
 
@@ -95,7 +92,6 @@ public class TableTab extends AbstractDemoPanel {
 	}
 
 	private void setupUI() {
-//		initWidget(layout);
 		add(layout);
 		
 		enableZebra.setStyleName("enableZebra");
@@ -109,11 +105,11 @@ public class TableTab extends AbstractDemoPanel {
 	}
 	
 	private void setupListener() {
-		enableZebra.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-				table.setZebraMode(enableZebra.isChecked());
-			}
-		});
+//		enableZebra.addClickListener(new ClickListener() {
+//			public void onClick(Widget sender) {
+//				table.setZebraMode(enableZebra.isChecked());
+//			}
+//		});
 	}
 
 	public FlexTable getProperties() {

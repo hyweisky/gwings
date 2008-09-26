@@ -3,5 +3,17 @@
 	<!-- Inherit the core Web Toolkit stuff.                  -->
 	<inherits name='com.google.gwt.user.User'/>
 
-	<inherits name='org.gwtwidgets.WidgetLibrary'/>
+	<inherits name='com.google.gwt.widgetideas.WidgetIdeas'/> 
+	<inherits name='com.google.gwt.widgetideas.ScrollTable' />
+	
+	<stylesheet src="styles/ScrollTableDemo.css" />
+	<stylesheet src="styles/table.css" />
+	<stylesheet src="styles/pagingBar.css" />
+	<stylesheet src="styles/listSelector.css"/>
+	<stylesheet src="styles/slider.css"/>
+	<stylesheet src="styles/spinner.css"/>
+	<stylesheet src="styles/queryBox.css"/>
+	<stylesheet src="styles/roundBox.css"/>
+	<stylesheet src="styles/colorChooser.css"/>
+		
 </module>

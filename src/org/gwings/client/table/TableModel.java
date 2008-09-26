@@ -21,7 +21,7 @@ import java.util.List;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public interface TableModel {
+public interface TableModel<T extends Plotable> {
 
         /**
          * Adds a column to the model specifying the renderer to be used with it.
@@ -138,7 +138,7 @@ public interface TableModel {
          * @param line
          *            The line to be added.
          */
-        public void appendLine(Plotable line);
+        public void appendLine(T line);
 
         /**
          * Inserts a line at the specified index.
@@ -148,7 +148,7 @@ public interface TableModel {
          * @param line
          *            The new line.
          */
-        public void addLine(int index, Plotable line);
+        public void addLine(int index, T line);
 
         /**
          * Removes the specified line of the model.
@@ -157,7 +157,7 @@ public interface TableModel {
          *            The number of the line to be removed.
          * @return The object represented by that line.
          */
-        public Plotable removeLine(int lineNumber);
+        public T removeLine(int lineNumber);
 
         /**
          * Removes the specified object of the model.
@@ -165,7 +165,7 @@ public interface TableModel {
          * @param line
          *            The object represented by the line.
          */
-        public void removeLine(Plotable line);
+        public void removeLine(T line);
 
         /**
          * Returns the object represented by the line.
@@ -174,7 +174,7 @@ public interface TableModel {
          *            The number of the line representing the object.
          * @return The object represented.
          */
-        public Plotable getLine(int lineNumber);
+        public T getLine(int lineNumber);
 
         /**
          * Returns the current row count of the model.
@@ -213,5 +213,5 @@ public interface TableModel {
          * Sets the collection of lines.
          * @param lines
          */
-        public void setLines(List<Plotable> lines);
+        public void setLines(List<T> lines);
 }

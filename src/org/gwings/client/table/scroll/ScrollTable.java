@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.gwings.client.table.ColumnRenderer;
+import org.gwings.client.table.DefaultTableModel;
+import org.gwings.client.table.Plotable;
 import org.gwings.client.table.TableModel;
 import org.gwings.client.table.TableModelEvent;
 import org.gwings.client.table.TableModelListener;
@@ -15,6 +18,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
@@ -23,6 +27,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.client.ResizableWidget;
 import com.google.gwt.widgetideas.client.ResizableWidgetCollection;
@@ -62,13 +67,12 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
 
     private ColumnResizePolicy columnResizePolicy = ColumnResizePolicy.MULTI_CELL;
     private ResizePolicy resizePolicy = ResizePolicy.FLOW;
-    private ScrollPolicy scrollPolicy = ScrollPolicy.BOTH;
+    private ScrollPolicy scrollPolicy;
     
     /**
      * Columns which have guaranteed sizes.
      */
     private Set<Integer> guaranteedColumns = new HashSet<Integer>();
-    
     
     /**
      * Wrappers Div around the tables. Header and footer are non-scrollable, data
@@ -86,13 +90,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     private DivElement footerSpacer = null;
     
     /**
-     * If true, ignore all requests to scroll the tables. This boolean is used to
-     * improve performance of certain operations that would otherwise force
-     * repeated calls to scrollTables.
-     */
-    private boolean disableScrollTables = false;
-    
-    /**
      * An image used to show a fill width button.
      */
     private Image fillWidthImage;
@@ -100,8 +97,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * The tables of the scroll table.
      */
-    FixedWidthFlexTable headerTable = null;    
-    private FixedWidthFlexTable dataTable;
+    private FixedWidthFlexTable headerTable = null;    
+    private FixedWidthFlexTable dataTable = null;
     private FixedWidthFlexTable footerTable = null;
     
     /**
@@ -134,8 +131,15 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * value = true if the column is sortable, false of not
      */
     private Map<Integer, Boolean> unsortableColumns = new HashMap<Integer, Boolean>();
-
+    
+    private TableModel tableModel;
+    
     public ScrollTable(){
+        this(new DefaultTableModel());
+    }
+    
+    public ScrollTable(TableModel model){
+        this(new FixedWidthFlexTable(), new FixedWidthFlexTable(), model);
     }
     
     /**
@@ -144,8 +148,9 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @param dataTable the data table
      * @param headerTable the header table
      */
-    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable) {
-        this(dataTable, headerTable,(ScrollTableImages) GWT.create(ScrollTableImages.class));
+    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, TableModel model) {
+        this(dataTable, headerTable, (ScrollTableImages) GWT.create(ScrollTableImages.class), model);
+        
     }
 
     /**
@@ -155,14 +160,17 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @param headerTable the header table
      * @param images the images to use in the table
      */
-    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, ScrollTableImages images){
+    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, ScrollTableImages images, TableModel model){
         super();
         init(images);
+        setDataTable(dataTable);
+        setHeaderTable(headerTable);
+        setTableModel(model);
+        setScrollPolicy(ScrollPolicy.DISABLED);
     }
 
     private void init(ScrollTableImages images){
-        resizeWorker.setScrollTable(this);
-
+        
         // Create the main div container
         DivElement mainElem = Document.get().createDivElement();
         setElement(mainElem);
@@ -171,11 +179,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         mainElem.getStyle().setProperty("overflow", "hidden");
         mainElem.getStyle().setProperty("position", "relative");
 
-        // Create the table wrapper and spacer
-        headerWrapper = createWrapper("headerWrapper");
-        headerSpacer = createSpacer(headerWrapper);
-        dataWrapper = createWrapper("dataWrapper");
-
+        resizeWorker.setScrollTable(this);
+        
         // Create image to fill width
         fillWidthImage = new Image() {
             @Override
@@ -188,7 +193,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         };
         fillWidthImage.setTitle("Shrink/Expand to fill visible area");
         images.scrollTableFillWidth().applyTo(fillWidthImage);
-        ImageElement fillWidthImageElem = ImageElement.as(fillWidthImage.getElement());
+
+        ImageElement fillWidthImageElem = (ImageElement)(Element)fillWidthImage.getElement();
         fillWidthImageElem.getStyle().setProperty("cursor", "pointer");
         fillWidthImageElem.getStyle().setProperty("position", "absolute");
         fillWidthImageElem.getStyle().setProperty("top", "0px");
@@ -196,30 +202,68 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         fillWidthImageElem.getStyle().setProperty("zIndex", "1");
         add(fillWidthImage, getElement());
 
-        // Adopt the header and data tables into the panel
-        adoptTable(headerTable, headerWrapper, 1);
-        adoptTable(dataTable, dataWrapper, 2);
-
         // Add some event handling
         sinkEvents(Event.ONMOUSEOUT);
         
-        DOM.setEventListener((com.google.gwt.user.client.Element)(Element)dataWrapper, this);
-        Event.sinkEvents(dataWrapper, Event.ONSCROLL);
-        DOM.setEventListener((com.google.gwt.user.client.Element)(Element)headerWrapper, this);
-        Event.sinkEvents(headerWrapper, Event.ONMOUSEMOVE | Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONCLICK);
-
         // Add to Resizable Collection
         ResizableWidgetCollection.get().add(this);
     }
 
-    public void setDataTable(FixedWidthFlexTable dataTable) {
-        this.dataTable = dataTable;
-        prepareTable(dataTable, "dataTable");
+    private void setDataTable(FixedWidthFlexTable dataTable) {
+        if(this.dataTable != null){
+            orphan(this.dataTable);
+            dataWrapper.removeChild(this.dataTable.getElement());
+            getElement().removeChild(dataWrapper);
+            getChildren().remove(this.dataTable);
+        }
+        
+        
+        if(dataTable != null){
+            dataTable.setCellSpacing(getCellSpacing());
+            dataTable.setCellPadding(getCellPadding());
+            prepareTable(dataTable, "dataTable");
+
+            this.dataTable = dataTable;
+            
+            if(dataWrapper == null){
+                dataWrapper = createWrapper("dataWrapper");
+                DOM.setEventListener((com.google.gwt.user.client.Element)(Element)dataWrapper, this);
+                Event.sinkEvents(dataWrapper, Event.ONSCROLL);
+            }
+            adoptTable(dataTable, dataWrapper, 2);
+        }
+        
+        resizeTablesVertically();
     }
 
     public void setHeaderTable(FixedWidthFlexTable headerTable) {
+        if(this.headerTable != null){
+            orphan(this.headerTable);
+            headerWrapper.removeChild(this.headerTable.getElement());
+            getElement().removeChild(headerWrapper);
+            
+            getChildren().remove(this.headerTable);
+        }
+        
         this.headerTable = headerTable;
-        prepareTable(headerTable, "headerTable");
+        if(headerTable != null){
+            headerTable.setCellSpacing(getCellSpacing());
+            headerTable.setCellPadding(getCellPadding());
+            prepareTable(headerTable, "headerTable");
+            
+            if(headerWrapper == null){
+                headerWrapper = createWrapper("headerWrapper");
+                headerSpacer = createSpacer(headerWrapper);
+                
+                DOM.setEventListener((com.google.gwt.user.client.Element)(Element)headerWrapper, this);
+                Event.sinkEvents(headerWrapper, Event.ONMOUSEMOVE | Event.ONMOUSEDOWN | Event.ONMOUSEUP | Event.ONCLICK);
+            }
+            
+            adoptTable(headerTable, headerWrapper, 1);
+
+        }
+        
+        resizeTablesVertically();
     }
 
     /**
@@ -262,9 +306,9 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             }
             totalWidth += colWidths[i];
         }
-
-        // Prevent tables from aligning, we'll call this manually at the end
-        disableScrollTables = true;
+        
+        ScrollPolicy policy = getScrollPolicy();
+        setScrollPolicy(ScrollPolicy.DISABLED);
 
         // Distribute the difference across all columns, weighted by current size
         int remainingDiff = diff;
@@ -289,7 +333,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
 
         // Reset the resize policy
         resizePolicy = tempResizePolicy;
-        disableScrollTables = false;
+        setScrollPolicy(policy);
         scrollTables(false);
     }
 
@@ -297,14 +341,14 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @return the cell padding of the tables, in pixels
      */
     public int getCellPadding() {
-        return dataTable.getCellPadding();
+        return (dataTable != null ? dataTable.getCellPadding() : 0);
     }
 
     /**
      * @return the cell spacing of the tables, in pixels
      */
     public int getCellSpacing() {
-        return dataTable.getCellSpacing();
+        return (dataTable != null ? dataTable.getCellSpacing() : 0);
     }
 
     /**
@@ -377,7 +421,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * @see Widget
      */
-    @Override
     public void onBrowserEvent(Event event) {
         super.onBrowserEvent(event);
         Element target = event.getTarget();
@@ -480,7 +523,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @return false
      * @throws UnsupportedOperationException
      */
-    @Override
     public boolean remove(Widget child) {
         throw new UnsupportedOperationException(
         "This panel does not support remove()");
@@ -574,8 +616,9 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             if (footerWrapper == null) {
                 footerWrapper = createWrapper("footerWrapper");
                 footerSpacer = createSpacer(footerWrapper);
+                
                 DOM.setEventListener((com.google.gwt.user.client.Element)(Element)footerWrapper, this);
-                DOM.sinkEvents((com.google.gwt.user.client.Element)(Element)footerWrapper, Event.ONMOUSEUP);
+                Event.sinkEvents(footerWrapper, Event.ONMOUSEUP);
             }
 
             // Adopt the header table into the panel
@@ -602,7 +645,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * @see com.google.gwt.user.client.ui.UIObject
      */
-    @Override
     public void setHeight(String height) {
         this.lastHeight = height;
         super.setHeight(height);
@@ -641,10 +683,10 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      */
     public void setScrollPolicy(ScrollPolicy scrollPolicy) {
         this.scrollPolicy = scrollPolicy;
-
         if (scrollPolicy == ScrollPolicy.DISABLED) {
             // Disabled scroll bars
             super.setHeight("auto");
+            
             dataWrapper.getStyle().setProperty("height", "auto");
             dataWrapper.getStyle().setProperty("overflow", "");
             getElement().getStyle().setProperty("overflow", "");
@@ -681,7 +723,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * Resize the widget and redistribute space as needed.
      */
-    @Override
     protected void onAttach() {
         super.onAttach();
         resizeTablesVertically();
@@ -726,7 +767,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             footerWrapper.getStyle().setPropertyPx("height", footerHeight);
         }
         int height = totalHeight - headerHeight - footerHeight;
-        dataWrapper.getStyle().setPropertyPx("height", height);
+        dataWrapper.getStyle().setPropertyPx("height", (height > 0 ? height : 1));
         dataWrapper.getStyle().setProperty("overflow", "hidden");
         dataWrapper.getStyle().setProperty("overflow", "auto");
         scrollTables(true);
@@ -744,10 +785,12 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             return;
         }
 
-        if (isAttached() && !disableScrollTables) {
+        if (isAttached()) {
             if (baseHeader) {
                 int headerScrollLeft = headerWrapper.getScrollLeft();
-                dataWrapper.setScrollLeft(headerScrollLeft);
+                if(headerScrollLeft > 0){
+                    dataWrapper.setScrollLeft(headerScrollLeft);
+                }
             }
             int scrollLeft = dataWrapper.getScrollLeft();
             headerWrapper.setScrollLeft(scrollLeft);
@@ -954,7 +997,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             fillWidthImage.setVisible(true);
         }
     }
-
     
     public void columnAdded(TableModelEvent evt) {
         TableModel model = evt.getSource();
@@ -963,12 +1005,17 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
             dataTable.addCell(i);
             headerTable.addCell(i);
         }
+        if(headerTable.getRowCount() == 0){
+            headerTable.insertRow(0);
+        }
         int coluna = headerTable.getCellCount(0);
         headerTable.setHTML(0, coluna, columnName);
         headerTable.getRowFormatter().setStyleName(0, "header");
+        
+        redraw();
+        
     }
     
-
     public void columnRemoved(TableModelEvent evt) {
         TableModel model = evt.getSource();
         int column = evt.getColumn();
@@ -981,40 +1028,75 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     }
     
 
-    @Override
+    @SuppressWarnings("unchecked")
     public void rowAdded(TableModelEvent evt) {
-        // TODO Auto-generated method stub
-        
+        TableModel model = evt.getSource();
+        int row = evt.getRow();
+
+        Plotable plotable = model.getLine(row);
+
+        Object[] line = plotable.plot();
+        int nextRow = row;
+        dataTable.insertRow(nextRow);
+        dataTable.getRowFormatter().addStyleName(nextRow, "row");
+        for (int i = 0; i < line.length; i++) {
+            ColumnRenderer renderer = model.getColumnRenderer(i);
+            Widget widget = renderer.renderType(line[i]);
+            dataTable.setWidget(nextRow, i, widget);
+            dataTable.getCellFormatter().setAlignment(nextRow, i,
+                                                      VerticalPanel.ALIGN_CENTER,
+                                                      VerticalPanel.ALIGN_MIDDLE);
+        }
     }
 
-    @Override
     public void rowChanged(TableModelEvent evt) {
-        // TODO Auto-generated method stub
-        
+        rowRemoved(evt);
+        rowAdded(evt);
     }
 
-    @Override
     public void rowRemoved(TableModelEvent evt) {
-        // TODO Auto-generated method stub
-        
+        int row = evt.getRow();
+        dataTable.removeRow(row + 1);
     }
 
-    @Override
     public void rowsCleared(TableModelEvent evt) {
-        // TODO Auto-generated method stub
-        
+        tableCleared(evt);
     }
-
-    @Override
+    
+    @SuppressWarnings("unchecked")
     public void tableChanged(TableModelEvent evt) {
-        // TODO Auto-generated method stub
+        //destruir a tabela e reconstruir com o table model do evento.
+        tableCleared(evt);
         
+        TableModel model = evt.getSource();
+        for(int column = 0; column < model.getColumnCount(); column++){
+            String columnName = model.getColumnName(column);
+            headerTable.setHTML(0, column, columnName);
+        }
+        
+        
+        for(int row = 0; row < model.getRowCount(); row++){
+            Plotable plotable = model.getLine(row);
+
+            Object[] line = plotable.plot();
+            dataTable.insertRow(row);
+            dataTable.getRowFormatter().addStyleName(row, "row");
+            for (int i = 0; i < line.length; i++) {
+                ColumnRenderer renderer = model.getColumnRenderer(i);
+                Widget widget = renderer.renderType(line[i]);
+                dataTable.setWidget(row, i, widget);
+                dataTable.getCellFormatter().setAlignment(row, i,
+                                                          VerticalPanel.ALIGN_CENTER,
+                                                          VerticalPanel.ALIGN_MIDDLE);
+            }
+        }
     }
 
-    @Override
     public void tableCleared(TableModelEvent evt) {
-        // TODO Auto-generated method stub
-        
+        for (int i = 0; i < evt.getSource().getRowCount(); i++) {
+            dataTable.removeRow(i + 1);
+        }
+        dataTable.clear();
     }
     
     /**
@@ -1023,12 +1105,41 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     DivElement getHeaderWrapper() {
         return headerWrapper;
     }
-
     
     /**
      * @return the footerWrapper
      */
     DivElement getFooterWrapper() {
         return footerWrapper;
+    }
+    
+    TableCellElement getHeaderEventTargetCell(Event evt){
+        com.google.gwt.user.client.Element targetCell = headerTable.getEventTargetCell(evt);
+        return (TableCellElement)(Element)targetCell;
+    }
+    
+    int getHeaderColumnIndex(int row, int cell){
+        return headerTable.getColumnIndex(row, cell);
+    }
+
+    /**
+     * @return the tableModel
+     */
+    public TableModel getTableModel() {
+        return tableModel;
+    }
+    
+    /**
+     * @param tableModel the tableModel to set
+     */
+    public void setTableModel(TableModel tableModel) {
+        if(this.tableModel != null){
+            this.tableModel.removeTableModelListener(this);
+        }
+        
+        this.tableModel = tableModel;
+        this.tableModel.addTableModelListener(this);
+        
+        tableChanged(new TableModelEvent(this.tableModel));
     }
 }

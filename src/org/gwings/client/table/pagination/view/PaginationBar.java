@@ -122,31 +122,26 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         
     }
 
-    @Override
     public void firstPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index);
     }
 
-    @Override
     public void lastPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index);
     }
 
-    @Override
     public void nextPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index);
     }
 
-    @Override
     public void pageChanged(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index);
     }
 
-    @Override
     public void previousPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index);        
