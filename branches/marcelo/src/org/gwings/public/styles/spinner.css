@@ -36,7 +36,7 @@
 	height: 20px;
 }
 .org_gwings_Spinner .incrementButton{
-	background-image: url("../images/asc.gif");
+	/*background-image: url("../pics/spinner/asc.gif");*/
 	background-position: center center;
 	background-repeat: no-repeat;
 	border-style: solid;
@@ -53,7 +53,7 @@
 	width:15px;
 }
 .org_gwings_Spinner .decrementButton{
-	background-image: url("../images/desc.gif");
+	/*background-image: url("../pics/spinner/desc.gif");*/
 	background-position: center center;
 	background-repeat: no-repeat;
 	border-style: solid;

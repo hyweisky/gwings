@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.WindowResizeListener;
+import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
@@ -34,7 +35,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @since 07/03/2007
  */
 public class GWingsDemo implements EntryPoint, WindowResizeListener {
-	private TabPanel panel;
+	private DecoratedTabPanel panel;
 	private DocStack stack;
 	private DockPanel layout;
 	
@@ -44,12 +45,12 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		Window.setMargin("5px");
 		Window.addWindowResizeListener(this);
 
-		panel = new TabPanel();
+		panel = new DecoratedTabPanel();
 		stack = new DocStack();
 		layout = new DockPanel();
 		
 		panel.add(new TableTab(), "Table");
-		panel.add(new PaginableTableTab(), "Paginable Table");
+//		panel.add(new PaginableTableTab(), "Paginable Table");
 		panel.add(new ListSelectorTab(), "Selector");
 		panel.add(new SliderTab(), "Slider");
 		panel.add(new SpinnerTab(), "Spinner");
@@ -57,7 +58,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		panel.add(new ColorChooserTab(), "Color Chooser");
 		panel.add(new RoundBoxTab(), "Round Box");
 
-		DeferredCommand.add(new Command() {
+		DeferredCommand.addCommand(new Command() {
 			public void execute() {
 				int width = Window.getClientWidth();
 				int height = Window.getClientHeight();
@@ -68,18 +69,15 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		});
 
 		panel.addTabListener(new TabListener() {
-		
 			public void onTabSelected(SourcesTabEvents sender, int tabIndex) {
 				AbstractDemoPanel demoPanel = (AbstractDemoPanel) panel.getWidget(tabIndex);
 				setComponentLinks(demoPanel.getLinks());
 				setProperties(demoPanel.getProperties());
 				stack.showStack(0);
 			}
-		
 			public boolean onBeforeTabSelected(SourcesTabEvents sender, int tabIndex) {
 				return true;
 			}
-		
 		});
 		layout.setVerticalAlignment(VerticalPanel.ALIGN_BOTTOM);
 		
@@ -116,6 +114,4 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 	public void setComponentLinks(HTML links){
 		stack.setLinks(links);
 	}
-	
-	
 }

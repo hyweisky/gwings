@@ -36,5 +36,5 @@ public interface QueryBoxService extends RemoteService {
 		}
 	}
 	
-	public List getMatches(String pattern) throws QueryBoxSampleException;
+	public List<String> getMatches(String pattern) throws QueryBoxSampleException;
 }

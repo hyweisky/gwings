@@ -2,7 +2,7 @@ package org.gwings.client.demo;
 
 import java.util.Date;
 
-import org.gwings.client.ui.Plotable;
+import org.gwings.client.table.Plotable;
 
 import com.google.gwt.user.client.ui.Image;
 /**
@@ -25,7 +25,9 @@ import com.google.gwt.user.client.ui.Image;
  * @since 07/03/2007
  */
 public class SimpleLinePlotable implements Plotable {
-	private Boolean marked;
+    private static final long serialVersionUID = 8614765613220703585L;
+
+    private Boolean marked;
 	private Image image;
 	private String name;
 	private Date value;

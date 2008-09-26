@@ -110,17 +110,10 @@ public class MouseResizeWorker {
      */
     public boolean setCurrentCell(Event event) {
         // Check the resize policy of the table
-        TableCellElement cell = null;
-        switch(table.getColumnResizePolicy()){
-            case MULTI_CELL:{
-                cell = TableCellElement.as(table.headerTable.getEventTargetCell(event));
-                break;
-            }
-            case SINGLE_CELL:{
-                cell = TableCellElement.as(table.headerTable.getEventTargetCell(event));
-                if (cell != null && cell.getColSpan() > 1) {
-                    cell = null;
-                }
+        TableCellElement cell = table.getHeaderEventTargetCell(event);
+        if(table.getColumnResizePolicy() == ColumnResizePolicy.SINGLE_CELL) {
+            if (cell != null && cell.getColSpan() > 1) {
+                cell = null;
             }
         }
 
@@ -246,7 +239,7 @@ public class MouseResizeWorker {
         TableRowElement rowElement = TableRowElement.as(cell.getParentElement());
         int row = rowElement.getRowIndex() - 1;
         int column = cell.getCellIndex();
-        return table.headerTable.getColumnIndex(row, column);
+        return table.getHeaderColumnIndex(row, column);
     }
 
     /**

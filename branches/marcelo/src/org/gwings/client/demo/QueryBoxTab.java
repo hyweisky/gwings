@@ -108,7 +108,7 @@ public class QueryBoxTab extends AbstractDemoPanel {
 		
 			public void onKeyUp(Widget sender, char keyCode, int modifiers) {
 				if(!queryBox.getText().equals("")){
-					showPossibleResults();
+//					showPossibleResults();
 				}
 			}
 		
