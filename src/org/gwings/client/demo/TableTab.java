@@ -3,8 +3,12 @@ package org.gwings.client.demo;
 import java.util.Date;
 
 import org.gwings.client.table.TableModel;
+import org.gwings.client.table.scroll.ResizePolicy;
+import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.ScrollTable;
+import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -45,6 +49,7 @@ public class TableTab extends AbstractDemoPanel {
 	private TableModel model;
 	private DockPanel layout;
 	private CheckBox enableZebra;
+    private Button addLineButton;
 	
 
 	public TableTab() {
@@ -54,14 +59,21 @@ public class TableTab extends AbstractDemoPanel {
 	}
 
 	private void initialize() {
-		table = new ScrollTable();
+		table = new PaginatedScrollTable();
 		layout = new DockPanel();
 		enableZebra = new CheckBox();
 		model = table.getTableModel();
-		
+		addLineButton = new Button("add line");
 		setupColumns();
 		makeMockObjects();
-
+		
+		table.setColumnWidth(0, 70);
+		table.setColumnWidth(1, 50);
+		table.setColumnWidth(2, 450);
+		table.setColumnWidth(3, 90);
+		
+		table.setResizePolicy(ResizePolicy.FIXED_WIDTH);
+		table.setScrollPolicy(ScrollPolicy.BOTH);
 	}
 
 	/**
@@ -110,6 +122,12 @@ public class TableTab extends AbstractDemoPanel {
 //				table.setZebraMode(enableZebra.isChecked());
 //			}
 //		});
+	    addLineButton.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                SimpleLinePlotable plotable = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+                model.appendLine(plotable);
+            }
+        });
 	}
 
 	public FlexTable getProperties() {
@@ -117,6 +135,8 @@ public class TableTab extends AbstractDemoPanel {
 		FlexTable flexTable = new FlexTable();
 		flexTable.setWidget(0, 0, new HTML("Zebra Mode"));
 		flexTable.setWidget(0, 1, enableZebra);
+		flexTable.setWidget(1, 0, new HTML("AddLine")); 
+		flexTable.setWidget(1, 1, addLineButton); 
 		return flexTable;
 	}
 
