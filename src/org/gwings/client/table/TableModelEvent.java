@@ -20,19 +20,20 @@ package org.gwings.client.table;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class TableModelEvent {
+public class TableModelEvent<T extends Plotable> {
+	
         private static final int NONE_SELECTION = -1;
-        private TableModel source;
+        private TableModel<T> source;
         private int column;
         private int row;
         
-        public TableModelEvent(TableModel source){
+        public TableModelEvent(TableModel<T> source){
                 this.source = source;
                 this.column = NONE_SELECTION;
                 this.row = NONE_SELECTION;
         }
 
-        public TableModel getSource() {
+        public TableModel<T> getSource() {
                 return this.source;
         }
 
