@@ -1001,19 +1001,20 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     public void columnAdded(TableModelEvent evt) {
         TableModel model = evt.getSource();
         String columnName = model.getColumnName(evt.getColumn());
+        if(headerTable.getRowCount() == 0){
+        	headerTable.insertRow(0);
+        }
+
         for (int i = 0; i < model.getRowCount(); i++) {
             dataTable.addCell(i);
             headerTable.addCell(i);
         }
-        if(headerTable.getRowCount() == 0){
-            headerTable.insertRow(0);
-        }
+        
         int coluna = headerTable.getCellCount(0);
         headerTable.setHTML(0, coluna, columnName);
         headerTable.getRowFormatter().setStyleName(0, "header");
         
-        redraw();
-        
+        resizeTablesVerticallyNow();
     }
     
     public void columnRemoved(TableModelEvent evt) {
@@ -1025,6 +1026,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         for (int i = 0; i < model.getRowCount(); i++) {
             dataTable.removeCell(i, column);
         }
+        
+        resizeTablesVerticallyNow();
     }
     
 

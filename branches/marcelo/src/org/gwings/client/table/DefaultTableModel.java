@@ -83,9 +83,13 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
     }
 
     public String getColumnName(int column) {
-        if (column < columns.size()) {
-            Column col = (Column) columns.get(column);
-            return col.getName();
+        if (columns.size() >= column && column >= 0) {
+        	for(String key : columns.keySet()){
+        		Column col = (Column) columns.get(key);
+        		if(col.getPosition() == column){
+        			return col.getName();
+        		}
+        	}
         }
         return "";
     }
