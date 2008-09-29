@@ -41,7 +41,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 	
 	public void onModuleLoad() {
 
-		Window.enableScrolling(false);
+//		Window.enableScrolling(false);
 		Window.setMargin("5px");
 		Window.addWindowResizeListener(this);
 

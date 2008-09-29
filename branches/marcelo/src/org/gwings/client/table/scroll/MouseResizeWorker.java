@@ -250,9 +250,9 @@ public class MouseResizeWorker {
         if (mouseXLast != mouseXCurrent) {
             mouseXLast = mouseXCurrent;
             
-            ScrollPolicy policy = table.getScrollPolicy();
+//            ScrollPolicy policy = table.getScrollPolicy();
             
-            table.setScrollPolicy(ScrollPolicy.DISABLED);
+//            table.setScrollPolicy(ScrollPolicy.DISABLED);
             int columnsRemaining = curCellColumns.size();
             int totalDelta = mouseXCurrent - mouseXStart;
             
@@ -266,7 +266,7 @@ public class MouseResizeWorker {
                 columnsRemaining--;
             }
             
-            table.setScrollPolicy(policy);
+//            table.setScrollPolicy(policy);
             table.scrollTables(false);
         }
     }

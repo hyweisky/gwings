@@ -11,30 +11,30 @@ import com.google.gwt.user.client.ui.ImageBundle;
  */
 public interface PaginationBundle extends ImageBundle {
     
-    @Resource("br/com/aptools/public/pics/pagination/first.png")
+    @Resource("org/gwings/public/pics/pagingBar/fast_backward.gif")
     public AbstractImagePrototype first();
     
-    @Resource("br/com/aptools/public/pics/pagination/first-over.png")
+    @Resource("org/gwings/public/pics/pagingBar/fast_backward.gif")
     public AbstractImagePrototype firstOver();
 
-    @Resource("br/com/aptools/public/pics/pagination/previous.png")
+    @Resource("org/gwings/public/pics/pagingBar/backward.gif")
     public AbstractImagePrototype previous();
     
-    @Resource("br/com/aptools/public/pics/pagination/previous-over.png")
+    @Resource("org/gwings/public/pics/pagingBar/backward.gif")
     public AbstractImagePrototype previousOver();
 
-    @Resource("br/com/aptools/public/pics/pagination/last.png")
+    @Resource("org/gwings/public/pics/pagingBar/fast_forward.gif")
     public AbstractImagePrototype last();
 
-    @Resource("br/com/aptools/public/pics/pagination/last-over.png")
+    @Resource("org/gwings/public/pics/pagingBar/fast_forward.gif")
     public AbstractImagePrototype lastOver();
     
-    @Resource("br/com/aptools/public/pics/pagination/next.png")
+    @Resource("org/gwings/public/pics/pagingBar/forward.gif")
     public AbstractImagePrototype next();
     
-    @Resource("br/com/aptools/public/pics/pagination/next-over.png")
+    @Resource("org/gwings/public/pics/pagingBar/forward.gif")
     public AbstractImagePrototype nextOver();
     
-    @Resource("br/com/aptools/public/pics/pagination/separator.png")
+    @Resource("org/gwings/public/pics/pagingBar/separator.png")
     public AbstractImagePrototype separator();
 }
