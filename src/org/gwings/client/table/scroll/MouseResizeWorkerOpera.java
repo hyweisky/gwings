@@ -1,9 +1,10 @@
 package org.gwings.client.table.scroll;
 
+import org.gwings.client.table.Plotable;
+
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -13,8 +14,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  * isn't updated if the mouse is hovering over an element DOM object when its
  * cursor style is changed.
  */
-@SuppressWarnings("unused")
-public class MouseResizeWorkerOpera extends MouseResizeWorker {
+public class MouseResizeWorkerOpera<T extends Plotable> extends MouseResizeWorker<T> {
 
     /**
      * A div used to force the cursor to update.

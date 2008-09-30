@@ -1,13 +1,11 @@
 package org.gwings.client.demo;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.gwings.client.table.TableModel;
-import org.gwings.client.table.scroll.ResizePolicy;
-import org.gwings.client.table.scroll.ScrollPolicy;
-import org.gwings.client.table.scroll.ScrollTable;
+import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -19,6 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
+
 
 /**
  * 
@@ -39,40 +38,35 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConst
  * @author Marcelo Emanoel
  * @since 04/02/2007
  */
-public class TableTab extends AbstractDemoPanel {
+public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	
 	private final HorizontalAlignmentConstant CENTER = HorizontalPanel.ALIGN_CENTER;
 	private final VerticalAlignmentConstant MIDDLE = VerticalPanel.ALIGN_MIDDLE;
 
-	private ScrollTable<SimpleLinePlotable> table;
+	private PaginatedScrollTable<SimpleLinePlotable> table;
 	private TableModel<SimpleLinePlotable> model;
 	private DockPanel layout;
 	private CheckBox enableZebra;
-    private Button addLineButton;
 	
 
-	public TableTab() {
+	public PaginatedScrollTableTab() {
 		initialize();
 		setupUI();
 		setupListener();
 	}
 
 	private void initialize() {
-		table = new ScrollTable<SimpleLinePlotable>();
+		table = new PaginatedScrollTable<SimpleLinePlotable>();
 		layout = new DockPanel();
 		enableZebra = new CheckBox();
 		model = table.getTableModel();
-		addLineButton = new Button("add line");
+		
+//		table.setZebraMode(false);
+//		enableZebra.setChecked(table.isZebraMode());
+
 		setupColumns();
 		makeMockObjects();
-		
-		table.setColumnWidth(0, 70);
-		table.setColumnWidth(1, 50);
-		table.setColumnWidth(2, 450);
-		table.setColumnWidth(3, 90);
-		
-		table.setResizePolicy(ResizePolicy.FIXED_WIDTH);
-		table.setScrollPolicy(ScrollPolicy.BOTH);
+
 	}
 
 	/**
@@ -85,11 +79,18 @@ public class TableTab extends AbstractDemoPanel {
 		SimpleLinePlotable plotable2 = new SimpleLinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
 		SimpleLinePlotable plotable3 = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
 		
-		model.appendLine(plotable);
-		model.appendLine(plotable1);
-		model.appendLine(plotable2);
-		model.appendLine(plotable3);
+		ArrayList<SimpleLinePlotable> data = new ArrayList<SimpleLinePlotable>();
+		data.add(plotable);
+		data.add(plotable1);
+		data.add(plotable2);
+		data.add(plotable3);
 		
+//		Pager pager = new PagerWizard();
+//		pager.setMaxResultsPerPage(2);
+//		pager.setResults(data);
+//		
+//		table.setPaginable(true);
+//		table.getPagingBar().setPager(pager);
 	}
 
 	/**
@@ -104,7 +105,6 @@ public class TableTab extends AbstractDemoPanel {
 
 	private void setupUI() {
 		add(layout);
-		
 		enableZebra.setStyleName("enableZebra");
 		
 		layout.setHorizontalAlignment(CENTER);
@@ -116,17 +116,11 @@ public class TableTab extends AbstractDemoPanel {
 	}
 	
 	private void setupListener() {
-//		enableZebra.addClickListener(new ClickListener() {
-//			public void onClick(Widget sender) {
+		enableZebra.addClickListener(new ClickListener() {
+			public void onClick(Widget sender) {
 //				table.setZebraMode(enableZebra.isChecked());
-//			}
-//		});
-	    addLineButton.addClickListener(new ClickListener() {
-            public void onClick(Widget sender) {
-                SimpleLinePlotable plotable = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
-                model.appendLine(plotable);
-            }
-        });
+			}
+		});
 	}
 
 	public FlexTable getProperties() {
@@ -134,8 +128,6 @@ public class TableTab extends AbstractDemoPanel {
 		FlexTable flexTable = new FlexTable();
 		flexTable.setWidget(0, 0, new HTML("Zebra Mode"));
 		flexTable.setWidget(0, 1, enableZebra);
-		flexTable.setWidget(1, 0, new HTML("AddLine")); 
-		flexTable.setWidget(1, 1, addLineButton); 
 		return flexTable;
 	}
 

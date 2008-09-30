@@ -46,31 +46,54 @@ public class Pager<T> implements Serializable {
     }
 
     public Integer currentPageIndex() {
-        return pageConfig.getFinish() / getPageSize();
+        Integer finish = pageConfig.getFinish();
+        
+        if(finish == null || currentPage == null){
+            return -1;
+        }
+        return finish / getPageSize();
     }
     
-    public Integer getTotalPages() {
-        return pageConfig.getTotalAvailable() / getPageSize();
+    public Integer getTotalPages() throws Exception {
+        Integer totalAvailable = getRowsAvailable();
+        Integer rest = totalAvailable % getPageSize(); 
+        
+        if(totalAvailable == null || totalAvailable < 0){
+            return -1;
+        }
+        
+        int pages = totalAvailable / getPageSize();
+        pages += (rest > 0 ? 1 : 0);
+        
+        return pages;
     }
 
     public void nextPage() throws Exception{
-        Integer finish = pageConfig.getFinish();
+        Integer reference = pageConfig.getFinish();
         Integer totalAvailable = 0;
 
         if(currentPage == null){
             totalAvailable = provider.fetchSize();
+            reference = pageConfig.getStart();
         }
         else{
             totalAvailable = pageConfig.getTotalAvailable();
         }
-
+        
+        Integer start = reference;
+        Integer finish = start + getPageSize();
+        
+        if(finish > totalAvailable){
+            throw new Exception("Invalid interval! Finish greater than total.");
+        }
+        
         PageConfig nextConfig = new PageConfig();
-        nextConfig.setStart(finish);
-        nextConfig.setFinish(finish + getPageSize());
+        nextConfig.setStart(start);
+        nextConfig.setFinish(finish);
         nextConfig.setTotalAvailable(totalAvailable);
         
-        setPageConfig(nextConfig);
         setCurrentPage(provider.fetchData(nextConfig));
+        setPageConfig(nextConfig);
         
         support.fireNextPage(makePagerEvent());
     }
@@ -79,13 +102,20 @@ public class Pager<T> implements Serializable {
         Integer start = pageConfig.getStart();
         Integer available = pageConfig.getTotalAvailable();
         
+        Integer finish = pageConfig.getStart();
+        start = start - getPageSize();
+        
+        if(start < 0){
+            throw new Exception("Invalid interval! Start less than zero!");
+        }
+        
         PageConfig previousConfig = new PageConfig();
-        previousConfig.setFinish(start);
-        previousConfig.setStart(start - getPageSize());
+        previousConfig.setFinish(finish);
+        previousConfig.setStart(start);
         previousConfig.setTotalAvailable(available);
         
-        setPageConfig(previousConfig);
         setCurrentPage(provider.fetchData(previousConfig));
+        setPageConfig(previousConfig);
         
         support.firePreviousPage(makePagerEvent());
     }
@@ -119,14 +149,16 @@ public class Pager<T> implements Serializable {
     }
 
     public void goToPage(Integer page) throws Exception{
+        Integer rowsAvailable = getRowsAvailable();
+        
         if(page > getTotalPages()){
             throw new Exception("Invalid page number!");
         }
         
         PageConfig config = new PageConfig();
-        config.setStart(page * getPageSize());
-        config.setFinish(config.getStart() + getPageSize());
-        config.setTotalAvailable(getRowsAvailable());
+        config.setFinish(page * getPageSize());
+        config.setStart(config.getFinish() - getPageSize());
+        config.setTotalAvailable(rowsAvailable);
         
         setPageConfig(config);
         setCurrentPage(provider.fetchData(config));

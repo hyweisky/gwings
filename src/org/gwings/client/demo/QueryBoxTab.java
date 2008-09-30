@@ -117,10 +117,9 @@ public class QueryBoxTab extends AbstractDemoPanel {
 
 	public void showPossibleResults(){
 		QueryBoxServiceAsync service = QueryBoxService.Util.getInstance();
-		service.getMatches(queryBox.getText(), new AsyncCallback() {
-			public void onSuccess(Object result) {
-				List matches = (List) result;
-				queryBox.response(matches);
+		service.getMatches(queryBox.getText(), new AsyncCallback<List<String>>() {
+			public void onSuccess(List<String> result) {
+				queryBox.response(result);
 			}
 			public void onFailure(Throwable caught) {
 				String message = caught.getMessage();

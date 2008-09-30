@@ -31,7 +31,7 @@ public interface TableModel<T extends Plotable> {
          * @param renderer
          *            This object will render properly the values of this column.
          */
-        public void addColumn(String columnName, ColumnRenderer renderer);
+        public <R> void addColumn(String columnName, ColumnRenderer<R> renderer);
 
         /**
          * Adds a column to the model. This column will use the default renderer.
@@ -96,7 +96,7 @@ public interface TableModel<T extends Plotable> {
          * 
          * @return the respective column renderer
          */
-        public ColumnRenderer getColumnRenderer(int column);
+        public <R> ColumnRenderer<R> getColumnRenderer(int column);
 
         /**
          * Returns the column renderer of the specified column.
@@ -105,7 +105,7 @@ public interface TableModel<T extends Plotable> {
          *            The name of the column.
          * @return the respective column renderer
          */
-        public ColumnRenderer getColumnRenderer(String columnName);
+        public <R> ColumnRenderer<R> getColumnRenderer(String columnName);
 
         /**
          * Sets the renderer of the column.
@@ -120,7 +120,7 @@ public interface TableModel<T extends Plotable> {
          * @param renderer
          *            The proper renderer for the column.
          */
-        public void setColumnRenderer(int column, ColumnRenderer renderer);
+        public <R> void setColumnRenderer(int column, ColumnRenderer<R> renderer);
 
         /**
          * Sets the renderer of the column.
@@ -130,7 +130,7 @@ public interface TableModel<T extends Plotable> {
          * @param renderer
          *            The proper renderer for the column.
          */
-        public void setColumnRenderer(String columnName, ColumnRenderer renderer);
+        public <R> void setColumnRenderer(String columnName, ColumnRenderer<R> renderer);
 
         /**
          * Append a line to the model.
@@ -194,7 +194,7 @@ public interface TableModel<T extends Plotable> {
          * @param theListener
          *            The listener of this model.
          */
-        public void addTableModelListener(TableModelListener theListener);
+        public void addTableModelListener(TableModelListener<T> theListener);
 
         /**
          * Removes a specified listener of this model.
@@ -202,7 +202,7 @@ public interface TableModel<T extends Plotable> {
          * @param theListener
          *            The listener to be removed.
          */
-        public void removeTableModelListener(TableModelListener theListener);
+        public void removeTableModelListener(TableModelListener<T> theListener);
 
         /**
          * Clear the entire model. Removes all rows and columns.

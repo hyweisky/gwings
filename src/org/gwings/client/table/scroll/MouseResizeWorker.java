@@ -3,6 +3,8 @@ package org.gwings.client.table.scroll;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwings.client.table.Plotable;
+
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.user.client.Event;
@@ -12,7 +14,7 @@ import com.google.gwt.user.client.Timer;
  * A helper class that handles some of the mouse events associated with resizing
  * columns.
  */
-public class MouseResizeWorker {
+public class MouseResizeWorker<T extends Plotable> {
 
     /**
      * The current header cell that the mouse is affecting.
@@ -70,7 +72,7 @@ public class MouseResizeWorker {
     /**
      * The table that this worker affects.
      */
-    private ScrollTable table = null;
+    private ScrollTable<T> table = null;
 
     /**
      * Returns the current cell.
@@ -156,7 +158,7 @@ public class MouseResizeWorker {
      * @param table
      *            the scroll table
      */
-    public void setScrollTable(ScrollTable table) {
+    public void setScrollTable(ScrollTable<T> table) {
         this.table = table;
     }
 
@@ -224,7 +226,7 @@ public class MouseResizeWorker {
      * 
      * @return the scroll table
      */
-    protected ScrollTable getScrollTable() {
+    protected ScrollTable<T> getScrollTable() {
         return table;
     }
 

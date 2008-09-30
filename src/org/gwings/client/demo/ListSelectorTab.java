@@ -69,7 +69,7 @@ public class ListSelectorTab extends AbstractDemoPanel {
 	private void setupUI() {
 		add(layout);
 
-		ArrayList lista = new ArrayList();
+		ArrayList<String> lista = new ArrayList<String>();
 		for (int i = 0; i < 10; i++) {
 			lista.add(i + "");
 		}
@@ -166,7 +166,7 @@ public class ListSelectorTab extends AbstractDemoPanel {
 		}
 		catch (Exception e) {
 			Window.alert("Please insert an integer greater than zero.");
-			DeferredCommand.add(new Command() {
+			DeferredCommand.addCommand(new Command() {
 				public void execute() {
 					maxVisibleItens.selectAll();
 					maxVisibleItens.setFocus(true);

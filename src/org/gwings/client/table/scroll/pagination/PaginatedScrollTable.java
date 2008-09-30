@@ -4,6 +4,7 @@
 package org.gwings.client.table.scroll.pagination;
 
 import org.gwings.client.table.Plotable;
+import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
 import org.gwings.client.table.pagination.view.PaginationBar;
@@ -15,65 +16,9 @@ import com.google.gwt.dom.client.DivElement;
 /**
  * @author USER
  */
-public class PaginatedScrollTable<T extends Plotable> extends ScrollTable {
+public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
 
     private PaginationBar<T> paginationBar;
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#firstPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void firstPage(PagerEvent<T> evt) {
-        paginationBar.firstPage(evt);
-    }
-
-    /**
-     * @return
-     * @see org.gwings.client.table.pagination.view.PaginationBar#getPager()
-     */
-    public Pager<T> getPager() {
-        return paginationBar.getPager();
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#lastPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void lastPage(PagerEvent<T> evt) {
-        paginationBar.lastPage(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#nextPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void nextPage(PagerEvent<T> evt) {
-        paginationBar.nextPage(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#pageChanged(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void pageChanged(PagerEvent<T> evt) {
-        paginationBar.pageChanged(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#previousPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void previousPage(PagerEvent<T> evt) {
-        paginationBar.previousPage(evt);
-    }
-
-    /**
-     * @param pager
-     * @see org.gwings.client.table.pagination.view.PaginationBar#setPager(org.gwings.client.table.pagination.model.Pager)
-     */
-    public void setPager(Pager<T> pager) {
-        paginationBar.setPager(pager);
-    }
-
     private DivElement paginationWrapper;
     
     public PaginatedScrollTable(){
@@ -128,6 +73,78 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable {
         scrollTables(true);
     }
     
+    /**
+     * @param evt
+     * @see org.gwings.client.table.pagination.view.PaginationBar#firstPage(org.gwings.client.table.pagination.observer.PagerEvent)
+     */
+    public void firstPage(PagerEvent<T> evt) {
+        paginationBar.firstPage(evt);
+    }
+
+    /**
+     * @return
+     * @see org.gwings.client.table.pagination.view.PaginationBar#getPager()
+     */
+    public Pager<T> getPager() {
+        return paginationBar.getPager();
+    }
+
+    /**
+     * @param evt
+     * @see org.gwings.client.table.pagination.view.PaginationBar#lastPage(org.gwings.client.table.pagination.observer.PagerEvent)
+     */
+    public void lastPage(PagerEvent<T> evt) {
+        paginationBar.lastPage(evt);
+    }
+
+    /**
+     * @param evt
+     * @see org.gwings.client.table.pagination.view.PaginationBar#nextPage(org.gwings.client.table.pagination.observer.PagerEvent)
+     */
+    public void nextPage(PagerEvent<T> evt) {
+        paginationBar.nextPage(evt);
+    }
+
+    /**
+     * @param evt
+     * @see org.gwings.client.table.pagination.view.PaginationBar#pageChanged(org.gwings.client.table.pagination.observer.PagerEvent)
+     */
+    public void pageChanged(PagerEvent<T> evt) {
+        paginationBar.pageChanged(evt);
+    }
+
+    /**
+     * @param evt
+     * @see org.gwings.client.table.pagination.view.PaginationBar#previousPage(org.gwings.client.table.pagination.observer.PagerEvent)
+     */
+    public void previousPage(PagerEvent<T> evt) {
+        paginationBar.previousPage(evt);
+    }
+
+
+    /**
+     * @param pager
+     * @see org.gwings.client.table.pagination.view.PaginationBar#setPager(org.gwings.client.table.pagination.model.Pager)
+     */
+    public void setPager(Pager<T> pager) {
+        paginationBar.setPager(pager);
+    }
+
     
+    /**
+     * @return the provider
+     */
+    public DataProvider<T> getProvider() {
+        return paginationBar.getPager().getProvider();
+    }
+
+    
+    /**
+     * @param provider the provider to set
+     */
+    public void setProvider(DataProvider<T> provider) {
+        paginationBar.getPager().setProvider(provider);
+    }
+
 
 }

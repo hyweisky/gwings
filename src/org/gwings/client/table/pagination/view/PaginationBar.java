@@ -8,6 +8,7 @@ import org.gwings.client.table.pagination.observer.PagerListener;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -60,6 +61,11 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         previousLabel = new Label(messages.previous());
         nextLabel = new Label(messages.next());
         lastLabel = new Label(messages.last());
+        
+        currentPageSelector = new ListBox();
+        availablePages = new Label();
+
+        setPager(new Pager<T>());
     }
 
     private void setupLayout() {
@@ -91,6 +97,47 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         previousImage.addMouseListener(new ImageChangeListener(images.previous(), images.previousOver()));
         nextImage.addMouseListener(new ImageChangeListener(images.next(), images.nextOver()));
         lastImage.addMouseListener(new ImageChangeListener(images.last(), images.lastOver()));
+        
+        firstImage.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                try {
+                    pager.firstPage();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        previousImage.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                try {
+                    pager.previousPage();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        nextImage.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                try {
+                    pager.nextPage();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        lastImage.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                try {
+                    pager.lastPage();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     
     /**
@@ -104,7 +151,10 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
      * @param pager the pager to set
      */
     public void setPager(Pager<T> pager) {
-        this.pager.removePagerListener(this);
+        if(this.pager != null){
+            this.pager.removePagerListener(this);
+        }
+        
         this.pager = pager;
         this.pager.addPagerListener(this);
         
@@ -113,12 +163,21 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
 
     private void mountRange() {
         currentPageSelector.clear();
-        for(int i = 0; i < pager.getTotalPages(); i++){
+        
+        Integer totalPages = 0;
+        try {
+            totalPages = pager.getTotalPages();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        for(int i = 0; i < totalPages; i++){
             currentPageSelector.addItem((i+1)+"");
         }
 
         currentPageSelector.setSelectedIndex(pager.currentPageIndex());
-        availablePages.setText(pager.getTotalPages()+"");
+        availablePages.setText(totalPages+"");
         
     }
 
