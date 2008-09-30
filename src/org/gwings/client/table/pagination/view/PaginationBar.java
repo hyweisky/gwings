@@ -2,6 +2,7 @@ package org.gwings.client.table.pagination.view;
 
 import org.gwings.client.table.pagination.i18n.PaginationBundle;
 import org.gwings.client.table.pagination.i18n.PaginationMessages;
+import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
 import org.gwings.client.table.pagination.observer.PagerListener;
@@ -21,6 +22,29 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class PaginationBar<T> extends Composite implements PagerListener<T> {
     
+    private class ImageChangeListener extends MouseListenerAdapter{
+
+        private AbstractImagePrototype over;
+        private AbstractImagePrototype normal;
+        
+        public ImageChangeListener(AbstractImagePrototype normal, AbstractImagePrototype over){
+            this.over = over;
+            this.normal = normal;
+        }
+        
+        @Override
+        public void onMouseEnter(Widget sender) {
+            Image img = (Image) sender;
+            over.applyTo(img);
+        }
+        
+        @Override
+        public void onMouseLeave(Widget sender) {
+            Image img = (Image) sender;
+            normal.applyTo(img);
+        }
+    };
+
     private PaginationMessages messages;
     private PaginationBundle images;
     
@@ -157,8 +181,6 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         
         this.pager = pager;
         this.pager.addPagerListener(this);
-        
-        mountRange();
     }
 
     private void mountRange() {
@@ -178,7 +200,6 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
 
         currentPageSelector.setSelectedIndex(pager.currentPageIndex());
         availablePages.setText(totalPages+"");
-        
     }
 
     public void firstPage(PagerEvent<T> evt) {
@@ -206,26 +227,23 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         currentPageSelector.setSelectedIndex(index);        
     }
     
-    private class ImageChangeListener extends MouseListenerAdapter{
+    /**
+     * @return
+     * @see org.gwings.client.table.pagination.model.Pager#getProvider()
+     */
+    public DataProvider<T> getProvider() {
+        return pager.getProvider();
+    }
 
-        private AbstractImagePrototype over;
-        private AbstractImagePrototype normal;
-        
-        public ImageChangeListener(AbstractImagePrototype normal, AbstractImagePrototype over){
-            this.over = over;
-            this.normal = normal;
+    /**
+     * @param provider
+     * @see org.gwings.client.table.pagination.model.Pager#setProvider(org.gwings.client.table.pagination.model.DataProvider)
+     */
+    public void setProvider(DataProvider<T> provider) {
+        pager.setProvider(provider);
+        if(provider != null){
+            mountRange();
         }
-        
-        @Override
-        public void onMouseEnter(Widget sender) {
-            Image img = (Image) sender;
-            over.applyTo(img);
-        }
-        
-        @Override
-        public void onMouseLeave(Widget sender) {
-            Image img = (Image) sender;
-            normal.applyTo(img);
-        }
-    };
+    }
+
 }

@@ -135,7 +135,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
      * @return the provider
      */
     public DataProvider<T> getProvider() {
-        return paginationBar.getPager().getProvider();
+        return paginationBar.getProvider();
     }
 
     
@@ -143,7 +143,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
      * @param provider the provider to set
      */
     public void setProvider(DataProvider<T> provider) {
-        paginationBar.getPager().setProvider(provider);
+        paginationBar.setProvider(provider);
     }
 
 

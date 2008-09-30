@@ -44,8 +44,8 @@ public class TableTab extends AbstractDemoPanel {
 	private final HorizontalAlignmentConstant CENTER = HorizontalPanel.ALIGN_CENTER;
 	private final VerticalAlignmentConstant MIDDLE = VerticalPanel.ALIGN_MIDDLE;
 
-	private ScrollTable<SimpleLinePlotable> table;
-	private TableModel<SimpleLinePlotable> model;
+	private ScrollTable<LinePlotable> table;
+	private TableModel<LinePlotable> model;
 	private DockPanel layout;
 	private CheckBox enableZebra;
     private Button addLineButton;
@@ -58,7 +58,7 @@ public class TableTab extends AbstractDemoPanel {
 	}
 
 	private void initialize() {
-		table = new ScrollTable<SimpleLinePlotable>();
+		table = new ScrollTable<LinePlotable>();
 		layout = new DockPanel();
 		enableZebra = new CheckBox();
 		model = table.getTableModel();
@@ -80,10 +80,10 @@ public class TableTab extends AbstractDemoPanel {
 	 */
 	private void makeMockObjects() {
 		
-		SimpleLinePlotable plotable = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable1 = new SimpleLinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable2 = new SimpleLinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable3 = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable1 = new LinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable2 = new LinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable3 = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
 		
 		model.appendLine(plotable);
 		model.appendLine(plotable1);
@@ -123,7 +123,7 @@ public class TableTab extends AbstractDemoPanel {
 //		});
 	    addLineButton.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
-                SimpleLinePlotable plotable = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+                LinePlotable plotable = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
                 model.appendLine(plotable);
             }
         });

@@ -40,7 +40,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 	
 	public void onModuleLoad() {
 
-//		Window.enableScrolling(false);
+		Window.enableScrolling(false);
 		Window.setMargin("5px");
 		Window.addWindowResizeListener(this);
 
@@ -49,7 +49,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 		layout = new DockPanel();
 		
 		panel.add(new TableTab(), "Table");
-//		panel.add(new PaginableTableTab(), "Paginable Table");
+		panel.add(new PaginatedScrollTableTab(), "Paginable Table");
 		panel.add(new ListSelectorTab(), "Selector");
 		panel.add(new SliderTab(), "Slider");
 		panel.add(new SpinnerTab(), "Spinner");

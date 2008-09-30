@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.Image;
  * @author Marcelo Emanoel
  * @since 07/03/2007
  */
-public class SimpleLinePlotable implements Plotable {
+public class LinePlotable implements Plotable {
     private static final long serialVersionUID = 8614765613220703585L;
 
     private Boolean marked;
@@ -32,11 +32,11 @@ public class SimpleLinePlotable implements Plotable {
 	private String name;
 	private Date value;
 
-	public SimpleLinePlotable() {
+	public LinePlotable() {
 		this(Boolean.FALSE, new Image(), "",new Date());
 	}
 
-	public SimpleLinePlotable(Boolean marked, Image img, String stringValue, Date value) {
+	public LinePlotable(Boolean marked, Image img, String stringValue, Date value) {
 		this.marked = marked;
 		this.image = img;
 		this.name = stringValue;

@@ -17,9 +17,11 @@ public class PageConfig implements Serializable {
     private Integer finish;
 
     public PageConfig() {
-
+        setTotalAvailable(0);
+        setStart(0);
+        setFinish(0);
     }
-    
+
     /**
      * @return the totalAvailable
      */
@@ -64,8 +66,8 @@ public class PageConfig implements Serializable {
     public void setFinish(Integer finish) {
         this.finish = finish;
     }
-    
-    public Integer getPageSize(){
+
+    public Integer getPageSize() {
         return Math.abs(start - finish);
     }
 }
