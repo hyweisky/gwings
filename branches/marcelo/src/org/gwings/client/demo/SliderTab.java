@@ -144,7 +144,7 @@ public class SliderTab extends AbstractDemoPanel {
 		}
 		catch (Exception e) {
 			Window.alert("Please insert a valid integer value.");
-			DeferredCommand.add(new Command() {
+			DeferredCommand.addCommand(new Command() {
 				public void execute() {
 					horizontalValueBox.selectAll();
 					horizontalValueBox.setFocus(true);

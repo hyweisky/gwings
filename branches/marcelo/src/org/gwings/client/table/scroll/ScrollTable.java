@@ -58,7 +58,7 @@ import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
  * <li> .gwt-ScrollTable .footerWrapper { wrapper around the footer table }</li>
  * </ul>
  */
-public class ScrollTable extends ComplexPanel implements ResizableWidget, TableModelListener, EventListener {
+public class ScrollTable<T extends Plotable> extends ComplexPanel implements ResizableWidget, TableModelListener<T>, EventListener {
     
     /**
      * The default style name.
@@ -113,7 +113,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * The worker that helps with mouse resize events.
      */
-    private MouseResizeWorker resizeWorker = GWT.create(MouseResizeWorker.class);
+    private MouseResizeWorker<T> resizeWorker = GWT.create(MouseResizeWorker.class);
     
     /**
      * A Deferred command used to resize tables vertically. Using this command
@@ -132,13 +132,13 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      */
     private Map<Integer, Boolean> unsortableColumns = new HashMap<Integer, Boolean>();
     
-    private TableModel tableModel;
+    private TableModel<T> tableModel;
     
     public ScrollTable(){
-        this(new DefaultTableModel());
+        this(new DefaultTableModel<T>());
     }
     
-    public ScrollTable(TableModel model){
+    public ScrollTable(TableModel<T> model){
         this(new FixedWidthFlexTable(), new FixedWidthFlexTable(), model);
     }
     
@@ -148,7 +148,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @param dataTable the data table
      * @param headerTable the header table
      */
-    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, TableModel model) {
+    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, TableModel<T> model) {
         this(dataTable, headerTable, (ScrollTableImages) GWT.create(ScrollTableImages.class), model);
         
     }
@@ -160,7 +160,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
      * @param headerTable the header table
      * @param images the images to use in the table
      */
-    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, ScrollTableImages images, TableModel model){
+    public ScrollTable(FixedWidthFlexTable dataTable, FixedWidthFlexTable headerTable, ScrollTableImages images, TableModel<T> model){
         super();
         init(images);
         setDataTable(dataTable);
@@ -999,8 +999,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         }
     }
     
-    public void columnAdded(TableModelEvent evt) {
-        TableModel model = evt.getSource();
+    public void columnAdded(TableModelEvent<T> evt) {
+        TableModel<T> model = evt.getSource();
         String columnName = model.getColumnName(evt.getColumn());
         if(headerTable.getRowCount() == 0){
         	headerTable.insertRow(0);
@@ -1018,8 +1018,8 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         resizeTablesVertically();
     }
     
-    public void columnRemoved(TableModelEvent evt) {
-        TableModel model = evt.getSource();
+    public void columnRemoved(TableModelEvent<T> evt) {
+        TableModel<T> model = evt.getSource();
         int column = evt.getColumn();
         
         headerTable.removeCell(0, column);
@@ -1055,19 +1055,19 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         
     }
 
-    public void rowChanged(TableModelEvent evt) {
+    public void rowChanged(TableModelEvent<T> evt) {
         rowRemoved(evt);
         rowAdded(evt);
         resizeTablesVertically();
     }
 
-    public void rowRemoved(TableModelEvent evt) {
+    public void rowRemoved(TableModelEvent<T> evt) {
         int row = evt.getRow();
         dataTable.removeRow(row + 1);
         resizeTablesVertically();
     }
 
-    public void rowsCleared(TableModelEvent evt) {
+    public void rowsCleared(TableModelEvent<T> evt) {
         tableCleared(evt);
         resizeTablesVertically();
     }
@@ -1102,7 +1102,7 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         resizeTablesVertically();
     }
 
-    public void tableCleared(TableModelEvent evt) {
+    public void tableCleared(TableModelEvent<T> evt) {
         for (int i = 0; i < evt.getSource().getRowCount(); i++) {
             dataTable.removeRow(i + 1);
         }
@@ -1136,14 +1136,14 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
     /**
      * @return the tableModel
      */
-    public TableModel getTableModel() {
+    public TableModel<T> getTableModel() {
         return tableModel;
     }
     
     /**
      * @param tableModel the tableModel to set
      */
-    public void setTableModel(TableModel tableModel) {
+    public void setTableModel(TableModel<T> tableModel) {
         if(this.tableModel != null){
             this.tableModel.removeTableModelListener(this);
         }
@@ -1151,6 +1151,6 @@ public class ScrollTable extends ComplexPanel implements ResizableWidget, TableM
         this.tableModel = tableModel;
         this.tableModel.addTableModelListener(this);
         
-        tableChanged(new TableModelEvent(this.tableModel));
+        tableChanged(new TableModelEvent<T>(this.tableModel));
     }
 }

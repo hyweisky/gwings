@@ -1,5 +1,7 @@
 package org.gwings.client.demo.services;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 /**
  * 
@@ -21,5 +23,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @since 11/03/2007
  */
 public interface QueryBoxServiceAsync {
-	public void getMatches(String pattern, AsyncCallback<String> callback);
+	public void getMatches(String pattern, AsyncCallback<List<String>> callback);
 }

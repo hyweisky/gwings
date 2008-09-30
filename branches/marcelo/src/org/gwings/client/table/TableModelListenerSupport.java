@@ -9,67 +9,67 @@ import java.util.List;
 /**
  * @author USER
  */
-public class TableModelListenerSupport {
+public class TableModelListenerSupport<T extends Plotable> {
 
-    private List<TableModelListener> listeners;
+    private List<TableModelListener<T>> listeners;
 
     public TableModelListenerSupport() {
-        listeners = new ArrayList<TableModelListener>();
+        listeners = new ArrayList<TableModelListener<T>>();
     }
 
-    public void removeTableModelListener(TableModelListener l) {
+    public void removeTableModelListener(TableModelListener<T> l) {
         listeners.remove(l);
     }
 
-    public void addTableModelListener(TableModelListener l) {
+    public void addTableModelListener(TableModelListener<T> l) {
         listeners.add(l);
     }
     
-    public void fireRowAdded(TableModelEvent evt) {
+    public void fireRowAdded(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.rowAdded(evt);
         }
     }
 
-    public void fireColumnAdded(TableModelEvent evt) {
+    public void fireColumnAdded(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.columnAdded(evt);
         }
     }
 
-    public void fireClearedAll(TableModelEvent evt) {
+    public void fireClearedAll(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.tableCleared(evt);
         }
     }
 
-    public void fireRowsCleared(TableModelEvent evt) {
+    public void fireRowsCleared(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.rowsCleared(evt);
         }
     }
 
-    public void fireColumnRemoved(TableModelEvent evt) {
+    public void fireColumnRemoved(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.columnRemoved(evt);
         }
     }
 
-    public void fireLineRemoved(TableModelEvent evt) {
+    public void fireLineRemoved(TableModelEvent<T> evt) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.rowRemoved(evt);
         }
     }
 
-    public void fireTableChanged(TableModelEvent event) {
+    public void fireTableChanged(TableModelEvent<T> event) {
         for (int i = 0; i < listeners.size(); i++) {
-            TableModelListener listener = (TableModelListener) listeners.get(i);
+            TableModelListener<T> listener = listeners.get(i);
             listener.tableChanged(event);
         }
     }

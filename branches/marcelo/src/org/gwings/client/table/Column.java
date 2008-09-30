@@ -1,13 +1,13 @@
 package org.gwings.client.table;
 
-public class Column {
+public class Column<T> {
 
     private String name;
-    private ColumnRenderer type;
+    private ColumnRenderer<T> type;
     private ColumnOrder order;
     private Integer position;
 
-    public Column(String name, ColumnRenderer type) {
+    public Column(String name, ColumnRenderer<T> type) {
         setName(name);
         setType(type);
     }
@@ -20,16 +20,19 @@ public class Column {
         this.name = name;
     }
 
-    public ColumnRenderer getType() {
+    public ColumnRenderer<T> getType() {
         return this.type;
     }
 
-    public void setType(ColumnRenderer type) {
+    public void setType(ColumnRenderer<T> type) {
         this.type = type;
     }
-
+    
+    
+    @Override
+    @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
-        Column col = (Column) obj;
+        Column<T> col = (Column) obj;
         return col.getName().equals(getName());
     }
 

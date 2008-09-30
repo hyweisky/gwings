@@ -193,7 +193,7 @@ public class SpinnerTab extends AbstractDemoPanel {
 		}
 		catch (Exception e) {
 			Window.alert("Please, insert a valid integer.");
-			DeferredCommand.add(new Command() {
+			DeferredCommand.addCommand(new Command() {
 				public void execute() {
 					minNumberValueBox.selectAll();
 					minNumberValueBox.setFocus(true);

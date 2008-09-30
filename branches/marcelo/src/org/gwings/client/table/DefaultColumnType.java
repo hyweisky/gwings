@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -29,10 +28,11 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Marcelo Emanoel
  * @since 04/02/2007
  */
+@SuppressWarnings("unchecked")
 public class DefaultColumnType implements ColumnRenderer{
 
         public Widget renderType(Object value) {
-                String type = GWT.getTypeName(value);
+                String type = value.getClass().getName();
                 if(type != null){
                         if(type.equals("java.lang.Boolean")){
                                 Boolean b = (Boolean) value;
