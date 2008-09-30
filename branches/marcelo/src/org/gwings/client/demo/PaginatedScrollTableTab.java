@@ -1,20 +1,16 @@
 package org.gwings.client.demo;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import org.gwings.client.table.TableModel;
+import org.gwings.client.table.pagination.model.PageConfig;
+import org.gwings.client.table.scroll.ResizePolicy;
+import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
@@ -43,12 +39,11 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	private final HorizontalAlignmentConstant CENTER = HorizontalPanel.ALIGN_CENTER;
 	private final VerticalAlignmentConstant MIDDLE = VerticalPanel.ALIGN_MIDDLE;
 
-	private PaginatedScrollTable<SimpleLinePlotable> table;
-	private TableModel<SimpleLinePlotable> model;
-	private DockPanel layout;
-	private CheckBox enableZebra;
+	private PaginatedScrollTable<LinePlotable> table;
+	private TableModel<LinePlotable> model;
 	
-
+	private DockPanel layout;
+	
 	public PaginatedScrollTableTab() {
 		initialize();
 		setupUI();
@@ -56,41 +51,27 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	}
 
 	private void initialize() {
-		table = new PaginatedScrollTable<SimpleLinePlotable>();
-		layout = new DockPanel();
-		enableZebra = new CheckBox();
-		model = table.getTableModel();
+		PageConfig config = new PageConfig();
+		config.setStart(0);
+		config.setFinish(50);
 		
-//		table.setZebraMode(false);
-//		enableZebra.setChecked(table.isZebraMode());
+		table = new PaginatedScrollTable<LinePlotable>();
+		table.getPager().setPageConfig(config);
+		table.setProvider(new LineProvider());
+		
+		model = table.getTableModel();
+		layout = new DockPanel();
 
 		setupColumns();
-		makeMockObjects();
-
-	}
-
-	/**
-	 * 
-	 */
-	private void makeMockObjects() {
 		
-		SimpleLinePlotable plotable = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable1 = new SimpleLinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable2 = new SimpleLinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		SimpleLinePlotable plotable3 = new SimpleLinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
-		
-		ArrayList<SimpleLinePlotable> data = new ArrayList<SimpleLinePlotable>();
-		data.add(plotable);
-		data.add(plotable1);
-		data.add(plotable2);
-		data.add(plotable3);
-		
-//		Pager pager = new PagerWizard();
-//		pager.setMaxResultsPerPage(2);
-//		pager.setResults(data);
-//		
-//		table.setPaginable(true);
-//		table.getPagingBar().setPager(pager);
+		table.setColumnWidth(0, 70);
+        table.setColumnWidth(1, 50);
+        table.setColumnWidth(2, 450);
+        table.setColumnWidth(3, 90);
+        
+        table.setResizePolicy(ResizePolicy.FIXED_WIDTH);
+        table.setScrollPolicy(ScrollPolicy.BOTH);
+        
 	}
 
 	/**
@@ -105,29 +86,19 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 
 	private void setupUI() {
 		add(layout);
-		enableZebra.setStyleName("enableZebra");
-		
 		layout.setHorizontalAlignment(CENTER);
 		layout.setVerticalAlignment(MIDDLE);
 
 		layout.add(table, DockPanel.CENTER);
 		layout.setSize("100%", "100%");
-		
 	}
 	
 	private void setupListener() {
-		enableZebra.addClickListener(new ClickListener() {
-			public void onClick(Widget sender) {
-//				table.setZebraMode(enableZebra.isChecked());
-			}
-		});
 	}
 
 	public FlexTable getProperties() {
 		
 		FlexTable flexTable = new FlexTable();
-		flexTable.setWidget(0, 0, new HTML("Zebra Mode"));
-		flexTable.setWidget(0, 1, enableZebra);
 		return flexTable;
 	}
 

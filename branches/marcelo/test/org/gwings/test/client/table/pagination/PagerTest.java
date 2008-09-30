@@ -295,7 +295,7 @@ public class PagerTest extends GWTTestCase {
         assertEquals(new Integer(-1), pager.currentPageIndex());
         assertEquals(new Integer(0), pager.getPageConfig().getStart());
         assertEquals(new Integer(10), pager.getPageConfig().getFinish());
-        assertNull(pager.getPageConfig().getTotalAvailable());
+        assertNotNull(pager.getPageConfig().getTotalAvailable());
         
         try {
             pager.lastPage();
@@ -322,7 +322,7 @@ public class PagerTest extends GWTTestCase {
         assertEquals(new Integer(0), pager.getPageConfig().getStart());
         assertEquals(new Integer(10), pager.getPageConfig().getFinish());
         assertEquals(new Integer(10), pager.getPageSize());
-        assertNull(pager.getPageConfig().getTotalAvailable());
+        assertNotNull(pager.getPageConfig().getTotalAvailable());
         
 
         try {
