@@ -89,7 +89,6 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
      * work.
      */
     public void fillWidth() {
-        System.out.println("arrumando a largura!");
         // Calculate how much room we have to work with
         int clientWidth = -1;
         if (scrollPolicy == ScrollPolicy.BOTH) {
