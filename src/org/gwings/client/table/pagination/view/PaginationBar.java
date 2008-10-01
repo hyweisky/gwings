@@ -30,6 +30,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
 
         private AbstractImagePrototype over;
         private AbstractImagePrototype normal;
+        private boolean ignoringEvents;
         
         public ImageChangeListener(AbstractImagePrototype normal, AbstractImagePrototype over){
             this.over = over;
@@ -38,14 +39,34 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         
         @Override
         public void onMouseEnter(Widget sender) {
-            Image img = (Image) sender;
-            over.applyTo(img);
+            if(!isIgnoringEvents()){
+                Image img = (Image) sender;
+                over.applyTo(img);
+            }
         }
         
         @Override
         public void onMouseLeave(Widget sender) {
-            Image img = (Image) sender;
-            normal.applyTo(img);
+            if(!isIgnoringEvents()){
+                Image img = (Image) sender;
+                normal.applyTo(img);
+            }
+        }
+
+        
+        /**
+         * @return the ignoreEvents
+         */
+        public boolean isIgnoringEvents() {
+            return ignoringEvents;
+        }
+
+        
+        /**
+         * @param ignoreEvents the ignoreEvents to set
+         */
+        public void setIgnoringEvents(boolean ignoreEvents) {
+            this.ignoringEvents = ignoreEvents;
         }
     };
 
@@ -66,6 +87,12 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
     private Image previousImage;
     private Image firstImage;
     
+    private ImageChangeListener nextListener;
+    private ImageChangeListener previousListener;
+    
+    private boolean nextDisabled;
+    private boolean previousDisabled;
+    
     private Pager<T> pager;
 
     public PaginationBar(){
@@ -80,11 +107,13 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         messages = GWT.create(PaginationMessages.class);
         images = GWT.create(PaginationBundle.class);
         
-        firstImage = images.first().createImage();
-        previousImage = images.previous().createImage();
-        nextImage = images.next().createImage();
-        lastImage = images.last().createImage();
-
+        initImages();
+        previousListener = new ImageChangeListener(images.previous(), images.previousOver());
+        nextListener = new ImageChangeListener(images.next(), images.nextOver());
+        
+        setPreviousDisabled(true);
+        setNextDisabled(false);
+        
         firstLabel = new Label(messages.first());
         previousLabel = new Label(messages.previous());
         nextLabel = new Label(messages.next());
@@ -92,8 +121,24 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         
         currentPageSelector = new ListBox();
         availablePages = new HTML();
-
+        
         setPager(new Pager<T>());
+    }
+
+    private void initImages() {
+        firstImage = createImage();
+        previousImage = createImage();
+        nextImage = createImage();
+        lastImage = createImage();
+        
+        images.first().applyTo(firstImage);
+        images.previousDisabled().applyTo(previousImage);
+        images.next().applyTo(nextImage);
+        images.last().applyTo(lastImage);
+    }
+
+    private Image createImage() {
+        return new Image();
     }
 
     private void setupLayout() {
@@ -122,8 +167,8 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
 
     private void setupListeners() {
         firstImage.addMouseListener(new ImageChangeListener(images.first(), images.firstOver()));
-        previousImage.addMouseListener(new ImageChangeListener(images.previous(), images.previousOver()));
-        nextImage.addMouseListener(new ImageChangeListener(images.next(), images.nextOver()));
+        previousImage.addMouseListener(previousListener);
+        nextImage.addMouseListener(nextListener);
         lastImage.addMouseListener(new ImageChangeListener(images.last(), images.lastOver()));
         
         firstImage.addClickListener(new ClickListener() {
@@ -139,7 +184,9 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         previousImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
-                    pager.previousPage();
+                    if(!isPreviousDisabled()){
+                        pager.previousPage();
+                    }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -149,7 +196,9 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         nextImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
-                    pager.nextPage();
+                    if(!isNextDisabled()){
+                        pager.nextPage();
+                    }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -224,26 +273,69 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
     public void firstPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index-1);
+     
+        setPreviousDisabled(true);
+        setNextDisabled(false);
     }
 
     public void lastPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index-1);
+        
+        setNextDisabled(true);
+        setPreviousDisabled(false);
     }
 
     public void nextPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
         currentPageSelector.setSelectedIndex(index-1);
+        
+        Integer totalPages = 0;
+        try {
+            totalPages = pager.getTotalPages();
+            if(index == totalPages){
+                setNextDisabled(true);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        setPreviousDisabled(false);
+        
     }
 
     public void pageChanged(PagerEvent<T> evt) {
-        Integer index = evt.getPager().currentPageIndex();
+        Pager<T> pager = evt.getPager();
+        
+        Integer index = pager.currentPageIndex();
         currentPageSelector.setSelectedIndex(index-1);
+        
+        try {
+            Integer totalPages = pager.getTotalPages();
+            if(index > 1 && index < totalPages){
+                setNextDisabled(false);
+                setPreviousDisabled(false);
+            }
+            if(index == 1){
+                setPreviousDisabled(true);
+            }
+            if(index == totalPages){
+                setNextDisabled(true); 
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void previousPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index-1);        
+        currentPageSelector.setSelectedIndex(index-1);
+        
+        if(index == 1){
+            setPreviousDisabled(true);
+        }
+        setNextDisabled(false);
     }
     
     /**
@@ -272,6 +364,52 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
                     }
                 }
             });
+        }
+    }
+
+    
+    /**
+     * @return the nextDisabled
+     */
+    private boolean isNextDisabled() {
+        return nextDisabled;
+    }
+
+    
+    /**
+     * @param disabled the nextDisabled to set
+     */
+    private void setNextDisabled(boolean disabled) {
+        this.nextDisabled = disabled;
+        nextListener.setIgnoringEvents(disabled);
+        if(disabled){
+            images.nextDisabled().applyTo(nextImage);
+        }
+        else{
+            images.next().applyTo(nextImage);
+        }
+    }
+
+    
+    /**
+     * @return the previousDisabled
+     */
+    private boolean isPreviousDisabled() {
+        return previousDisabled;
+    }
+
+    
+    /**
+     * @param disabled the previousDisabled to set
+     */
+    private void setPreviousDisabled(boolean disabled) {
+        this.previousDisabled = disabled;
+        previousListener.setIgnoringEvents(disabled);
+        if(disabled){
+            images.previousDisabled().applyTo(previousImage);
+        }
+        else{
+            images.previous().applyTo(previousImage);
         }
     }
 
