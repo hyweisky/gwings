@@ -69,9 +69,11 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
         table.setColumnWidth(2, 450);
         table.setColumnWidth(3, 90);
         
+        table.setPixelWidth(660);
+        table.setHeight(400+"px");
+        
         table.setResizePolicy(ResizePolicy.FIXED_WIDTH);
         table.setScrollPolicy(ScrollPolicy.BOTH);
-        
 	}
 
 	/**

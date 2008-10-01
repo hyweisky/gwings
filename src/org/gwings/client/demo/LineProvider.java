@@ -36,7 +36,7 @@ public class LineProvider implements DataProvider<LinePlotable>, LineConstants{
             int dateIndex = Random.nextInt(DATE_VALUES.length);
             
             Boolean marked = BOOLEAN_VALUES[booleanIndex];
-            Image img = IMAGE_VALUES[imageIndex];
+            Image img = new Image(IMAGE_VALUES[imageIndex].getUrl());
             String msg = STRING_VALUES[stringIndex];
             Date date = DATE_VALUES[dateIndex];
             

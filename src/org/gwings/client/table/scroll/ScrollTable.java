@@ -17,7 +17,6 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.user.client.Command;
@@ -66,7 +65,7 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
     public static final String DEFAULT_STYLE_NAME = "gwt-ScrollTable";
 
     private ColumnResizePolicy columnResizePolicy = ColumnResizePolicy.MULTI_CELL;
-    private ResizePolicy resizePolicy = ResizePolicy.FILL_WIDTH;
+    protected ResizePolicy resizePolicy = ResizePolicy.FILL_WIDTH;
     protected ScrollPolicy scrollPolicy;
     
     /**
@@ -98,7 +97,7 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
      * The tables of the scroll table.
      */
     protected FixedWidthFlexTable headerTable = null;    
-    private FixedWidthFlexTable dataTable = null;
+    protected FixedWidthFlexTable dataTable = null;
     protected FixedWidthFlexTable footerTable = null;
     
     /**
@@ -108,7 +107,7 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
     /**
      * The minimum allowed width of the data table.
      */
-    private int minWidth = -1;
+    protected int minWidth = -1;
     
     /**
      * The worker that helps with mouse resize events.
@@ -847,8 +846,7 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
      */
     protected void adoptTable(Widget table, DivElement wrapper, int index) {
         getChildren().add(table);
-        Node sibling = getElement().getChildNodes().getItem(index);
-        getElement().insertBefore(wrapper, sibling);
+        DOM.insertChild(getElement(), (com.google.gwt.user.client.Element)(Element)wrapper, index);
         wrapper.appendChild(table.getElement());
         adopt(table);
     }
@@ -1078,10 +1076,10 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
         tableCleared(evt);
         
         TableModel model = evt.getSource();
-        for(int column = 0; column < model.getColumnCount(); column++){
-            String columnName = model.getColumnName(column);
-            headerTable.setHTML(0, column, columnName);
-        }
+//        for(int column = 0; column < model.getColumnCount(); column++){
+//            String columnName = model.getColumnName(column);
+//            headerTable.setHTML(0, column, columnName);
+//        }
         
         
         for(int row = 0; row < model.getRowCount(); row++){
@@ -1103,10 +1101,11 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
     }
 
     public void tableCleared(TableModelEvent<T> evt) {
-        for (int i = 0; i < evt.getSource().getRowCount(); i++) {
-            dataTable.removeRow(i + 1);
-        }
+        int rowCount = dataTable.getRowCount();
         dataTable.clear();
+        for (int i = 0; i < rowCount; i++) {
+            dataTable.removeRow(dataTable.getRowCount()-1);
+        }
         resizeTablesVertically();
     }
     

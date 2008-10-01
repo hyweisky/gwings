@@ -22,7 +22,10 @@ public interface PaginationBundle extends ImageBundle {
     
     @Resource("org/gwings/public/pics/pagingBar/backward.gif")
     public AbstractImagePrototype previousOver();
-
+    
+    @Resource("org/gwings/public/pics/pagingBar/backward.gif")
+    public AbstractImagePrototype previousDisabled();
+    
     @Resource("org/gwings/public/pics/pagingBar/fast_forward.gif")
     public AbstractImagePrototype last();
 
@@ -34,6 +37,9 @@ public interface PaginationBundle extends ImageBundle {
     
     @Resource("org/gwings/public/pics/pagingBar/forward.gif")
     public AbstractImagePrototype nextOver();
+    
+    @Resource("org/gwings/public/pics/pagingBar/forward.gif")
+    public AbstractImagePrototype nextDisabled();
     
     @Resource("org/gwings/public/pics/pagingBar/separator.png")
     public AbstractImagePrototype separator();

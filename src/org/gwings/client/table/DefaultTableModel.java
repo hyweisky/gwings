@@ -72,9 +72,11 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
     }
 
     public void clearRows() {
+        int rows = getRowCount();
         lines.clear();
 
         TableModelEvent evt = makeEvent();
+        evt.setRow(rows);
         support.fireRowsCleared(evt);
     }
 
