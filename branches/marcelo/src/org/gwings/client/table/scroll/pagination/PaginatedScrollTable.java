@@ -3,20 +3,27 @@
  */
 package org.gwings.client.table.scroll.pagination;
 
+import java.util.List;
+
 import org.gwings.client.table.Plotable;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
+import org.gwings.client.table.pagination.observer.PagerListener;
 import org.gwings.client.table.pagination.view.PaginationBar;
+import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.ScrollTable;
 
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * @author USER
  */
-public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
+public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> implements PagerListener<T> {
 
     private PaginationBar<T> paginationBar;
     private DivElement paginationWrapper;
@@ -30,8 +37,8 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
     private void init() {
         paginationWrapper = super.createWrapper("paginationWrapper");
         paginationBar = new PaginationBar<T>();
-        
-        super.adoptTable(paginationBar, paginationWrapper, 4);
+        setPager(paginationBar.getPager());
+        adoptTable(paginationBar, paginationWrapper, this.getWidgetCount());
     }
     
     /**
@@ -50,7 +57,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
             scrollTables(true);
             return;
         }
-
+        
         // Give the data wrapper all remaining height
         int totalHeight = getElement().getPropertyInt("clientHeight");
         totalHeight = totalHeight > 0 ? totalHeight : getElement().getPropertyInt("offsetHeight");
@@ -72,6 +79,92 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
         dataWrapper.getStyle().setProperty("overflow", "auto");
         scrollTables(true);
     }
+
+    /**
+     * Adjust all column widths so they take up the maximum amount of space
+     * without needing a horizontal scroll bar. The distribution will be
+     * proportional to the current width of each column.
+     * 
+     * The {@link ScrollTable} must be visible on the page for this method to
+     * work.
+     */
+    public void fillWidth() {
+        System.out.println("arrumando a largura!");
+        // Calculate how much room we have to work with
+        int clientWidth = -1;
+        if (scrollPolicy == ScrollPolicy.BOTH) {
+            dataWrapper.getStyle().setProperty("overflow", "scroll");
+            clientWidth = dataWrapper.getPropertyInt("clientWidth") - 1;
+            dataWrapper.getStyle().setProperty("overflow", "auto");
+        } else {
+            clientWidth = dataWrapper.getPropertyInt("clientWidth");
+        }
+        if (clientWidth <= 0) {
+            return;
+        }
+        clientWidth = Math.max(clientWidth, minWidth);
+        int diff = clientWidth - ((Widget) dataTable).getOffsetWidth();
+        
+        // Temporarily set resize policy to unconstrained
+        ResizePolicy tempResizePolicy = getResizePolicy();
+        resizePolicy = ResizePolicy.UNCONSTRAINED;
+
+        // Calculate the total width of the columns that aren't guaranteed
+        int totalWidth = 0;
+        int numColumns = dataTable.getColumnCount();
+        int[] colWidths = new int[numColumns];
+        for (int i = 0; i < numColumns; i++) {
+            if (isColumnWidthGuaranteed(i)) {
+                colWidths[i] = 0;
+            } else {
+                colWidths[i] = dataTable.getColumnWidth(i);
+            }
+            totalWidth += colWidths[i];
+        }
+        
+        ScrollPolicy policy = getScrollPolicy();
+        scrollPolicy = ScrollPolicy.DISABLED;
+
+        // Distribute the difference across all columns, weighted by current size
+        int remainingDiff = diff;
+        for (int i = 0; i < numColumns; i++) {
+            if (colWidths[i] > 0) {
+                int colDiff = (int) (diff * (colWidths[i] / (float) totalWidth));
+                colDiff = setColumnWidth(i, colWidths[i] + colDiff) - colWidths[i];
+                remainingDiff -= colDiff;
+                colWidths[i] += colDiff;
+            }
+        }
+
+        // Spread out remaining diff however possible
+        if (remainingDiff != 0) {
+            for (int i = 0; i < numColumns && remainingDiff != 0; i++) {
+                if (!isColumnWidthGuaranteed(i)) {
+                    int colWidth = setColumnWidth(i, colWidths[i] + remainingDiff);
+                    remainingDiff -= (colWidth - colWidths[i]);
+                }
+            }
+        }
+
+        // Reset the resize policy
+        resizePolicy = tempResizePolicy;
+        scrollPolicy = policy;
+        scrollTables(true);
+        DeferredCommand.addCommand(new Command() {
+            public void execute() {
+                paginationWrapper.setPropertyInt("width", headerTable.getOffsetWidth());
+                paginationWrapper.getStyle().setPropertyPx("width", headerTable.getOffsetWidth());
+            }
+        });
+    }
+    
+    public void setPixelWidth(int pixels){
+        setWidth((pixels+30)+"px");
+        dataWrapper.setPropertyInt("width", pixels+30);
+        dataWrapper.getStyle().setPropertyPx("width", pixels+30);
+        paginationWrapper.setPropertyInt("width", pixels+30);
+        paginationWrapper.getStyle().setPropertyPx("width", pixels+30);
+    }
     
     /**
      * @param evt
@@ -90,47 +183,17 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
     }
 
     /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#lastPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void lastPage(PagerEvent<T> evt) {
-        paginationBar.lastPage(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#nextPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void nextPage(PagerEvent<T> evt) {
-        paginationBar.nextPage(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#pageChanged(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void pageChanged(PagerEvent<T> evt) {
-        paginationBar.pageChanged(evt);
-    }
-
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#previousPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void previousPage(PagerEvent<T> evt) {
-        paginationBar.previousPage(evt);
-    }
-
-
-    /**
      * @param pager
      * @see org.gwings.client.table.pagination.view.PaginationBar#setPager(org.gwings.client.table.pagination.model.Pager)
      */
     public void setPager(Pager<T> pager) {
+        if(getPager() != null){
+            getPager().removePagerListener(this);
+        }
         paginationBar.setPager(pager);
+        getPager().addPagerListener(this);
     }
 
-    
     /**
      * @return the provider
      */
@@ -145,6 +208,30 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> {
     public void setProvider(DataProvider<T> provider) {
         paginationBar.setProvider(provider);
     }
+    
+    public void lastPage(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
 
+    public void nextPage(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
 
+    public void pageChanged(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+
+    public void previousPage(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+   
+    private void updateLines(final PagerEvent<T> evt) {
+        DeferredCommand.addCommand(new Command() {
+            public void execute() {
+                List<T> items = evt.getPager().getCurrentPage().getItems();
+                getTableModel().clearRows();
+                getTableModel().setLines(items);
+            }
+        });
+    }
 }

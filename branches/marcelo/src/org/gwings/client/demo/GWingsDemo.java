@@ -63,7 +63,7 @@ public class GWingsDemo implements EntryPoint, WindowResizeListener {
 				int height = Window.getClientHeight();
 
 				onWindowResized(width, height);
-				panel.selectTab(0);
+				panel.selectTab(1);
 			}
 		});
 

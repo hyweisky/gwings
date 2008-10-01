@@ -8,10 +8,14 @@ import org.gwings.client.table.pagination.observer.PagerEvent;
 import org.gwings.client.table.pagination.observer.PagerListener;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -50,7 +54,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
     
     private FlexTable layout;
     private ListBox currentPageSelector;
-    private Label availablePages;
+    private HTML availablePages;
     
     private Label lastLabel;
     private Label nextLabel;
@@ -87,7 +91,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         lastLabel = new Label(messages.last());
         
         currentPageSelector = new ListBox();
-        availablePages = new Label();
+        availablePages = new HTML();
 
         setPager(new Pager<T>());
     }
@@ -162,6 +166,22 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
                 }
             }
         });
+        
+        currentPageSelector.addChangeListener(new ChangeListener() {
+            public void onChange(Widget sender) {
+                int index = currentPageSelector.getSelectedIndex();
+                String page = currentPageSelector.getItemText(index);
+                try {
+                    pager.goToPage(new Integer(page));
+                }
+                catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     
     /**
@@ -198,33 +218,32 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
             currentPageSelector.addItem((i+1)+"");
         }
 
-        currentPageSelector.setSelectedIndex(pager.currentPageIndex());
-        availablePages.setText(totalPages+"");
+        availablePages.setHTML(totalPages+"");
     }
 
     public void firstPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index);
+        currentPageSelector.setSelectedIndex(index-1);
     }
 
     public void lastPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index);
+        currentPageSelector.setSelectedIndex(index-1);
     }
 
     public void nextPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index);
+        currentPageSelector.setSelectedIndex(index-1);
     }
 
     public void pageChanged(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index);
+        currentPageSelector.setSelectedIndex(index-1);
     }
 
     public void previousPage(PagerEvent<T> evt) {
         Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index);        
+        currentPageSelector.setSelectedIndex(index-1);        
     }
     
     /**
@@ -243,6 +262,16 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         pager.setProvider(provider);
         if(provider != null){
             mountRange();
+            DeferredCommand.addCommand(new Command() {
+                public void execute() {
+                    try {
+                        pager.firstPage();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 

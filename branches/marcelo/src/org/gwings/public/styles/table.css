@@ -1,7 +1,8 @@
 .org_gwings_Table{
 	border-collapse: collapse;
 }
-.headerTable{
+
+.headerTable, .headerWrapper{
 	background-image: url(../pics/table/header.gif);
 	background-repeat: repeat-x;
 	
@@ -16,6 +17,7 @@
 	background-color: #CCDAF0;
 	font-family: sans-serif;
 	font-size: xx-small;
+	empty-cells: hide;
 }
 .dataTable td{
 	border-bottom: gray 1px solid;
