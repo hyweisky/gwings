@@ -19,7 +19,7 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.GWTShell"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www org.gwings.GWingsDemo/GWingsDemo.html"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-out www -port 8080 org.gwings.GWingsDemo/GWingsDemo.html"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="GWings"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms128M -Xmx256M"/>
 </launchConfiguration>

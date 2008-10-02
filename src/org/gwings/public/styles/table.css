@@ -3,7 +3,7 @@
 }
 
 .headerTable, .headerWrapper{
-	background-image: url(../pics/table/header.gif);
+	background-image: url(../pics/table/header.png);
 	background-repeat: repeat-x;
 	
 	text-align: center;
@@ -31,11 +31,25 @@
 	background-color: #A5B4EF;
 }
 .paginationWrapper {
-	background-image: url(../pics/table/header.gif);
+	background-image: url(../pics/table/header.png);
 	background-repeat: repeat-x;
 	height: 15px;
 	width:100%;
 	
 	font-family: sans-serif;
 	font-size: x-small;
+}
+
+.org_gwings_PaginationBar{
+	font-family: sans-serif;
+	font-size: xx-small;
+	font-weight: bold;
+	
+	vertical-align: middle;
+}
+
+.pageSelector{
+	height: 15px;
+	border-style: solid blue 1px;
+	font-size: 8pt;
 }

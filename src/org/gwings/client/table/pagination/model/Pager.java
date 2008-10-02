@@ -66,7 +66,7 @@ public class Pager<T> implements Serializable {
         Integer finish = pageConfig.getFinish();
 
         if (finish == null || currentPage == null) {
-            return -1;
+            return 0;
         }
         return finish / getPageSize();
     }
@@ -74,7 +74,7 @@ public class Pager<T> implements Serializable {
     public Integer getTotalPages() throws Exception {
         Integer totalAvailable = getRowsAvailable();
         if (totalAvailable == null || totalAvailable < 0 || getPageSize() == 0) {
-            return -1;
+            return 0;
         }
 
         Integer rest = totalAvailable % getPageSize();
@@ -86,100 +86,53 @@ public class Pager<T> implements Serializable {
     }
 
     public void nextPage() throws Exception {
-        Integer reference = pageConfig.getFinish();
-        Integer totalAvailable = 0;
-
-        if (currentPage == null) {
-            totalAvailable = provider.fetchSize();
-            reference = pageConfig.getStart();
-        } else {
-            totalAvailable = pageConfig.getTotalAvailable();
+        try {
+            moveTo(currentPageIndex() + 1);
         }
-
-        Integer start = reference;
-        Integer finish = start + getPageSize();
-
-        if (finish > totalAvailable) {
-            throw new Exception("Invalid interval! Finish greater than total.");
+        catch (Exception e) {
+            throw new Exception("Can't go to a next page. Pager already at the end.");
         }
-
-        PageConfig nextConfig = new PageConfig();
-        nextConfig.setStart(start);
-        nextConfig.setFinish(finish);
-        nextConfig.setTotalAvailable(totalAvailable);
-
-        setCurrentPage(provider.fetchData(nextConfig));
-        setPageConfig(nextConfig);
-
         support.fireNextPage(makePagerEvent());
     }
 
     public void previousPage() throws Exception {
-        Integer start = pageConfig.getStart();
-        Integer available = pageConfig.getTotalAvailable();
-
-        Integer finish = pageConfig.getStart();
-        start = start - getPageSize();
-
-        if (start < 0) {
-            throw new Exception("Invalid interval! Start less than zero!");
+        try {
+            moveTo(currentPageIndex()-1);
         }
-
-        PageConfig previousConfig = new PageConfig();
-        previousConfig.setFinish(finish);
-        previousConfig.setStart(start);
-        previousConfig.setTotalAvailable(available);
-
-        setCurrentPage(provider.fetchData(previousConfig));
-        setPageConfig(previousConfig);
-
+        catch (Exception e) {
+            throw new Exception("Can't go to a previous page. Pager already at the begining.");
+        }
         support.firePreviousPage(makePagerEvent());
     }
 
     public void firstPage() throws Exception {
-        Integer available = getRowsAvailable();
-
-        PageConfig firstConfig = new PageConfig();
-        firstConfig.setStart(0);
-        firstConfig.setFinish(getPageSize());
-        firstConfig.setTotalAvailable(available);
-
-        setPageConfig(firstConfig);
-        setCurrentPage(provider.fetchData(firstConfig));
-
+        moveTo(1);
         support.fireFirstPage(makePagerEvent());
     }
 
     public void lastPage() throws Exception {
-        Integer available = getRowsAvailable();
-
-        PageConfig lastConfig = new PageConfig();
-        lastConfig.setFinish(available);
-        lastConfig.setStart(available - getPageSize());
-        lastConfig.setTotalAvailable(available);
-
-        setPageConfig(lastConfig);
-        setCurrentPage(provider.fetchData(lastConfig));
-
+        moveTo(getTotalPages());
         support.fireLastPage(makePagerEvent());
     }
 
     public void goToPage(Integer page) throws Exception {
+        moveTo(page);
+        support.firePageChanged(makePagerEvent());
+    }
+
+    private void moveTo(Integer page) throws Exception {
         Integer rowsAvailable = getRowsAvailable();
 
-        if (page > getTotalPages()) {
-            throw new Exception("Invalid page number!");
+        if (page > getTotalPages() || page <= 0) {
+            throw new Exception("Invalid page request!");
         }
-
+        
         PageConfig config = new PageConfig();
         config.setFinish(page * getPageSize());
         config.setStart(config.getFinish() - getPageSize());
         config.setTotalAvailable(rowsAvailable);
 
-        setPageConfig(config);
         setCurrentPage(provider.fetchData(config));
-
-        support.firePageChanged(makePagerEvent());
     }
 
     private Integer getRowsAvailable() throws Exception {
@@ -234,6 +187,9 @@ public class Pager<T> implements Serializable {
      */
     public void setCurrentPage(Page<T> currentPage) {
         this.currentPage = currentPage;
+        if(currentPage != null){
+            setPageConfig(currentPage.getConfig());
+        }
     }
 
     /**

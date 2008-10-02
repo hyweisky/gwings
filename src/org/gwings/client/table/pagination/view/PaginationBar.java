@@ -1,15 +1,19 @@
 package org.gwings.client.table.pagination.view;
 
+import org.gwings.client.table.Plotable;
 import org.gwings.client.table.pagination.i18n.PaginationBundle;
 import org.gwings.client.table.pagination.i18n.PaginationMessages;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
 import org.gwings.client.table.pagination.observer.PagerListener;
+import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
+import org.gwings.client.ui.BusyWidget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -21,10 +25,11 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MouseListenerAdapter;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
-public class PaginationBar<T> extends Composite implements PagerListener<T> {
+public class PaginationBar<T extends Plotable> extends Composite implements PagerListener<T> {
     
     private class ImageChangeListener extends MouseListenerAdapter{
 
@@ -93,9 +98,12 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
     private boolean nextDisabled;
     private boolean previousDisabled;
     
+    private PaginatedScrollTable<T> table;
     private Pager<T> pager;
+    private BusyWidget busy;
 
-    public PaginationBar(){
+    public PaginationBar(PaginatedScrollTable<T> table){
+        setTable(table);
         init();
         setupLayout();
         setupListeners();
@@ -123,6 +131,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         availablePages = new HTML();
         
         setPager(new Pager<T>());
+        busy = new BusyWidget(getTable());
     }
 
     private void initImages() {
@@ -143,6 +152,9 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
 
     private void setupLayout() {
         HorizontalPanel navigationPanel = new HorizontalPanel();
+        navigationPanel.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
+        navigationPanel.setSpacing(2);
+        
         navigationPanel.add(firstImage);
         navigationPanel.add(firstLabel);
         navigationPanel.add(images.separator().createImage());
@@ -162,7 +174,15 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         layout.setWidget(0, 4, new Label(""));
         layout.setWidget(0, 5, navigationPanel);
         
+        layout.setStylePrimaryName("org_gwings_PaginationBar");
+        navigationPanel.setStylePrimaryName("org_gwings_PaginationBar");
+        
+        currentPageSelector.setStylePrimaryName("pageSelector");
+        availablePages.setStylePrimaryName("pagesAvailableLable");
+        
         initWidget(layout);
+        
+        layout.getRowFormatter().setVerticalAlign(0, VerticalPanel.ALIGN_MIDDLE);
     }
 
     private void setupListeners() {
@@ -174,45 +194,53 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         firstImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
+                    busy.setVisible(true);
                     pager.firstPage();
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
+                busy.setVisible(false);
             }
         });
         previousImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
                     if(!isPreviousDisabled()){
+                        busy.setVisible(true);
                         pager.previousPage();
                     }
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
+                busy.setVisible(false);
             }
         });
         nextImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
                     if(!isNextDisabled()){
+                        busy.setVisible(true);
                         pager.nextPage();
                     }
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
+                busy.setVisible(false);
             }
         });
         lastImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
+                    busy.setVisible(true);
                     pager.lastPage();
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
+                busy.setVisible(false);
             }
         });
         
@@ -221,14 +249,16 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
                 int index = currentPageSelector.getSelectedIndex();
                 String page = currentPageSelector.getItemText(index);
                 try {
+                    busy.setVisible(true);
                     pager.goToPage(new Integer(page));
                 }
                 catch (NumberFormatException e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
+                    Window.alert(e.getMessage());
                 }
+                busy.setVisible(false);
             }
         });
     }
@@ -260,7 +290,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
             totalPages = pager.getTotalPages();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Window.alert(e.getMessage());
         }
         
         for(int i = 0; i < totalPages; i++){
@@ -271,34 +301,32 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
     }
 
     public void firstPage(PagerEvent<T> evt) {
-        Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index-1);
+        currentPageSelector.setSelectedIndex(0);
      
         setPreviousDisabled(true);
         setNextDisabled(false);
     }
 
     public void lastPage(PagerEvent<T> evt) {
-        Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index-1);
+        currentPageSelector.setSelectedIndex(currentPageSelector.getItemCount()-1);
         
         setNextDisabled(true);
         setPreviousDisabled(false);
     }
 
     public void nextPage(PagerEvent<T> evt) {
-        Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index-1);
+        int index = currentPageSelector.getSelectedIndex();
+        currentPageSelector.setSelectedIndex(++index);
         
         Integer totalPages = 0;
         try {
             totalPages = pager.getTotalPages();
-            if(index == totalPages){
+            if(index+1 == totalPages){
                 setNextDisabled(true);
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Window.alert(e.getMessage());
         }
         setPreviousDisabled(false);
         
@@ -324,15 +352,15 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Window.alert(e.getMessage());
         }
     }
 
     public void previousPage(PagerEvent<T> evt) {
-        Integer index = evt.getPager().currentPageIndex();
-        currentPageSelector.setSelectedIndex(index-1);
+        Integer index = currentPageSelector.getSelectedIndex();
+        currentPageSelector.setSelectedIndex(--index);
         
-        if(index == 1){
+        if(index == 0){
             setPreviousDisabled(true);
         }
         setNextDisabled(false);
@@ -360,7 +388,7 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
                         pager.firstPage();
                     }
                     catch (Exception e) {
-                        e.printStackTrace();
+                        Window.alert(e.getMessage());
                     }
                 }
             });
@@ -411,6 +439,20 @@ public class PaginationBar<T> extends Composite implements PagerListener<T> {
         else{
             images.previous().applyTo(previousImage);
         }
+    }
+
+    /**
+     * @param table the table to set
+     */
+    public void setTable(PaginatedScrollTable<T> table) {
+        this.table = table;
+    }
+
+    /**
+     * @return the table
+     */
+    public PaginatedScrollTable<T> getTable() {
+        return table;
     }
 
 }
