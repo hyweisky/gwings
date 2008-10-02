@@ -54,7 +54,7 @@ public class PagerTest extends GWTTestCase {
             Integer finish = config.getFinish();
 
             List<PagerItem> items = new ArrayList<PagerItem>();
-            for (int i = start; i < finish; i++) {
+            for (int i = start; i < finish && i < fullData.size(); i++) {
                 items.add(fullData.get(i));
             }
 
@@ -107,7 +107,7 @@ public class PagerTest extends GWTTestCase {
         init();
         
         assertNull(pager.getCurrentPage());
-        assertEquals(new Integer(-1), pager.currentPageIndex());
+        assertEquals(new Integer(0), pager.currentPageIndex());
         
         try {
             pager.nextPage();
@@ -168,9 +168,9 @@ public class PagerTest extends GWTTestCase {
             fail(e.getMessage());
         }
         
-        assertEquals(new Integer(30), pager.currentPageIndex());
-        assertEquals(new Integer(291), pager.getPageConfig().getStart());
-        assertEquals(new Integer(301), pager.getPageConfig().getFinish());
+        assertEquals(new Integer(31), pager.currentPageIndex());
+        assertEquals(new Integer(300), pager.getPageConfig().getStart());
+        assertEquals(new Integer(310), pager.getPageConfig().getFinish());
         assertEquals(new Integer(301), pager.getPageConfig().getTotalAvailable());
         
         try {
@@ -178,7 +178,7 @@ public class PagerTest extends GWTTestCase {
             fail();
         }
         catch (Exception e) {
-            assertEquals("Invalid interval! Finish greater than total.", e.getMessage());
+            assertEquals("Can't go to a next page. Pager already at the end.", e.getMessage());
         }
     }
     
@@ -285,14 +285,14 @@ public class PagerTest extends GWTTestCase {
             fail();
         }
         catch (Exception e) {
-            assertEquals("Invalid interval! Start less than zero!", e.getMessage());
+            assertEquals("Can't go to a previous page. Pager already at the begining.", e.getMessage());
         }
     }
     
     public void testLastPage(){
         init();
         
-        assertEquals(new Integer(-1), pager.currentPageIndex());
+        assertEquals(new Integer(0), pager.currentPageIndex());
         assertEquals(new Integer(0), pager.getPageConfig().getStart());
         assertEquals(new Integer(10), pager.getPageConfig().getFinish());
         assertNotNull(pager.getPageConfig().getTotalAvailable());
@@ -306,9 +306,9 @@ public class PagerTest extends GWTTestCase {
         
         assertNotNull(pager.getCurrentPage());
         
-        assertEquals(new Integer(30), pager.currentPageIndex());
-        assertEquals(new Integer(291), pager.getPageConfig().getStart());
-        assertEquals(new Integer(301), pager.getPageConfig().getFinish());
+        assertEquals(new Integer(31), pager.currentPageIndex());
+        assertEquals(new Integer(300), pager.getPageConfig().getStart());
+        assertEquals(new Integer(310), pager.getPageConfig().getFinish());
         assertEquals(new Integer(301), pager.getPageConfig().getTotalAvailable());
         
         dataTest();
@@ -318,7 +318,7 @@ public class PagerTest extends GWTTestCase {
         init();
         
         assertNull(pager.getCurrentPage());
-        assertEquals(new Integer(-1), pager.currentPageIndex());
+        assertEquals(new Integer(0), pager.currentPageIndex());
         assertEquals(new Integer(0), pager.getPageConfig().getStart());
         assertEquals(new Integer(10), pager.getPageConfig().getFinish());
         assertEquals(new Integer(10), pager.getPageSize());
@@ -351,7 +351,7 @@ public class PagerTest extends GWTTestCase {
             fail();
         }
         catch (Exception e) {
-            assertEquals("Invalid page number!", e.getMessage());
+            assertEquals("Invalid page request!", e.getMessage());
         }
     }
     
