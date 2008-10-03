@@ -71,7 +71,8 @@ public class TableTab extends AbstractDemoPanel {
 		table.setColumnWidth(2, 450);
 		table.setColumnWidth(3, 90);
 		
-		table.setPixelSize(660, 400);
+		table.setPixelWidth(660);
+        table.setHeight(400+"px");
 		
 		table.setResizePolicy(ResizePolicy.FIXED_WIDTH);
 		table.setScrollPolicy(ScrollPolicy.BOTH);
