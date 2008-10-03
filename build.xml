@@ -69,5 +69,4 @@
 	</target>
 
 	<target name="all" depends="package" />
-
 </project>
