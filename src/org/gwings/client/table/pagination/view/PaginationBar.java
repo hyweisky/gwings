@@ -198,9 +198,9 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     pager.firstPage();
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
-                busy.setVisible(false);
             }
         });
         previousImage.addClickListener(new ClickListener() {
@@ -212,9 +212,9 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     }
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
-                busy.setVisible(false);
             }
         });
         nextImage.addClickListener(new ClickListener() {
@@ -226,9 +226,9 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     }
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
-                busy.setVisible(false);
             }
         });
         lastImage.addClickListener(new ClickListener() {
@@ -238,9 +238,9 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     pager.lastPage();
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
-                busy.setVisible(false);
             }
         });
         
@@ -253,12 +253,13 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     pager.goToPage(new Integer(page));
                 }
                 catch (NumberFormatException e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
-                busy.setVisible(false);
             }
         });
     }
@@ -454,5 +455,8 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     public PaginatedScrollTable<T> getTable() {
         return table;
     }
-
+    
+    public void stopBusy(){
+        busy.setVisible(false);
+    }
 }

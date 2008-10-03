@@ -228,6 +228,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
                 List<T> items = evt.getPager().getCurrentPage().getItems();
                 getTableModel().clearRows();
                 getTableModel().setLines(items);
+                paginationBar.stopBusy();
             }
         });
     }

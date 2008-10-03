@@ -26,15 +26,13 @@ public class BusyWidget extends PopupPanel {
     }
 
     private void init() {
-        
         div = new HTML("<div></div>");
         add(div);
-        
-//        setAnimationEnabled(true);
     }
     
     private void setupStyles() {
         div.setStylePrimaryName(PRIMARY_STYLE);
+        setStylePrimaryName(PRIMARY_STYLE);
     }
     
     public void setVisible(boolean visible){
