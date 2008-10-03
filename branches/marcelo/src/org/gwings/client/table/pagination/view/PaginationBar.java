@@ -289,6 +289,10 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         Integer totalPages = 0;
         try {
             totalPages = pager.getTotalPages();
+            if(totalPages == 1){
+                setNextDisabled(true);
+                setPreviousDisabled(true);
+            }
         }
         catch (Exception e) {
             Window.alert(e.getMessage());
@@ -297,7 +301,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         for(int i = 0; i < totalPages; i++){
             currentPageSelector.addItem((i+1)+"");
         }
-
+        
         availablePages.setHTML(totalPages+"");
     }
 
@@ -305,14 +309,26 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         currentPageSelector.setSelectedIndex(0);
      
         setPreviousDisabled(true);
-        setNextDisabled(false);
+        try {
+            Integer totalPages = pager.getTotalPages();
+            setNextDisabled(totalPages == 1);
+        }
+        catch (Exception e) {
+            Window.alert(e.getMessage());
+        }
     }
 
     public void lastPage(PagerEvent<T> evt) {
         currentPageSelector.setSelectedIndex(currentPageSelector.getItemCount()-1);
         
         setNextDisabled(true);
-        setPreviousDisabled(false);
+        try {
+            Integer totalPages = pager.getTotalPages();
+            setPreviousDisabled(totalPages == 1);
+        }
+        catch (Exception e) {
+            Window.alert(e.getMessage());
+        }
     }
 
     public void nextPage(PagerEvent<T> evt) {
