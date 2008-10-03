@@ -1,6 +1,6 @@
 package org.gwings.client.table.pagination.view;
 
-import org.gwings.client.table.Plotable;
+import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.i18n.PaginationBundle;
 import org.gwings.client.table.pagination.i18n.PaginationMessages;
 import org.gwings.client.table.pagination.model.DataProvider;

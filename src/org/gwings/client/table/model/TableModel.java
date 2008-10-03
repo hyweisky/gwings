@@ -1,6 +1,9 @@
-package org.gwings.client.table;
+package org.gwings.client.table.model;
 
 import java.util.List;
+
+import org.gwings.client.table.view.ColumnRenderer;
+
 
 /**
  * 

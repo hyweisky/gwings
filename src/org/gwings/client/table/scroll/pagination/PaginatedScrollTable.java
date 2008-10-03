@@ -5,7 +5,7 @@ package org.gwings.client.table.scroll.pagination;
 
 import java.util.List;
 
-import org.gwings.client.table.Plotable;
+import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;

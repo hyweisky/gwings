@@ -1,9 +1,13 @@
-package org.gwings.client.table;
+package org.gwings.client.table.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.gwings.client.table.view.ColumnRenderer;
+import org.gwings.client.table.view.DefaultColumnType;
+
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not

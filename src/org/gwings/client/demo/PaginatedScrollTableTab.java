@@ -1,6 +1,6 @@
 package org.gwings.client.demo;
 
-import org.gwings.client.table.TableModel;
+import org.gwings.client.table.model.TableModel;
 import org.gwings.client.table.pagination.model.PageConfig;
 import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;

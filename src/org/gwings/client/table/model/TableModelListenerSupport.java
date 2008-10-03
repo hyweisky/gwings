@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.gwings.client.table;
+package org.gwings.client.table.model;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.gwings.client.table.ColumnRenderer;
-import org.gwings.client.table.DefaultTableModel;
-import org.gwings.client.table.Plotable;
-import org.gwings.client.table.TableModel;
-import org.gwings.client.table.TableModelEvent;
-import org.gwings.client.table.TableModelListener;
+import org.gwings.client.table.model.DefaultTableModel;
+import org.gwings.client.table.model.Plotable;
+import org.gwings.client.table.model.TableModel;
+import org.gwings.client.table.model.TableModelEvent;
+import org.gwings.client.table.model.TableModelListener;
+import org.gwings.client.table.view.ColumnRenderer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;

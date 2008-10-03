@@ -3,7 +3,7 @@ package org.gwings.client.table.scroll;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gwings.client.table.Plotable;
+import org.gwings.client.table.model.Plotable;
 
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableRowElement;

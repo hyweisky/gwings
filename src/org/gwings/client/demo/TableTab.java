@@ -2,7 +2,7 @@ package org.gwings.client.demo;
 
 import java.util.Date;
 
-import org.gwings.client.table.TableModel;
+import org.gwings.client.table.model.TableModel;
 import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.ScrollTable;
