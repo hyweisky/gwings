@@ -136,7 +136,7 @@ public class ListSelector extends Composite implements ListSelectionListener {
         selectButtonsPanel.setSize("100%", "100%");
         deselectButtonsPanel.setSize("100%", "100%");
 
-        DeferredCommand.add(new Command() {
+        DeferredCommand.addCommand(new Command() {
             public void execute() {
                 List availableItens = model.getAvailableItems();
                 for (int i = 0; i < availableItens.size(); i++) {
@@ -347,6 +347,6 @@ public class ListSelector extends Composite implements ListSelectionListener {
      *          to disable it
      */
     public void setEnabled(boolean enabled) {
-      DOM.setBooleanAttribute(getElement(), "disabled", !enabled);
+        getElement().setPropertyBoolean("disabled", !enabled);
     }
 }
