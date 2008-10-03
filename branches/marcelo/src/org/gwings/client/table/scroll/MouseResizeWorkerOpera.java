@@ -1,6 +1,6 @@
 package org.gwings.client.table.scroll;
 
-import org.gwings.client.table.Plotable;
+import org.gwings.client.table.model.Plotable;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;

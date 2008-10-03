@@ -1,4 +1,7 @@
-package org.gwings.client.table;
+package org.gwings.client.table.model;
+
+import org.gwings.client.table.view.ColumnOrder;
+import org.gwings.client.table.view.ColumnRenderer;
 
 public class Column<T> {
 

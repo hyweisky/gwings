@@ -1,4 +1,4 @@
-package org.gwings.client.table;
+package org.gwings.client.table.view;
 
 public enum ColumnOrder {
     ASCENDING, DESCENDING

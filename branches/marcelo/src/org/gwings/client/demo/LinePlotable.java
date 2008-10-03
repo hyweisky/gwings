@@ -2,7 +2,7 @@ package org.gwings.client.demo;
 
 import java.util.Date;
 
-import org.gwings.client.table.Plotable;
+import org.gwings.client.table.model.Plotable;
 
 import com.google.gwt.user.client.ui.Image;
 /**
