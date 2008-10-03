@@ -20,10 +20,7 @@ public class Pager<T> implements Serializable {
         private static final long serialVersionUID = 4404147801907185267L;
 
         public Page<T> fetchData(PageConfig config) throws Exception {
-            Page<T> page = new Page<T>();
-            page.setConfig(config);
-            page.setItems(new ArrayList<T>());
-            return page;
+            return new Page<T>(new ArrayList<T>(), config);
         }
 
         public Integer fetchSize() throws Exception {
