@@ -1152,4 +1152,10 @@ public class ScrollTable<T extends Plotable> extends ComplexPanel implements Res
         
         tableChanged(new TableModelEvent<T>(this.tableModel));
     }
+    
+    public void setPixelWidth(int pixels){
+        setWidth((pixels+30)+"px");
+        dataWrapper.setPropertyInt("width", pixels+30);
+        dataWrapper.getStyle().setPropertyPx("width", pixels+30);
+    }
 }

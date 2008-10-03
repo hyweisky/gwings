@@ -18,18 +18,19 @@ import java.util.Map;
  * @author Marcelo Emanoel
  * @since 04/02/2007
  */
+@SuppressWarnings("unchecked")
 public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
 
     private Map<String, Column> columns;
     private List<T> lines;
-    private TableModelListenerSupport support;
+    private TableModelListenerSupport<T> support;
     
     public DefaultTableModel() {
         this(new ArrayList<T>(), new ArrayList<String>());
     }
 
     public DefaultTableModel(List<T> linhas, List<String> colunas) {
-        support = new TableModelListenerSupport();
+        support = new TableModelListenerSupport<T>();
         this.columns = new HashMap<String, Column>();
         this.lines = linhas;
     }
@@ -41,7 +42,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
             columns.put(columnName, column);
             column.setPosition(columns.size());
             
-            TableModelEvent evt = makeEvent();
+            TableModelEvent<T> evt = makeEvent();
             evt.setColumn(column.getPosition()); //Alterar pra enviar a coluna em si!
             support.fireColumnAdded(evt);
         }
@@ -54,7 +55,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
     public void addLine(int index, T line) {
         lines.add(index, line);
 
-        TableModelEvent evt = makeEvent();
+        TableModelEvent<T> evt = makeEvent();
         evt.setRow(index);
         support.fireRowAdded(evt);
     }
@@ -67,7 +68,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
         lines.clear();
         columns.clear();
 
-        TableModelEvent evt = makeEvent();
+        TableModelEvent<T> evt = makeEvent();
         support.fireClearedAll(evt);
     }
 
@@ -75,7 +76,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
         int rows = getRowCount();
         lines.clear();
 
-        TableModelEvent evt = makeEvent();
+        TableModelEvent<T> evt = makeEvent();
         evt.setRow(rows);
         support.fireRowsCleared(evt);
     }
@@ -133,7 +134,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
 
     public String removeColumn(int column) {
         Column coluna = (Column) columns.remove(column);
-        TableModelEvent evt = makeEvent();
+        TableModelEvent<T> evt = makeEvent();
         evt.setColumn(column);
         support.fireColumnRemoved(evt);
         return coluna.getName();
@@ -144,7 +145,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
         if (column != null) {
             columns.remove(columnName);
 
-            TableModelEvent evt = makeEvent();
+            TableModelEvent<T> evt = makeEvent();
             evt.setColumn(column.getPosition()); //Alterar o evento para conter a coluna!
             support.fireColumnRemoved(evt);
         }
@@ -153,7 +154,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
     public T removeLine(int line) {
         if (line < lines.size()) {
             T plotable = lines.remove(line);
-            TableModelEvent evt = makeEvent();
+            TableModelEvent<T> evt = makeEvent();
             evt.setRow(line);
             support.fireLineRemoved(evt);
             return plotable;
@@ -166,7 +167,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
             int indice = lines.indexOf(line);
             lines.remove(indice);
 
-            TableModelEvent evt = makeEvent();
+            TableModelEvent<T> evt = makeEvent();
             evt.setRow(indice);
             support.fireLineRemoved(evt);
         }
@@ -198,8 +199,8 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
     /**
      * @return
      */
-    private TableModelEvent makeEvent() {
-        TableModelEvent evt = new TableModelEvent(this);
+    private TableModelEvent<T> makeEvent() {
+        TableModelEvent<T> evt = new TableModelEvent<T>(this);
         return evt;
     }
 
@@ -210,11 +211,11 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
         return new DefaultColumnType();
     }
 
-    public void removeTableModelListener(TableModelListener l) {
+    public void removeTableModelListener(TableModelListener<T> l) {
         support.removeTableModelListener(l);
     }
     
-    public void addTableModelListener(TableModelListener l) {
+    public void addTableModelListener(TableModelListener<T> l) {
         support.addTableModelListener(l);
     }
 }

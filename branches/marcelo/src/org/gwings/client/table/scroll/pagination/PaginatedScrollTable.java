@@ -156,15 +156,13 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
             }
         });
     }
-    
-    public void setPixelWidth(int pixels){
-        setWidth((pixels+30)+"px");
-        dataWrapper.setPropertyInt("width", pixels+30);
-        dataWrapper.getStyle().setPropertyPx("width", pixels+30);
-        paginationWrapper.setPropertyInt("width", pixels+30);
-        paginationWrapper.getStyle().setPropertyPx("width", pixels+30);
+
+    @Override
+    public void setPixelWidth(int pixels) {
+    	super.setPixelWidth(pixels);
+    	paginationWrapper.setPropertyInt("width", pixels+30);
+    	paginationWrapper.getStyle().setPropertyPx("width", pixels+30);
     }
-    
     /**
      * @return
      * @see org.gwings.client.table.pagination.view.PaginationBar#getPager()
