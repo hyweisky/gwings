@@ -4,7 +4,6 @@
 package org.gwings.client.table.pagination.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import org.gwings.client.table.pagination.observer.PagerEvent;
 import org.gwings.client.table.pagination.observer.PagerListener;
@@ -15,19 +14,6 @@ import org.gwings.client.table.pagination.observer.PagerListenerSupport;
  */
 public class Pager<T> implements Serializable {
 
-    private final class EmptyProvider implements DataProvider<T> {
-
-        private static final long serialVersionUID = 4404147801907185267L;
-
-        public Page<T> fetchData(PageConfig config) throws Exception {
-            return new Page<T>(new ArrayList<T>(), config);
-        }
-
-        public Integer fetchSize() throws Exception {
-            return 0;
-        }
-    }
-
     private static final long serialVersionUID = -6567047121711989649L;
 
     private DataProvider<T> provider;
@@ -37,7 +23,7 @@ public class Pager<T> implements Serializable {
     private PagerListenerSupport<T> support;
 
     public Pager() {
-        setProvider(new EmptyProvider());
+        setProvider(new EmptyProvider<T>());
         setPageConfig(new PageConfig());
         setCurrentPage(null);
         support = new PagerListenerSupport<T>();

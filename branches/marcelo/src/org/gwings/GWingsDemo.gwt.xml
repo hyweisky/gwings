@@ -8,4 +8,5 @@
 	
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class="org.gwings.client.demo.GWingsDemo"/>
+	<servlet path="/demoProvider" class="org.gwings.server.demo.pagination.RemoteLineProvider"/> 
 </module>
