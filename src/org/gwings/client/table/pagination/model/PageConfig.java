@@ -66,8 +66,30 @@ public class PageConfig implements Serializable {
     public void setFinish(Integer finish) {
         this.finish = finish;
     }
+    
+    public Integer currentPageIndex() {
+        Integer finish = getFinish();
 
+        if (finish == null) {
+            return 0;
+        }
+        return finish / getPageSize();
+    }
+    
     public Integer getPageSize() {
         return Math.abs(start - finish);
+    }
+    
+    public Integer getTotalPages() throws Exception {
+        if (totalAvailable == null || totalAvailable < 0 || getPageSize() == 0) {
+            return 0;
+        }
+
+        Integer rest = totalAvailable % getPageSize();
+        int pages = totalAvailable / getPageSize();
+
+        pages += (rest > 0 ? 1 : 0);
+
+        return pages;
     }
 }
