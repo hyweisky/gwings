@@ -1,16 +1,9 @@
 package org.gwings.client.table.pagination.model;
 
-import java.io.Serializable;
+import org.gwings.client.table.model.Plotable;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+public interface DataProvider<T extends Plotable> {
 
+    public void fetchData(ProviderRequest request, ProviderCallback<T> callback);
 
-@RemoteServiceRelativePath("/demoProvider")
-public interface DataProvider<T> extends Serializable, RemoteService {
-    
-    public Page<T> fetchData(PageConfig config) throws Exception;
-    
-    public Integer fetchSize() throws Exception;
-    
 }

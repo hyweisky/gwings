@@ -1,12 +1,8 @@
-package org.gwings.client.demo.services;
+package org.gwings.client.demo.services.querybox;
 
 import java.util.List;
 
-import org.gwings.client.demo.exception.QueryBoxSampleException;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -26,15 +22,6 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
  * @author Marcelo Emanoel, Luciano Broussal
  * @since 11/03/2007
  */
-public interface QueryBoxService extends RemoteService {
-	public static class Util {
-		public static QueryBoxServiceAsync getInstance() {
-			QueryBoxServiceAsync instance = (QueryBoxServiceAsync) GWT.create(QueryBoxService.class);
-			ServiceDefTarget target = (ServiceDefTarget) instance;
-			target.setServiceEntryPoint(GWT.getModuleBaseURL() + "/queryBox");
-			return instance;
-		}
-	}
-	
-	public List<String> getMatches(String pattern) throws QueryBoxSampleException;
+public interface QueryBoxServiceAsync {
+	public void getMatches(String pattern, AsyncCallback<List<String>> callback);
 }

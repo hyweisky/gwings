@@ -4,127 +4,206 @@
 package org.gwings.client.table.pagination.model;
 
 import java.io.Serializable;
+import java.util.Map;
 
+import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.observer.PagerEvent;
-import org.gwings.client.table.pagination.observer.PagerListener;
-import org.gwings.client.table.pagination.observer.PagerListenerSupport;
+import org.gwings.client.table.pagination.observer.PagerReadyListener;
+import org.gwings.client.table.pagination.observer.PagerReadySupport;
+import org.gwings.client.table.pagination.observer.PagerRequestListener;
+import org.gwings.client.table.pagination.observer.PagerRequestSupport;
 
 /**
  * @author USER
  */
-public class Pager<T> implements Serializable {
+public class Pager<T extends Plotable> implements Serializable {
 
     private static final long serialVersionUID = -6567047121711989649L;
+
+    private class ProxyCallback implements ProviderCallback<T> {
+        private ProviderCallback<T> callback;
+        
+        public ProxyCallback(ProviderCallback<T> callback) {
+            this.callback = callback;
+        }
+
+        public void dataFetched(ProviderRequest request,
+                                ProviderResponse<T> response) {
+            setCurrentPage(response.getPage());
+            setPageConfig(response.getPage().getConfig());
+            
+            callback.dataFetched(request, response);
+        }
+
+    }
 
     private DataProvider<T> provider;
     private PageConfig pageConfig;
     private Page<T> currentPage;
+    private Map<String, Serializable> params;
 
-    private PagerListenerSupport<T> support;
+    private PagerRequestSupport<T> requestSupport;
+    private PagerReadySupport<T> readySupport;
 
     public Pager() {
         setProvider(new EmptyProvider<T>());
         setPageConfig(new PageConfig());
         setCurrentPage(null);
-        support = new PagerListenerSupport<T>();
+        requestSupport = new PagerRequestSupport<T>();
+        readySupport = new PagerReadySupport<T>();
     }
 
     /**
      * @param listener
-     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#addPagerListener(org.gwings.client.table.pagination.observer.PagerListener)
+     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#addPagerListener(org.gwings.client.table.pagination.observer.PagerRequestListener)
      */
-    public void addPagerListener(PagerListener<T> listener) {
-        support.addPagerListener(listener);
+    public void addPagerRequestListener(PagerRequestListener<T> listener) {
+        requestSupport.addPagerListener(listener);
     }
 
     /**
      * @param listener
-     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#removePagerListener(org.gwings.client.table.pagination.observer.PagerListener)
+     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#removePagerListener(org.gwings.client.table.pagination.observer.PagerRequestListener)
      */
-    public void removePagerListener(PagerListener<T> listener) {
-        support.removePagerListener(listener);
+    public void removePagerRequestListener(PagerRequestListener<T> listener) {
+        requestSupport.removePagerListener(listener);
     }
 
-    public Integer currentPageIndex() {
-        Integer finish = pageConfig.getFinish();
-
-        if (finish == null || currentPage == null) {
-            return 0;
-        }
-        return finish / getPageSize();
+    public void addPagerReadyListener(PagerReadyListener<T> listener) {
+        readySupport.addPagerListener(listener);
     }
 
-    public Integer getTotalPages() throws Exception {
-        Integer totalAvailable = getRowsAvailable();
-        if (totalAvailable == null || totalAvailable < 0 || getPageSize() == 0) {
-            return 0;
-        }
-
-        Integer rest = totalAvailable % getPageSize();
-        int pages = totalAvailable / getPageSize();
-
-        pages += (rest > 0 ? 1 : 0);
-
-        return pages;
+    public void removePagerReadyListener(PagerReadyListener<T> listener) {
+        readySupport.addPagerListener(listener);
     }
 
     public void nextPage() throws Exception {
         try {
-            moveTo(currentPageIndex() + 1);
+            fetchSize();
+            int nextPage = currentPageIndex() + 1;
+            requestSupport.fireNextPageRequest(makePagerEvent());
+            moveTo(nextPage, new ProviderCallback<T>() {
+
+                public void dataFetched(ProviderRequest request,
+                                        ProviderResponse<T> response) {
+                    
+                    readySupport.fireNextPageReady(makePagerEvent());
+                }
+            });
         }
         catch (Exception e) {
             throw new Exception("Can't go to a next page. Pager already at the end.");
         }
-        support.fireNextPage(makePagerEvent());
     }
 
     public void previousPage() throws Exception {
         try {
-            moveTo(currentPageIndex()-1);
+            fetchSize();
+            int previousPage = currentPageIndex() - 1;
+            requestSupport.firePreviousPageRequest(makePagerEvent());
+            moveTo(previousPage, new ProviderCallback<T>() {
+
+                public void dataFetched(ProviderRequest request,
+                                        ProviderResponse<T> response) {
+
+                    readySupport.firePreviousPageReady(makePagerEvent());
+                }
+            });
         }
         catch (Exception e) {
             throw new Exception("Can't go to a previous page. Pager already at the begining.");
         }
-        support.firePreviousPage(makePagerEvent());
     }
 
     public void firstPage() throws Exception {
-        moveTo(1);
-        support.fireFirstPage(makePagerEvent());
+        int firstPage = 1;
+        requestSupport.fireFirstPageRequest(makePagerEvent());
+        moveTo(firstPage, new ProviderCallback<T>() {
+
+            public void dataFetched(ProviderRequest request,
+                                    ProviderResponse<T> response) {
+
+                readySupport.fireFirstPageReady(makePagerEvent());
+            }
+        });
     }
 
     public void lastPage() throws Exception {
-        moveTo(getTotalPages());
-        support.fireLastPage(makePagerEvent());
+        fetchSize();
+        Integer lastPage = getTotalPages();
+        requestSupport.fireLastPageRequest(makePagerEvent());
+        moveTo(lastPage, new ProviderCallback<T>() {
+
+            public void dataFetched(ProviderRequest request,
+                                    ProviderResponse<T> response) {
+
+                readySupport.fireLastPageReady(makePagerEvent());
+            }
+        });
     }
 
     public void goToPage(Integer page) throws Exception {
-        moveTo(page);
-        support.firePageChanged(makePagerEvent());
+        fetchSize();
+        requestSupport.firePageChangeRequest(makePagerEvent());
+        moveTo(page, new ProviderCallback<T>() {
+
+            public void dataFetched(ProviderRequest request,
+                                    ProviderResponse<T> response) {
+
+                readySupport.firePageChangeReady(makePagerEvent());
+            }
+        });
     }
 
-    private void moveTo(Integer page) throws Exception {
-        Integer rowsAvailable = getRowsAvailable();
-
-        if (page > getTotalPages() || page <= 0) {
+    private void moveTo(Integer page, ProviderCallback<T> callback) throws Exception {
+        int finish = page * getPageSize();
+        int start = finish - getPageSize();
+        
+        if(start < 0 || page > getTotalPages()) {
             throw new Exception("Invalid page request!");
         }
         
         PageConfig config = new PageConfig();
-        config.setFinish(page * getPageSize());
-        config.setStart(config.getFinish() - getPageSize());
-        config.setTotalAvailable(rowsAvailable);
+        config.setFinish(finish);
+        config.setStart(start);
+        config.setPageIndex(page);
 
-        setCurrentPage(provider.fetchData(config));
+        ProviderRequest request = new ProviderRequest();
+        request.setConfig(config);
+        request.setParams(getParams());
+
+        provider.fetchData(request, new ProxyCallback(callback));
     }
 
-    private Integer getRowsAvailable() throws Exception {
-        if (currentPage == null) {
-            assert (provider != null);
-            return provider.fetchSize();
+    private void fetchSize() {
+        Integer totalAvailable = pageConfig.getTotalAvailable();
+        if(totalAvailable == null || totalAvailable < 0){
+            
+            ProviderRequest request = new ProviderRequest();
+            request.setConfig(new PageConfig());
+            request.setParams(getParams());
+            
+            provider.fetchData(request, new ProviderCallback<T>() {
+                public void dataFetched(ProviderRequest request,
+                                        ProviderResponse<T> response) {
+                    
+                    Page<T> page = response.getPage();
+                    PageConfig config = page.getConfig();
+                    Integer totalAvailable = config.getTotalAvailable();
+                    getPageConfig().setTotalAvailable(totalAvailable);
+                }
+            });
         }
-        assert (pageConfig != null);
-        return pageConfig.getTotalAvailable();
+    }
+
+    public Integer currentPageIndex() {
+        fetchSize();
+        return pageConfig.getPageIndex();
+    }
+
+    public Integer getTotalPages() throws Exception {
+        fetchSize();
+        return pageConfig.getTotalPages();
     }
 
     /**
@@ -170,7 +249,7 @@ public class Pager<T> implements Serializable {
      */
     public void setCurrentPage(Page<T> currentPage) {
         this.currentPage = currentPage;
-        if(currentPage != null){
+        if (currentPage != null) {
             setPageConfig(currentPage.getConfig());
         }
     }
@@ -184,5 +263,20 @@ public class Pager<T> implements Serializable {
 
     private PagerEvent<T> makePagerEvent() {
         return new PagerEvent<T>(this);
+    }
+
+    /**
+     * @return the params
+     */
+    public Map<String, Serializable> getParams() {
+        return params;
+    }
+
+    /**
+     * @param params
+     *            the params to set
+     */
+    public void setParams(Map<String, Serializable> params) {
+        this.params = params;
     }
 }

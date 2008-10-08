@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gwings.client.demo.exception.QueryBoxSampleException;
-import org.gwings.client.demo.services.QueryBoxService;
+import org.gwings.client.demo.services.querybox.QueryBoxService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

@@ -9,7 +9,7 @@ import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
-import org.gwings.client.table.pagination.observer.PagerListener;
+import org.gwings.client.table.pagination.observer.PagerReadyListener;
 import org.gwings.client.table.pagination.view.PaginationBar;
 import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;
@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * @author USER
  */
-public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> implements PagerListener<T> {
+public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> implements PagerReadyListener<T> {
 
     private PaginationBar<T> paginationBar;
     private DivElement paginationWrapper;
@@ -177,10 +177,10 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
      */
     public void setPager(Pager<T> pager) {
         if(getPager() != null){
-            getPager().removePagerListener(this);
+            getPager().removePagerReadyListener(this);
         }
         paginationBar.setPager(pager);
-        getPager().addPagerListener(this);
+        getPager().addPagerReadyListener(this);
     }
 
     /**
@@ -190,7 +190,6 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
         return paginationBar.getProvider();
     }
 
-    
     /**
      * @param provider the provider to set
      */
@@ -198,21 +197,6 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
         paginationBar.setProvider(provider);
     }
     
-    public void lastPage(PagerEvent<T> evt) {
-        updateLines(evt);
-    }
-
-    public void nextPage(PagerEvent<T> evt) {
-        updateLines(evt);
-    }
-
-    public void pageChanged(PagerEvent<T> evt) {
-        updateLines(evt);
-    }
-
-    public void previousPage(PagerEvent<T> evt) {
-        updateLines(evt);
-    }
     /**
      * @param evt
      * @see org.gwings.client.table.pagination.view.PaginationBar#firstPage(org.gwings.client.table.pagination.observer.PagerEvent)
@@ -231,5 +215,25 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
                 paginationBar.stopBusy();
             }
         });
+    }
+
+    public void firstPageReady(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+
+    public void lastPageReady(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+
+    public void nextPageReady(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+
+    public void pageChangeReady(PagerEvent<T> evt) {
+        updateLines(evt);
+    }
+
+    public void previousPageReady(PagerEvent<T> evt) {
+        updateLines(evt);
     }
 }
