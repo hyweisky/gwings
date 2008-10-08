@@ -17,8 +17,8 @@ package org.gwings.client.demo;
 
 import java.util.List;
 
-import org.gwings.client.demo.services.QueryBoxService;
-import org.gwings.client.demo.services.QueryBoxServiceAsync;
+import org.gwings.client.demo.services.querybox.QueryBoxService;
+import org.gwings.client.demo.services.querybox.QueryBoxServiceAsync;
 import org.gwings.client.ui.QueryBox;
 
 import com.google.gwt.user.client.Window;

@@ -7,10 +7,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwings.client.table.model.Plotable;
+
 /**
  * @author USER
  */
-public class PagerListenerSupport<T> implements Serializable {
+public class PagerListenerSupport<T extends Plotable> implements Serializable {
 
     private static final long serialVersionUID = 5268124961156076693L;
 
@@ -28,33 +30,63 @@ public class PagerListenerSupport<T> implements Serializable {
         listeners.remove(listener);
     }
 
-    public void fireNextPage(PagerEvent<T> evt) {
+    public void fireNextPageRequest(PagerEvent<T> evt) {
         for (PagerListener<T> listener : listeners) {
-            listener.nextPage(evt);
+            listener.nextPageRequest(evt);
         }
     }
 
-    public void firePreviousPage(PagerEvent<T> evt) {
+    public void fireNextPageReady(PagerEvent<T> evt) {
         for (PagerListener<T> listener : listeners) {
-            listener.previousPage(evt);
+            listener.nextPageReady(evt);
         }
     }
 
-    public void fireLastPage(PagerEvent<T> evt) {
+    public void firePreviousPageRequest(PagerEvent<T> evt) {
         for (PagerListener<T> listener : listeners) {
-            listener.lastPage(evt);
+            listener.previousPageRequest(evt);
         }
     }
 
-    public void fireFirstPage(PagerEvent<T> evt) {
+    public void firePreviousPageReady(PagerEvent<T> evt) {
         for (PagerListener<T> listener : listeners) {
-            listener.firstPage(evt);
+            listener.previousPageReady(evt);
         }
     }
 
-    public void firePageChanged(PagerEvent<T> evt) {
+    public void fireLastPageRequest(PagerEvent<T> evt) {
         for (PagerListener<T> listener : listeners) {
-            listener.pageChanged(evt);
+            listener.lastPageRequest(evt);
+        }
+    }
+
+    public void fireLastPageReady(PagerEvent<T> evt) {
+        for (PagerListener<T> listener : listeners) {
+            listener.lastPageReady(evt);
+        }
+    }
+
+    public void fireFirstPageRequest(PagerEvent<T> evt) {
+        for (PagerListener<T> listener : listeners) {
+            listener.firstPageRequest(evt);
+        }
+    }
+
+    public void fireFirstPageReady(PagerEvent<T> evt) {
+        for (PagerListener<T> listener : listeners) {
+            listener.firstPageReady(evt);
+        }
+    }
+
+    public void firePageChangeRequest(PagerEvent<T> evt) {
+        for (PagerListener<T> listener : listeners) {
+            listener.pageChangeRequest(evt);
+        }
+    }
+
+    public void firePageChangeReady(PagerEvent<T> evt) {
+        for (PagerListener<T> listener : listeners) {
+            listener.pageChangeReady(evt);
         }
     }
 }

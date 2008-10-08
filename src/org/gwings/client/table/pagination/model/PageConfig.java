@@ -13,13 +13,14 @@ public class PageConfig implements Serializable {
     private static final long serialVersionUID = -6606776183212269494L;
 
     private Integer totalAvailable;
+    private Integer pageIndex;
     private Integer start;
     private Integer finish;
 
     public PageConfig() {
-        setTotalAvailable(0);
         setStart(0);
         setFinish(0);
+        setPageIndex(0);
     }
 
     /**
@@ -67,15 +68,6 @@ public class PageConfig implements Serializable {
         this.finish = finish;
     }
     
-    public Integer currentPageIndex() {
-        Integer finish = getFinish();
-
-        if (finish == null) {
-            return 0;
-        }
-        return finish / getPageSize();
-    }
-    
     public Integer getPageSize() {
         return Math.abs(start - finish);
     }
@@ -91,5 +83,21 @@ public class PageConfig implements Serializable {
         pages += (rest > 0 ? 1 : 0);
 
         return pages;
+    }
+
+    
+    /**
+     * @return the pageIndex
+     */
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    
+    /**
+     * @param pageIndex the pageIndex to set
+     */
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
     }
 }

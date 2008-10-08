@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.gwings.client.table.pagination.model.DataProvider;
-import org.gwings.client.table.pagination.model.Page;
 import org.gwings.client.table.pagination.model.PageConfig;
+import org.gwings.client.table.pagination.model.ProviderCallback;
+import org.gwings.client.table.pagination.model.ProviderRequest;
+import org.gwings.client.table.pagination.model.ProviderResponse;
 
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Image;
@@ -44,24 +46,23 @@ public class LineProvider implements DataProvider<LinePlotable>, LineConstants{
         }
     }
 
-    public Page<LinePlotable> fetchData(PageConfig config) throws Exception {
+    public void fetchData(ProviderRequest request,
+                          ProviderCallback<LinePlotable> callback) {
+        
+        PageConfig config = request.getConfig();
         Integer start = config.getStart();
         Integer finish = config.getFinish();
+        config.setTotalAvailable(size);
         
         List<LinePlotable> items = new ArrayList<LinePlotable>();
         for(int i = start; i < finish && i < data.size(); i++){
             items.add(data.get(i));
         }
         
-        Page<LinePlotable> page = new Page<LinePlotable>();
-        page.setItems(items);
-        page.setConfig(config);
+        ProviderResponse<LinePlotable> response = 
+                              new ProviderResponse<LinePlotable>(items, config);
         
-        return page;
-    }
-
-    public Integer fetchSize() throws Exception {
-        return size;
+        callback.dataFetched(request, response);
     }
 
 }

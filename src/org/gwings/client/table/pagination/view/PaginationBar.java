@@ -6,7 +6,7 @@ import org.gwings.client.table.pagination.i18n.PaginationMessages;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
-import org.gwings.client.table.pagination.observer.PagerListener;
+import org.gwings.client.table.pagination.observer.PagerRequestListener;
 import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 import org.gwings.client.ui.BusyWidget;
 
@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
-public class PaginationBar<T extends Plotable> extends Composite implements PagerListener<T> {
+public class PaginationBar<T extends Plotable> extends Composite implements PagerRequestListener<T> {
     
     private class ImageChangeListener extends MouseListenerAdapter{
 
@@ -42,7 +42,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             this.normal = normal;
         }
         
-        @Override
         public void onMouseEnter(Widget sender) {
             if(!isIgnoringEvents()){
                 Image img = (Image) sender;
@@ -50,7 +49,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             }
         }
         
-        @Override
         public void onMouseLeave(Widget sender) {
             if(!isIgnoringEvents()){
                 Image img = (Image) sender;
@@ -194,7 +192,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         firstImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
-                    busy.setVisible(true);
                     pager.firstPage();
                 }
                 catch (Exception e) {
@@ -207,7 +204,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             public void onClick(Widget sender) {
                 try {
                     if(!isPreviousDisabled()){
-                        busy.setVisible(true);
                         pager.previousPage();
                     }
                 }
@@ -221,7 +217,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             public void onClick(Widget sender) {
                 try {
                     if(!isNextDisabled()){
-                        busy.setVisible(true);
                         pager.nextPage();
                     }
                 }
@@ -234,7 +229,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         lastImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
                 try {
-                    busy.setVisible(true);
                     pager.lastPage();
                 }
                 catch (Exception e) {
@@ -249,7 +243,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                 int index = currentPageSelector.getSelectedIndex();
                 String page = currentPageSelector.getItemText(index);
                 try {
-                    busy.setVisible(true);
                     pager.goToPage(new Integer(page));
                 }
                 catch (NumberFormatException e) {
@@ -276,11 +269,11 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
      */
     public void setPager(Pager<T> pager) {
         if(this.pager != null){
-            this.pager.removePagerListener(this);
+            this.pager.removePagerRequestListener(this);
         }
         
         this.pager = pager;
-        this.pager.addPagerListener(this);
+        this.pager.addPagerRequestListener(this);
     }
 
     private void mountRange() {
@@ -338,7 +331,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         Integer totalPages = 0;
         try {
             totalPages = pager.getTotalPages();
-            if(index+1 == totalPages){
+            if (index + 1 == totalPages) {
                 setNextDisabled(true);
             }
         }
@@ -411,7 +404,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             });
         }
     }
-
     
     /**
      * @return the nextDisabled
@@ -434,7 +426,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             images.next().applyTo(nextImage);
         }
     }
-
     
     /**
      * @return the previousDisabled
@@ -442,7 +433,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private boolean isPreviousDisabled() {
         return previousDisabled;
     }
-
     
     /**
      * @param disabled the previousDisabled to set
@@ -474,5 +464,25 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     
     public void stopBusy(){
         busy.setVisible(false);
+    }
+
+    public void firstPageRequest(PagerEvent<T> evt) {
+        busy.setVisible(true);
+    }
+
+    public void lastPageRequest(PagerEvent<T> evt) {
+        busy.setVisible(true);
+    }
+
+    public void nextPageRequest(PagerEvent<T> evt) {
+        busy.setVisible(true);
+    }
+
+    public void pageChangeRequest(PagerEvent<T> evt) {
+        busy.setVisible(true);
+    }
+
+    public void previousPageRequest(PagerEvent<T> evt) {
+        busy.setVisible(true);
     }
 }
