@@ -4,6 +4,7 @@
 package org.gwings.client.table.scroll.pagination;
 
 import java.util.List;
+import java.util.Map;
 
 import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.model.DataProvider;
@@ -226,5 +227,24 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
 
     public void previousPageReady(PagerEvent<T> evt) {
         updateLines(evt);
+    }
+
+    public void pageSizeReady(PagerEvent<T> evt) {
+    }
+
+    /**
+     * @return
+     * @see org.gwings.client.table.pagination.view.PaginationBar#getParams()
+     */
+    public Map<String, String> getParams() {
+        return paginationBar.getParams();
+    }
+
+    /**
+     * @param params
+     * @see org.gwings.client.table.pagination.view.PaginationBar#setParams(java.util.Map)
+     */
+    public void setParams(Map<String, String> params) {
+        paginationBar.setParams(params);
     }
 }
