@@ -27,12 +27,11 @@ public class Pager<T extends Plotable> implements Serializable {
             this.callback = callback;
         }
 
-        public void dataFetched(ProviderRequest request,
-                                ProviderResponse<T> response) {
-            setCurrentPage(response.getPage());
-            setPageConfig(response.getPage().getConfig());
+        public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
             
+            setCurrentPage(response.getPage());
             callback.dataFetched(request, response);
+            
         }
 
     }
@@ -53,41 +52,32 @@ public class Pager<T extends Plotable> implements Serializable {
         readySupport = new PagerReadySupport<T>();
     }
 
-    /**
-     * @param listener
-     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#addPagerListener(org.gwings.client.table.pagination.observer.PagerRequestListener)
-     */
     public void addPagerRequestListener(PagerRequestListener<T> listener) {
-        requestSupport.addPagerListener(listener);
+        requestSupport.addPagerRequestListener(listener);
     }
 
-    /**
-     * @param listener
-     * @see org.gwings.client.table.pagination.observer.PagerListenerSupport#removePagerListener(org.gwings.client.table.pagination.observer.PagerRequestListener)
-     */
     public void removePagerRequestListener(PagerRequestListener<T> listener) {
-        requestSupport.removePagerListener(listener);
+        requestSupport.removePagerRequestListener(listener);
     }
 
     public void addPagerReadyListener(PagerReadyListener<T> listener) {
-        readySupport.addPagerListener(listener);
+        readySupport.addPagerReadyListener(listener);
     }
 
     public void removePagerReadyListener(PagerReadyListener<T> listener) {
-        readySupport.addPagerListener(listener);
+        readySupport.addPagerReadyListener(listener);
     }
 
     public void nextPage() throws Exception {
         try {
-            fetchSize();
             int nextPage = currentPageIndex() + 1;
             requestSupport.fireNextPageRequest(makePagerEvent());
             moveTo(nextPage, new ProviderCallback<T>() {
 
-                public void dataFetched(ProviderRequest request,
-                                        ProviderResponse<T> response) {
+                public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
                     
                     readySupport.fireNextPageReady(makePagerEvent());
+                    
                 }
             });
         }
@@ -98,15 +88,14 @@ public class Pager<T extends Plotable> implements Serializable {
 
     public void previousPage() throws Exception {
         try {
-            fetchSize();
             int previousPage = currentPageIndex() - 1;
             requestSupport.firePreviousPageRequest(makePagerEvent());
             moveTo(previousPage, new ProviderCallback<T>() {
 
-                public void dataFetched(ProviderRequest request,
-                                        ProviderResponse<T> response) {
+                public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
 
                     readySupport.firePreviousPageReady(makePagerEvent());
+                    
                 }
             });
         }
@@ -120,37 +109,35 @@ public class Pager<T extends Plotable> implements Serializable {
         requestSupport.fireFirstPageRequest(makePagerEvent());
         moveTo(firstPage, new ProviderCallback<T>() {
 
-            public void dataFetched(ProviderRequest request,
-                                    ProviderResponse<T> response) {
+            public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
 
                 readySupport.fireFirstPageReady(makePagerEvent());
+                
             }
         });
     }
 
     public void lastPage() throws Exception {
-        fetchSize();
         Integer lastPage = getTotalPages();
         requestSupport.fireLastPageRequest(makePagerEvent());
         moveTo(lastPage, new ProviderCallback<T>() {
 
-            public void dataFetched(ProviderRequest request,
-                                    ProviderResponse<T> response) {
+            public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
 
                 readySupport.fireLastPageReady(makePagerEvent());
+                
             }
         });
     }
 
     public void goToPage(Integer page) throws Exception {
-        fetchSize();
         requestSupport.firePageChangeRequest(makePagerEvent());
         moveTo(page, new ProviderCallback<T>() {
 
-            public void dataFetched(ProviderRequest request,
-                                    ProviderResponse<T> response) {
+            public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
 
                 readySupport.firePageChangeReady(makePagerEvent());
+                
             }
         });
     }
@@ -175,7 +162,7 @@ public class Pager<T extends Plotable> implements Serializable {
         provider.fetchData(request, new ProxyCallback(callback));
     }
 
-    private void fetchSize() {
+    public void fetchSize() {
         Integer totalAvailable = pageConfig.getTotalAvailable();
         if(totalAvailable == null || totalAvailable < 0){
             
@@ -184,25 +171,23 @@ public class Pager<T extends Plotable> implements Serializable {
             request.setParams(getParams());
             
             provider.fetchData(request, new ProviderCallback<T>() {
-                public void dataFetched(ProviderRequest request,
-                                        ProviderResponse<T> response) {
+                public void dataFetched(ProviderRequest request, ProviderResponse<T> response) {
                     
                     Page<T> page = response.getPage();
                     PageConfig config = page.getConfig();
                     Integer totalAvailable = config.getTotalAvailable();
                     getPageConfig().setTotalAvailable(totalAvailable);
+                    
                 }
             });
         }
     }
 
     public Integer currentPageIndex() {
-        fetchSize();
         return pageConfig.getPageIndex();
     }
 
     public Integer getTotalPages() throws Exception {
-        fetchSize();
         return pageConfig.getTotalPages();
     }
 

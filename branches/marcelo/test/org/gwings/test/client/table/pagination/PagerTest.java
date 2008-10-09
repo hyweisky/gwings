@@ -52,8 +52,7 @@ public class PagerTest extends GWTTestCase {
             }
         }
 
-        public void fetchData(ProviderRequest request,
-                              ProviderCallback<PagerItem> callback) {
+        public void fetchData(ProviderRequest request, ProviderCallback<PagerItem> callback) {
 
             PageConfig config = request.getConfig();
             Integer start = config.getStart();
@@ -65,8 +64,7 @@ public class PagerTest extends GWTTestCase {
                 items.add(fullData.get(i));
             }
 
-            ProviderResponse<PagerItem> response = 
-                                new ProviderResponse<PagerItem>(items, config);
+            ProviderResponse<PagerItem> response = new ProviderResponse<PagerItem>(items, config);
             
             callback.dataFetched(request, response);
         }
@@ -96,7 +94,6 @@ public class PagerTest extends GWTTestCase {
         assertEquals(pager.getPageConfig().getPageSize(), pager.getPageSize());
 
         try {
-            pager.nextPage();
             assertEquals(new Integer(31), pager.getTotalPages());
         }
         catch (Exception e) {
@@ -384,5 +381,7 @@ public class PagerTest extends GWTTestCase {
         
         config.setStart(0);
         config.setFinish(10);
+        
+        pager.fetchSize();
     }
 }

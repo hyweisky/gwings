@@ -19,11 +19,11 @@ public class PagerRequestSupport<T extends Plotable> {
         listeners = new ArrayList<PagerRequestListener<T>>();
     }
 
-    public void addPagerListener(PagerRequestListener<T> listener) {
+    public void addPagerRequestListener(PagerRequestListener<T> listener) {
         listeners.add(listener);
     }
 
-    public void removePagerListener(PagerRequestListener<T> listener) {
+    public void removePagerRequestListener(PagerRequestListener<T> listener) {
         listeners.remove(listener);
     }
 
