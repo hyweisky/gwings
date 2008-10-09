@@ -44,7 +44,7 @@ public class DefaultTableModel<T extends Plotable> implements TableModel<T> {
        
         if (!columns.containsKey(columnName)) {
             columns.put(columnName, column);
-            column.setPosition(columns.size());
+            column.setPosition(columns.size()-1);
             
             TableModelEvent<T> evt = makeEvent();
             evt.setColumn(column.getPosition()); //Alterar pra enviar a coluna em si!

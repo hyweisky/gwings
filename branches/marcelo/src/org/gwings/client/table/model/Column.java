@@ -31,12 +31,11 @@ public class Column<T> {
         this.type = type;
     }
     
-    
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         Column<T> col = (Column) obj;
-        return col.getName().equals(getName());
+        return col.getName().equals(getName()) && col.getPosition() == getPosition();
     }
 
     
