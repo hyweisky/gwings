@@ -4,9 +4,12 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="org.gwings.GWings" />
 	
+	<set-property name="gwt.suppressNonStaticFinalFieldWarnings" value="true" /> 
+	<servlet path="/provider" class="org.gwings.server.demo.pagination.RemoteLineProvider"/> 
+
 	<stylesheet src="styles/project.css" />
 	
 	<!-- Specify the app entry point class.                   -->
 	<entry-point class="org.gwings.client.demo.GWingsDemo"/>
-	<servlet path="/demoProvider" class="org.gwings.server.demo.pagination.RemoteLineProvider"/> 
+	
 </module>
