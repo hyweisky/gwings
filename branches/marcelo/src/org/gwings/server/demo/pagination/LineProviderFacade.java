@@ -3,14 +3,10 @@ package org.gwings.server.demo.pagination;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
-import org.gwings.client.demo.LineConstants;
 import org.gwings.client.demo.LinePlotable;
 import org.gwings.client.table.pagination.model.PageConfig;
-
-import com.google.gwt.user.client.Random;
-import com.google.gwt.user.client.ui.Image;
-
 
 public class LineProviderFacade implements LineConstants{
     private static LineProviderFacade instance = null;
@@ -33,31 +29,33 @@ public class LineProviderFacade implements LineConstants{
     }
     
     private LineProviderFacade(){
-        this(Random.nextInt(937));
+        this(new Random().nextInt(937));
     }
     
     private void generateRandomData(Integer size) {
         for(int i = 0; i < size; i++){
             
-            int booleanIndex = Random.nextInt(BOOLEAN_VALUES.length);
-            int imageIndex = Random.nextInt(IMAGE_VALUES.length);
-            int stringIndex = Random.nextInt(STRING_VALUES.length);
-            int dateIndex = Random.nextInt(DATE_VALUES.length);
+            int booleanIndex = new Random().nextInt(BOOLEAN_VALUES.length);
+            int imageIndex = new Random().nextInt(IMAGE_URL_VALUES.length);
+            int stringIndex = new Random().nextInt(STRING_VALUES.length);
+            int dateIndex = new Random().nextInt(DATE_VALUES.length);
             
             Boolean marked = BOOLEAN_VALUES[booleanIndex];
-            Image img = new Image(IMAGE_VALUES[imageIndex].getUrl());
+            String imgUrl = IMAGE_URL_VALUES[imageIndex];
             String msg = STRING_VALUES[stringIndex];
             Date date = DATE_VALUES[dateIndex];
             
-            data.add(new LinePlotable(marked, img, msg, date));
+            data.add(new LinePlotable(marked, imgUrl, msg, date));
         }
     }
 
     public List<LinePlotable> list(PageConfig config) throws Exception {
         Integer start = config.getStart();
-        Integer finish = config.getFinish();
+        Integer finish = (config.getFinish() >= countTotal() ? countTotal()-1 : config.getFinish());
+        config.setTotalAvailable(countTotal());
 
-        return new ArrayList<LinePlotable>(data.subList(start, finish));
+        List<LinePlotable> result = new ArrayList<LinePlotable>(data.subList(start, finish));
+        return result;
     }
 
     public Integer countTotal() throws Exception {
