@@ -19,5 +19,6 @@ public interface PagerReadyListener<T extends Plotable> {
     public void previousPageReady(PagerEvent<T> evt);
 
     public void nextPageReady(PagerEvent<T> evt);
-
+    
+    public void pageSizeReady(PagerEvent<T> evt);
 }

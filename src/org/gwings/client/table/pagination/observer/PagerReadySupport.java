@@ -56,4 +56,10 @@ public class PagerReadySupport<T extends Plotable> {
             listener.pageChangeReady(evt);
         }
     }
+    
+    public void firePageSizeReady(PagerEvent<T> evt){
+        for (PagerReadyListener<T> listener : listeners) {
+            listener.pageSizeReady(evt);
+        }
+    }
 }
