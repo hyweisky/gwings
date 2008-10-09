@@ -5,12 +5,15 @@ import org.gwings.client.table.pagination.model.PageConfig;
 import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
+import org.gwings.client.table.view.ColumnRenderer;
 
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
 
@@ -57,7 +60,7 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 		
 		table = new PaginatedScrollTable<LinePlotable>();
 		table.getPager().setPageConfig(config);
-		table.setProvider(new LineProvider());
+		table.setProvider(new LineProviderAsync());
 		
 		model = table.getTableModel();
 		layout = new DockPanel();
@@ -81,7 +84,11 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	 */
 	private void setupColumns() {
 		model.addColumn("Boolean");
-		model.addColumn("Image");
+		model.addColumn("Image", new ColumnRenderer<String>() {
+            public Widget renderType(String value) {
+                return new Image(value);
+            }
+        });
 		model.addColumn("String");
 		model.addColumn("Date");
 	}

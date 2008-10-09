@@ -11,7 +11,6 @@ import org.gwings.client.table.pagination.model.ProviderRequest;
 import org.gwings.client.table.pagination.model.ProviderResponse;
 
 import com.google.gwt.user.client.Random;
-import com.google.gwt.user.client.ui.Image;
 
 public class LineProvider implements DataProvider<LinePlotable>, LineConstants{
 
@@ -33,12 +32,12 @@ public class LineProvider implements DataProvider<LinePlotable>, LineConstants{
         for(int i = 0; i < size; i++){
             
             int booleanIndex = Random.nextInt(BOOLEAN_VALUES.length);
-            int imageIndex = Random.nextInt(IMAGE_VALUES.length);
+            int imageIndex = Random.nextInt(IMAGE_URL_VALUES.length);
             int stringIndex = Random.nextInt(STRING_VALUES.length);
             int dateIndex = Random.nextInt(DATE_VALUES.length);
             
             Boolean marked = BOOLEAN_VALUES[booleanIndex];
-            Image img = new Image(IMAGE_VALUES[imageIndex].getUrl());
+            String img = IMAGE_URL_VALUES[imageIndex];
             String msg = STRING_VALUES[stringIndex];
             Date date = DATE_VALUES[dateIndex];
             

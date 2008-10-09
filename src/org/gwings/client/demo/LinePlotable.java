@@ -3,8 +3,6 @@ package org.gwings.client.demo;
 import java.util.Date;
 
 import org.gwings.client.table.model.Plotable;
-
-import com.google.gwt.user.client.ui.Image;
 /**
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -28,15 +26,15 @@ public class LinePlotable implements Plotable {
     private static final long serialVersionUID = 8614765613220703585L;
 
     private Boolean marked;
-	private Image image;
+	private String image;
 	private String name;
 	private Date value;
 
 	public LinePlotable() {
-		this(Boolean.FALSE, new Image(), "",new Date());
+		this(Boolean.FALSE, "", "",new Date());
 	}
 
-	public LinePlotable(Boolean marked, Image img, String stringValue, Date value) {
+	public LinePlotable(Boolean marked, String img, String stringValue, Date value) {
 		this.marked = marked;
 		this.image = img;
 		this.name = stringValue;

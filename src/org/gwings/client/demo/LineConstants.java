@@ -3,7 +3,6 @@ package org.gwings.client.demo;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.ui.Image;
 
 public interface LineConstants {
 
@@ -12,9 +11,9 @@ public interface LineConstants {
             Boolean.FALSE 
     };
     
-    public static final Image[] IMAGE_VALUES = new Image[] {
-            new Image("pics/table/star_on.gif"),
-            new Image("pics/table/star_off.gif") 
+    public static final String[] IMAGE_URL_VALUES = new String[] {
+            "pics/table/star_on.gif",
+            "pics/table/star_off.gif" 
     };
     
     public static final String[] STRING_VALUES = new String[] {
