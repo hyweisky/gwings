@@ -6,6 +6,7 @@ import org.gwings.client.table.model.TableModel;
 import org.gwings.client.table.scroll.ResizePolicy;
 import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.ScrollTable;
+import org.gwings.client.table.view.ColumnRenderer;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -83,10 +84,10 @@ public class TableTab extends AbstractDemoPanel {
 	 */
 	private void makeMockObjects() {
 		
-		LinePlotable plotable = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
-		LinePlotable plotable1 = new LinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		LinePlotable plotable2 = new LinePlotable(Boolean.FALSE, new Image("pics/table/star_off.gif"), "Forbidden Knowledge Conference", new Date());
-		LinePlotable plotable3 = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable = new LinePlotable(Boolean.TRUE, "pics/table/star_on.gif", "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable1 = new LinePlotable(Boolean.FALSE, "pics/table/star_off.gif", "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable2 = new LinePlotable(Boolean.FALSE, "pics/table/star_off.gif", "Forbidden Knowledge Conference", new Date());
+		LinePlotable plotable3 = new LinePlotable(Boolean.TRUE, "pics/table/star_on.gif", "Forbidden Knowledge Conference", new Date());
 		
 		model.appendLine(plotable);
 		model.appendLine(plotable1);
@@ -100,7 +101,11 @@ public class TableTab extends AbstractDemoPanel {
 	 */
 	private void setupColumns() {
 		model.addColumn("Boolean");
-		model.addColumn("Image");
+		model.addColumn("Image", new ColumnRenderer<String>() {
+            public Widget renderType(String value) {
+                return new Image(value);
+            }
+        });
 		model.addColumn("String");
 		model.addColumn("Date");
 	}
@@ -126,7 +131,7 @@ public class TableTab extends AbstractDemoPanel {
 //		});
 	    addLineButton.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
-                LinePlotable plotable = new LinePlotable(Boolean.TRUE, new Image("pics/table/star_on.gif"), "Forbidden Knowledge Conference", new Date());
+                LinePlotable plotable = new LinePlotable(Boolean.TRUE, "pics/table/star_on.gif", "Forbidden Knowledge Conference", new Date());
                 model.appendLine(plotable);
             }
         });
