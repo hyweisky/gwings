@@ -37,7 +37,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
     private void init() {
         paginationWrapper = super.createWrapper("paginationWrapper");
         paginationBar = new PaginationBar<T>(this);
-        setPager(paginationBar.getPager());
+        paginationBar.getPager().addPagerReadyListener(this);
         adoptTable(paginationBar, paginationWrapper, this.getWidgetCount());
     }
     
@@ -197,18 +197,9 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
         paginationBar.setProvider(provider);
     }
     
-    /**
-     * @param evt
-     * @see org.gwings.client.table.pagination.view.PaginationBar#firstPage(org.gwings.client.table.pagination.observer.PagerEvent)
-     */
-    public void firstPage(PagerEvent<T> evt) {
-        updateLines(evt);
-    }
-    
     private void updateLines(final PagerEvent<T> evt) {
         DeferredCommand.addCommand(new Command() {
             public void execute() {
-                DeferredCommand.addPause();
                 List<T> items = evt.getPager().getCurrentPage().getItems();
                 getTableModel().clearRows();
                 getTableModel().setLines(items);

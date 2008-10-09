@@ -6,7 +6,7 @@ import org.gwings.client.table.pagination.i18n.PaginationMessages;
 import org.gwings.client.table.pagination.model.DataProvider;
 import org.gwings.client.table.pagination.model.Pager;
 import org.gwings.client.table.pagination.observer.PagerEvent;
-import org.gwings.client.table.pagination.observer.PagerRequestListener;
+import org.gwings.client.table.pagination.observer.PagerListener;
 import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 import org.gwings.client.ui.BusyWidget;
 
@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
-public class PaginationBar<T extends Plotable> extends Composite implements PagerRequestListener<T> {
+public class PaginationBar<T extends Plotable> extends Composite implements PagerListener<T> {
     
     private class ImageChangeListener extends MouseListenerAdapter{
 
@@ -237,7 +237,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                 }
             }
         });
-        
+
         currentPageSelector.addChangeListener(new ChangeListener() {
             public void onChange(Widget sender) {
                 int index = currentPageSelector.getSelectedIndex();
@@ -270,10 +270,12 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     public void setPager(Pager<T> pager) {
         if(this.pager != null){
             this.pager.removePagerRequestListener(this);
+            this.pager.removePagerReadyListener(this);
         }
         
         this.pager = pager;
         this.pager.addPagerRequestListener(this);
+        this.pager.addPagerReadyListener(this);
     }
 
     private void mountRange() {
@@ -281,6 +283,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         
         Integer totalPages = 0;
         try {
+            pager.fetchSize();
             totalPages = pager.getTotalPages();
             if(totalPages == 1){
                 setNextDisabled(true);
@@ -298,7 +301,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         availablePages.setHTML(totalPages+"");
     }
 
-    public void firstPage(PagerEvent<T> evt) {
+    public void firstPageReady(PagerEvent<T> evt) {
         currentPageSelector.setSelectedIndex(0);
      
         setPreviousDisabled(true);
@@ -311,7 +314,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         }
     }
 
-    public void lastPage(PagerEvent<T> evt) {
+    public void lastPageReady(PagerEvent<T> evt) {
         currentPageSelector.setSelectedIndex(currentPageSelector.getItemCount()-1);
         
         setNextDisabled(true);
@@ -324,7 +327,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         }
     }
 
-    public void nextPage(PagerEvent<T> evt) {
+    public void nextPageReady(PagerEvent<T> evt) {
         int index = currentPageSelector.getSelectedIndex();
         currentPageSelector.setSelectedIndex(++index);
         
@@ -342,7 +345,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         
     }
 
-    public void pageChanged(PagerEvent<T> evt) {
+    public void pageChangeReady(PagerEvent<T> evt) {
         Pager<T> pager = evt.getPager();
         
         Integer index = pager.currentPageIndex();
@@ -366,7 +369,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         }
     }
 
-    public void previousPage(PagerEvent<T> evt) {
+    public void previousPageReady(PagerEvent<T> evt) {
         Integer index = currentPageSelector.getSelectedIndex();
         currentPageSelector.setSelectedIndex(--index);
         
@@ -411,7 +414,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private boolean isNextDisabled() {
         return nextDisabled;
     }
-
     
     /**
      * @param disabled the nextDisabled to set
@@ -419,6 +421,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private void setNextDisabled(boolean disabled) {
         this.nextDisabled = disabled;
         nextListener.setIgnoringEvents(disabled);
+        
         if(disabled){
             images.nextDisabled().applyTo(nextImage);
         }
@@ -440,6 +443,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private void setPreviousDisabled(boolean disabled) {
         this.previousDisabled = disabled;
         previousListener.setIgnoringEvents(disabled);
+        
         if(disabled){
             images.previousDisabled().applyTo(previousImage);
         }

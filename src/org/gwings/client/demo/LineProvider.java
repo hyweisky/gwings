@@ -46,8 +46,7 @@ public class LineProvider implements DataProvider<LinePlotable>, LineConstants{
         }
     }
 
-    public void fetchData(ProviderRequest request,
-                          ProviderCallback<LinePlotable> callback) {
+    public void fetchData(ProviderRequest request, ProviderCallback<LinePlotable> callback) {
         
         PageConfig config = request.getConfig();
         Integer start = config.getStart();
