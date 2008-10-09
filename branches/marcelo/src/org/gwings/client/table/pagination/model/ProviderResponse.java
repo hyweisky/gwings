@@ -21,6 +21,10 @@ public class ProviderResponse<T extends Plotable> {
         setItems(items);
     }
     
+    public ProviderResponse(Page<T> page){
+        this.page = page;
+    }
+    
     /**
      * @param config
      * @see org.gwings.client.table.pagination.model.Page#setConfig(org.gwings.client.table.pagination.model.PageConfig)

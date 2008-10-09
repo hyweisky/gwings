@@ -39,7 +39,7 @@ public class Pager<T extends Plotable> implements Serializable {
     private DataProvider<T> provider;
     private PageConfig pageConfig;
     private Page<T> currentPage;
-    private Map<String, Serializable> params;
+    private Map<String, String> params;
 
     private PagerRequestSupport<T> requestSupport;
     private PagerReadySupport<T> readySupport;
@@ -178,6 +178,7 @@ public class Pager<T extends Plotable> implements Serializable {
                     Integer totalAvailable = config.getTotalAvailable();
                     getPageConfig().setTotalAvailable(totalAvailable);
                     
+                    readySupport.firePageSizeReady(makePagerEvent());
                 }
             });
         }
@@ -253,7 +254,7 @@ public class Pager<T extends Plotable> implements Serializable {
     /**
      * @return the params
      */
-    public Map<String, Serializable> getParams() {
+    public Map<String, String> getParams() {
         return params;
     }
 
@@ -261,7 +262,7 @@ public class Pager<T extends Plotable> implements Serializable {
      * @param params
      *            the params to set
      */
-    public void setParams(Map<String, Serializable> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
     }
 }
