@@ -1,5 +1,7 @@
 package org.gwings.client.table.pagination.view;
 
+import java.util.Map;
+
 import org.gwings.client.table.model.Plotable;
 import org.gwings.client.table.pagination.i18n.PaginationBundle;
 import org.gwings.client.table.pagination.i18n.PaginationMessages;
@@ -99,6 +101,22 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private PaginatedScrollTable<T> table;
     private Pager<T> pager;
     private BusyWidget busy;
+
+    /**
+     * @return
+     * @see org.gwings.client.table.pagination.model.Pager#getParams()
+     */
+    public Map<String, String> getParams() {
+        return pager.getParams();
+    }
+
+    /**
+     * @param params
+     * @see org.gwings.client.table.pagination.model.Pager#setParams(java.util.Map)
+     */
+    public void setParams(Map<String, String> params) {
+        pager.setParams(params);
+    }
 
     public PaginationBar(PaginatedScrollTable<T> table){
         setTable(table);
@@ -279,26 +297,35 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     }
 
     private void mountRange() {
-        currentPageSelector.clear();
-        
-        Integer totalPages = 0;
         try {
-            pager.fetchSize();
-            totalPages = pager.getTotalPages();
+            currentPageSelector.clear();
+            Integer totalPages = pager.getTotalPages();
             if(totalPages == 1){
                 setNextDisabled(true);
                 setPreviousDisabled(true);
             }
+            for(int i = 0; i < totalPages; i++){
+                currentPageSelector.addItem((i+1)+"");
+            }
+            availablePages.setHTML(totalPages+"");
         }
         catch (Exception e) {
             Window.alert(e.getMessage());
         }
-        
-        for(int i = 0; i < totalPages; i++){
-            currentPageSelector.addItem((i+1)+"");
-        }
-        
-        availablePages.setHTML(totalPages+"");
+    }
+
+    public void pageSizeReady(PagerEvent<T> evt) {
+        mountRange();
+        DeferredCommand.addCommand(new Command() {
+            public void execute() {
+                try {
+                    pager.firstPage();
+                }
+                catch (Exception e) {
+                    Window.alert(e.getMessage());
+                }
+            }
+        });
     }
 
     public void firstPageReady(PagerEvent<T> evt) {
@@ -394,17 +421,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     public void setProvider(DataProvider<T> provider) {
         pager.setProvider(provider);
         if(provider != null){
-            mountRange();
-            DeferredCommand.addCommand(new Command() {
-                public void execute() {
-                    try {
-                        pager.firstPage();
-                    }
-                    catch (Exception e) {
-                        Window.alert(e.getMessage());
-                    }
-                }
-            });
+            pager.fetchSize();
         }
     }
     
