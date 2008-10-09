@@ -9,16 +9,15 @@ import org.gwings.client.demo.LinePlotable;
 import org.gwings.client.table.pagination.model.Page;
 import org.gwings.client.table.pagination.model.PageConfig;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-
 
 /**
  * @author USER
- *
  */
-@RemoteServiceRelativePath("/provider")
-public interface PaginatedLineProvider extends RemoteService {
-    
-    public Page<LinePlotable> getItems(Map<String, String> params, PageConfig cfg) throws Exception;
+public interface PaginatedLineProviderAsync extends RemoteService {
+
+    public void getItems(Map<String, String> params, PageConfig cfg,
+                         AsyncCallback<Page<LinePlotable>> callback);
+
 }
