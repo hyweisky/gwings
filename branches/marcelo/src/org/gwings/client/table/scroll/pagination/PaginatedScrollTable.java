@@ -153,8 +153,8 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
         scrollTables(true);
         DeferredCommand.addCommand(new Command() {
             public void execute() {
-                paginationWrapper.setPropertyInt("width", headerTable.getOffsetWidth());
-                paginationWrapper.getStyle().setPropertyPx("width", headerTable.getOffsetWidth());
+                paginationWrapper.setPropertyString("width", "100%");
+                paginationWrapper.getStyle().setProperty("width", "100%");
             }
         });
     }
@@ -162,8 +162,8 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
     @Override
     public void setPixelWidth(int pixels) {
     	super.setPixelWidth(pixels);
-    	paginationWrapper.setPropertyInt("width", pixels+30);
-    	paginationWrapper.getStyle().setPropertyPx("width", pixels+30);
+    	paginationWrapper.setPropertyString("width", "100%");
+    	paginationWrapper.getStyle().setProperty("width", "100%");
     }
     /**
      * @return

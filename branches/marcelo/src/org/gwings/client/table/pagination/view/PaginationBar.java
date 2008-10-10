@@ -103,22 +103,6 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     private Pager<T> pager;
     private BusyWidget busy;
 
-    /**
-     * @return
-     * @see org.gwings.client.table.pagination.model.Pager#getParams()
-     */
-    public Map<String, ? extends Serializable> getParams() {
-        return pager.getParams();
-    }
-
-    /**
-     * @param params
-     * @see org.gwings.client.table.pagination.model.Pager#setParams(java.util.Map)
-     */
-    public void setParams(Map<String, ? extends Serializable> params) {
-        pager.setParams(params);
-    }
-
     public PaginationBar(PaginatedScrollTable<T> table){
         setTable(table);
         init();
@@ -147,7 +131,10 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         currentPageSelector = new ListBox();
         availablePages = new HTML();
         
-        setPager(new Pager<T>());
+        pager = new Pager<T>();
+        pager.addPagerReadyListener(this);
+        pager.addPagerRequestListener(this);
+        
         busy = new BusyWidget(getTable());
     }
 
@@ -311,6 +298,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
             availablePages.setHTML(totalPages+"");
         }
         catch (Exception e) {
+            stopBusy();
             Window.alert(e.getMessage());
         }
     }
@@ -323,6 +311,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
                     pager.firstPage();
                 }
                 catch (Exception e) {
+                    stopBusy();
                     Window.alert(e.getMessage());
                 }
             }
@@ -421,9 +410,9 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
      */
     public void setProvider(DataProvider<T> provider) {
         pager.setProvider(provider);
-        if(provider != null){
-            pager.fetchSize();
-        }
+//        if(provider != null){
+//            pager.fetchSize();
+//        }
     }
     
     /**
@@ -506,5 +495,21 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
 
     public void previousPageRequest(PagerEvent<T> evt) {
         busy.setVisible(true);
+    }
+    
+    /**
+     * @return
+     * @see org.gwings.client.table.pagination.model.Pager#getParams()
+     */
+    public Map<String, ? extends Serializable> getParams() {
+        return pager.getParams();
+    }
+
+    /**
+     * @param params
+     * @see org.gwings.client.table.pagination.model.Pager#setParams(java.util.Map)
+     */
+    public void setParams(Map<String, ? extends Serializable> params) {
+        pager.setParams(params);
     }
 }
