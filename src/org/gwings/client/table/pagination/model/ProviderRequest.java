@@ -3,6 +3,7 @@
  */
 package org.gwings.client.table.pagination.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,30 +13,30 @@ import java.util.Map;
  *
  */
 public class ProviderRequest {
-    private Map<String, String> params;
+    private Map<String, ? extends Serializable> params;
     private PageConfig config;
     
-    public ProviderRequest(PageConfig config, Map<String, String> params) {
+    public ProviderRequest(PageConfig config, Map<String, Serializable> params) {
         super();
         setConfig(config);
         setParams(params);
     }
     
     public ProviderRequest(){
-        this(new PageConfig(), new HashMap<String, String>());
+        this(new PageConfig(), new HashMap<String, Serializable>());
     }
     
     /**
      * @return the params
      */
-    public Map<String, String> getParams() {
+    public Map<String, ? extends Serializable> getParams() {
         return params;
     }
     
     /**
      * @param params the params to set
      */
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, ? extends Serializable> params) {
         this.params = params;
     }
     

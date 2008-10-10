@@ -1,5 +1,6 @@
 package org.gwings.client.table.pagination.view;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.gwings.client.table.model.Plotable;
@@ -106,7 +107,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
      * @return
      * @see org.gwings.client.table.pagination.model.Pager#getParams()
      */
-    public Map<String, String> getParams() {
+    public Map<String, ? extends Serializable> getParams() {
         return pager.getParams();
     }
 
@@ -114,7 +115,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
      * @param params
      * @see org.gwings.client.table.pagination.model.Pager#setParams(java.util.Map)
      */
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, ? extends Serializable> params) {
         pager.setParams(params);
     }
 

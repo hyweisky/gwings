@@ -16,7 +16,7 @@ import org.gwings.client.table.pagination.observer.PagerRequestSupport;
 /**
  * @author USER
  */
-public class Pager<T extends Plotable> implements Serializable {
+public class Pager<T extends Plotable>{
 
     private static final long serialVersionUID = -6567047121711989649L;
 
@@ -39,7 +39,7 @@ public class Pager<T extends Plotable> implements Serializable {
     private DataProvider<T> provider;
     private PageConfig pageConfig;
     private Page<T> currentPage;
-    private Map<String, String> params;
+    private Map<String, ? extends Serializable> params;
 
     private PagerRequestSupport<T> requestSupport;
     private PagerReadySupport<T> readySupport;
@@ -254,7 +254,7 @@ public class Pager<T extends Plotable> implements Serializable {
     /**
      * @return the params
      */
-    public Map<String, String> getParams() {
+    public Map<String, ? extends Serializable> getParams() {
         return params;
     }
 
@@ -262,7 +262,7 @@ public class Pager<T extends Plotable> implements Serializable {
      * @param params
      *            the params to set
      */
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, ? extends Serializable> params) {
         this.params = params;
     }
 }
