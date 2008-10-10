@@ -3,6 +3,7 @@
  */
 package org.gwings.client.demo.services.pagination;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.gwings.client.demo.LinePlotable;
@@ -20,5 +21,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("/provider")
 public interface PaginatedLineProvider extends RemoteService {
     
-    public Page<LinePlotable> getItems(Map<String, String> params, PageConfig cfg) throws Exception;
+    public Page<LinePlotable> getItems(Map<String, ? extends Serializable> params, PageConfig cfg) throws Exception;
 }

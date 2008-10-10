@@ -3,6 +3,7 @@
  */
 package org.gwings.client.table.scroll.pagination;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -236,7 +237,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
      * @return
      * @see org.gwings.client.table.pagination.view.PaginationBar#getParams()
      */
-    public Map<String, String> getParams() {
+    public Map<String, ? extends Serializable> getParams() {
         return paginationBar.getParams();
     }
 
@@ -244,7 +245,7 @@ public class PaginatedScrollTable<T extends Plotable> extends ScrollTable<T> imp
      * @param params
      * @see org.gwings.client.table.pagination.view.PaginationBar#setParams(java.util.Map)
      */
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map<String, ? extends Serializable> params) {
         paginationBar.setParams(params);
     }
 }
