@@ -28,6 +28,9 @@ import com.google.gwt.user.client.ui.Widget;
 public class DefaultColumnType implements ColumnRenderer {
 
     public Widget renderType(Object value) {
+        if(value == null){
+            return new HTML();
+        }
         String type = value.getClass().getName();
         if (type != null) {
             if (type.equals("java.lang.Boolean")) {
