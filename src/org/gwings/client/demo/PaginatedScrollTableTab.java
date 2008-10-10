@@ -7,11 +7,14 @@ import org.gwings.client.table.scroll.ScrollPolicy;
 import org.gwings.client.table.scroll.pagination.PaginatedScrollTable;
 import org.gwings.client.table.view.ColumnRenderer;
 
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
@@ -45,6 +48,8 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	private PaginatedScrollTable<LinePlotable> table;
 	private TableModel<LinePlotable> model;
 	
+	private Button initButton;
+	
 	private DockPanel layout;
 	
 	public PaginatedScrollTableTab() {
@@ -54,6 +59,8 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	}
 
 	private void initialize() {
+	    initButton = new Button("Init");
+	    
 		PageConfig config = new PageConfig();
 		config.setStart(0);
 		config.setFinish(50);
@@ -103,11 +110,18 @@ public class PaginatedScrollTableTab extends AbstractDemoPanel {
 	}
 	
 	private void setupListener() {
+	    initButton.addClickListener(new ClickListener() {
+            public void onClick(Widget sender) {
+                table.getPager().fetchSize();
+            }
+        });
 	}
 
 	public FlexTable getProperties() {
 		
 		FlexTable flexTable = new FlexTable();
+		flexTable.setWidget(0, 0, new Label("Init"));
+		flexTable.setWidget(0, 1, initButton);
 		return flexTable;
 	}
 
