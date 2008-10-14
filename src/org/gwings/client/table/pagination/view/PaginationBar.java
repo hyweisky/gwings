@@ -182,7 +182,7 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         navigationPanel.setStylePrimaryName("org_gwings_PaginationBar");
         
         currentPageSelector.setStylePrimaryName("pageSelector");
-        availablePages.setStylePrimaryName("pagesAvailableLable");
+        availablePages.setStylePrimaryName("pagesAvailable");
         
         initWidget(layout);
         
