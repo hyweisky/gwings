@@ -15,4 +15,5 @@
 	<stylesheet src="styles/queryBox.css"/>
 	<stylesheet src="styles/roundBox.css"/>
 	<stylesheet src="styles/colorChooser.css"/>
+	<stylesheet src="styles/busyWidget.css"/>
 </module>

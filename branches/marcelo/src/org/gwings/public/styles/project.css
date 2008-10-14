@@ -111,14 +111,3 @@
 	border-style: solid;
 	border-width: 1px;
 }
-
-.org_gwings_BusyWidget-visible{
-	background-image: url(../pics/busyWidget/loading.gif);
-	background-color: white;
-	background-position: center;
-	background-repeat: no-repeat;
-	
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-	-moz-opacity: 0.5;
-}

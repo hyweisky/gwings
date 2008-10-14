@@ -20,15 +20,12 @@ public class DateTimeColumnRenderer implements ColumnRenderer<Date> {
     private static final String STYLE_OVER = "mouseOver";
 
     private DateTimeFormat format;
-    private Label renderer;
     
     public DateTimeColumnRenderer(String pattern){
         format = DateTimeFormat.getFormat(pattern);
-        renderer = new Label();
-        setStyles();
     }
 
-    private void setStyles() {
+    private void setStyles(final Label renderer) {
         renderer.setStylePrimaryName(STYLE_NAME);
         renderer.addMouseListener(new MouseListenerAdapter() {
             public void onMouseEnter(Widget sender) {
@@ -41,7 +38,9 @@ public class DateTimeColumnRenderer implements ColumnRenderer<Date> {
     }
     
     public Widget renderType(Date value) {
+        Label renderer = new Label();
         renderer.setText(format.format(value));
+        setStyles(renderer);
         return renderer;
     }
     
