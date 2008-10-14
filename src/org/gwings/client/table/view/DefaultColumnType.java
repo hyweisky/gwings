@@ -8,6 +8,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -29,7 +30,7 @@ public class DefaultColumnType implements ColumnRenderer {
 
     public Widget renderType(Object value) {
         if(value == null){
-            return new HTML();
+            return new HTML("<span>&nbsp;</span>");
         }
         String type = value.getClass().getName();
         if (type != null) {
