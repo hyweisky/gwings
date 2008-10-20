@@ -95,9 +95,13 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     
     private ImageChangeListener nextListener;
     private ImageChangeListener previousListener;
+    private ImageChangeListener firstListener;
+    private ImageChangeListener lastListener;
     
     private boolean nextDisabled;
     private boolean previousDisabled;
+    private boolean firstDisabled;
+    private boolean lastDisabled;
     
     private PaginatedScrollTable<T> table;
     private Pager<T> pager;
@@ -119,9 +123,13 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
         initImages();
         previousListener = new ImageChangeListener(images.previous(), images.previousOver());
         nextListener = new ImageChangeListener(images.next(), images.nextOver());
+        firstListener = new ImageChangeListener(images.first(), images.firstOver());
+        lastListener = new ImageChangeListener(images.last(), images.lastOver());
         
         setPreviousDisabled(true);
-        setNextDisabled(false);
+        setNextDisabled(true);
+        setFirstDisabled(true);
+        setLastDisabled(true);
         
         firstLabel = new Label(messages.first());
         previousLabel = new Label(messages.previous());
@@ -190,10 +198,10 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
     }
 
     private void setupListeners() {
-        firstImage.addMouseListener(new ImageChangeListener(images.first(), images.firstOver()));
+        firstImage.addMouseListener(firstListener);
         previousImage.addMouseListener(previousListener);
         nextImage.addMouseListener(nextListener);
-        lastImage.addMouseListener(new ImageChangeListener(images.last(), images.lastOver()));
+        lastImage.addMouseListener(lastListener);
         
         firstImage.addClickListener(new ClickListener() {
             public void onClick(Widget sender) {
@@ -511,5 +519,52 @@ public class PaginationBar<T extends Plotable> extends Composite implements Page
      */
     public void setParams(Map<String, ? extends Serializable> params) {
         pager.setParams(params);
+    }
+    
+    /**
+     * @return the firstDisabled
+     */
+    private boolean isFirstDisabled() {
+        return firstDisabled;
+    }
+
+    
+    /**
+     * @param firstDisabled the firstDisabled to set
+     */
+    private void setFirstDisabled(boolean disabled) {
+        this.firstDisabled = disabled;
+        firstListener.setIgnoringEvents(disabled);
+        
+        if(disabled){
+            images.firstDisabled().applyTo(firstImage);
+        }
+        else{
+            images.first().applyTo(firstImage);
+        }
+    }
+
+    
+    /**
+     * @return the lastDisabled
+     */
+    private boolean isLastDisabled() {
+        return lastDisabled;
+    }
+
+    
+    /**
+     * @param lastDisabled the lastDisabled to set
+     */
+    private void setLastDisabled(boolean disabled) {
+        this.lastDisabled = disabled;
+        lastListener.setIgnoringEvents(disabled);
+        
+        if(disabled){
+            images.lastDisabled().applyTo(lastImage);
+        }
+        else{
+            images.last().applyTo(lastImage);
+        }
     }
 }
