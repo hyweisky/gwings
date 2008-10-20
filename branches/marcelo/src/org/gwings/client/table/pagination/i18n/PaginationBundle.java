@@ -43,4 +43,10 @@ public interface PaginationBundle extends ImageBundle {
     
     @Resource("org/gwings/public/pics/pagingBar/separator.png")
     public AbstractImagePrototype separator();
+
+    @Resource("org/gwings/public/pics/pagingBar/last.png")
+    public AbstractImagePrototype lastDisabled();
+    
+    @Resource("org/gwings/public/pics/pagingBar/first.png")
+    public AbstractImagePrototype firstDisabled();
 }
