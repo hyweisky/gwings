@@ -15,7 +15,7 @@ public class RemoteLineProvider extends RemoteServiceServlet implements
 
     private static final long serialVersionUID = -6820131024394722617L;
 
-    public Page<LinePlotable> getItems(Map<String, ? extends Serializable> params,
+    public Page<LinePlotable> getItems(Map<String, Serializable> params,
                                        PageConfig cfg) throws Exception {
         
         LineProviderFacade facade = LineProviderFacade.getInstance();
