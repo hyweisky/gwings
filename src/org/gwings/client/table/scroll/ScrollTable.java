@@ -19,6 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableElement;
+import com.google.gwt.gen2.table.client.FixedWidthFlexTable;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -30,7 +31,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.widgetideas.client.ResizableWidget;
 import com.google.gwt.widgetideas.client.ResizableWidgetCollection;
-import com.google.gwt.widgetideas.table.client.FixedWidthFlexTable;
 
 /**
  * <p>
