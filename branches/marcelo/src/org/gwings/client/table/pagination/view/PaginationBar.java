@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-
+ 
 public class PaginationBar<T extends Plotable> extends Composite implements PagerListener<T> {
     
     private class ImageChangeListener extends MouseListenerAdapter{

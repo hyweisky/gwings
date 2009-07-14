@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6.4//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.4/distro-source/core/src/gwt-module.dtd">
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6.4//EN" 
+                "http://google-web-toolkit.googlecode.com/svn/tags/1.6.4/distro-source/core/src/gwt-module.dtd">
 <module>
-
+    
 	<!-- Inherit the core Web Toolkit stuff.                  -->
-	<inherits name='com.google.gwt.user.User'/>
+	<inherits name='com.google.gwt.user.User' />
 
-	<inherits name='com.google.gwt.widgetideas.WidgetIdeas'/> 
-	<inherits name='com.google.gwt.widgetideas.ScrollTable' />
-	
+	<inherits name='com.google.gwt.widgetideas.WidgetIdeas' />
+	<inherits name='com.google.gwt.gen2.Gen2' />
+	<inherits name="com.google.gwt.gen2.table.FixedWidthFlexTable" />
+
 	<stylesheet src="styles/ScrollTableDemo.css" />
 	<stylesheet src="styles/table.css" />
 	<stylesheet src="styles/pagingBar.css" />
-	<stylesheet src="styles/listSelector.css"/>
-	<stylesheet src="styles/slider.css"/>
-	<stylesheet src="styles/spinner.css"/>
-	<stylesheet src="styles/queryBox.css"/>
-	<stylesheet src="styles/roundBox.css"/>
-	<stylesheet src="styles/colorChooser.css"/>
-	<stylesheet src="styles/busyWidget.css"/>
+	<stylesheet src="styles/listSelector.css" />
+	<stylesheet src="styles/slider.css" />
+	<stylesheet src="styles/spinner.css" />
+	<stylesheet src="styles/queryBox.css" />
+	<stylesheet src="styles/roundBox.css" />
+	<stylesheet src="styles/colorChooser.css" />
+	<stylesheet src="styles/busyWidget.css" />
 </module>
