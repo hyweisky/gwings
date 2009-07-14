@@ -1,22 +1,13 @@
-//package org.gwings.client.ui;
-//
-//import org.gwings.client.table.pagination.model.Page;
-//import org.gwings.client.table.pagination.model.Pager;
-//
-//import com.google.gwt.user.client.Window;
-//import com.google.gwt.user.client.ui.Button;
-//import com.google.gwt.user.client.ui.ClickListener;
-//import com.google.gwt.user.client.ui.FlexTable;
-//import com.google.gwt.user.client.ui.Label;
-//import com.google.gwt.user.client.ui.SimplePanel;
-//import com.google.gwt.user.client.ui.Widget;
-//
-///**
-// * @author Marcelo Emanoel
-// * @since 14/03/2007
-// */
-//public class PagingBar extends SimplePanel {
-//	
+package org.gwings.client.ui;
+
+import com.google.gwt.user.client.ui.SimplePanel;
+
+/**
+ * @author Marcelo Emanoel
+ * @since 14/03/2007
+ */
+public class PagingBar extends SimplePanel {
+	
 //	private Button forwardButton;
 //	private Button backwardButton;
 //	private Button fastForwardButton;
@@ -167,4 +158,4 @@
 //			Window.alert("This shouldn't happen... "+e.getMessage());
 //		}
 //	}
-//}
+}

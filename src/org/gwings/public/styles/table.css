@@ -1,55 +1,67 @@
-.org_gwings_Table{
+.org_gwings_Table {
 	border-collapse: collapse;
 }
 
-.headerTable, .headerWrapper{
+.headerTable td,.headerWrapper {
 	background-image: url(../pics/table/header.png);
 	background-repeat: repeat-x;
-	
 	text-align: center;
-	
+	line-height: 15px;
 	cursor: default;
-	font-family: sans-serif;
-	font-size: x-small;
-	font-weight: bold;
+	font-family: arial, tahoma, helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	font-variant: normal;
+	font-style: normal;
 }
-.dataTable{
+
+.dataTable {
 	background-color: #CCDAF0;
 	font-family: sans-serif;
 	font-size: xx-small;
 	empty-cells: hide;
 }
-.dataTable td{
+
+.dataTable td {
 	border-bottom: gray 1px solid;
 	border-left: gray 1px solid;
 }
 
-.org_gwings_Table .even{
+.org_gwings_Table .even {
 	background-color: #CCDAF0;
 }
-.org_gwings_Table .odd{
+
+.org_gwings_Table .odd {
 	background-color: #A5B4EF;
 }
+
 .paginationWrapper {
 	background-image: url(../pics/table/header.png);
 	background-repeat: repeat-x;
-	height: 15px;
-	width:100%;
+	width: 100%;
 	
-	font-family: sans-serif;
-	font-size: x-small;
+	font-family: arial, tahoma, helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	font-variant: normal;
+	font-style: normal;
 }
 
-.org_gwings_PaginationBar{
-	font-family: sans-serif;
-	font-size: xx-small;
-	font-weight: bold;
-	
+.org_gwings_PaginationBar td {
+	font-family: arial, tahoma, helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	font-variant: normal;
+	font-style: normal;
 	vertical-align: middle;
 }
 
-.pageSelector{
+.pageSelector {
 	height: 15px;
 	border-style: solid blue 1px;
-	font-size: 8pt;
+	font-family: arial,tahoma,helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    font-variant: normal;
+    font-style: normal;
 }
