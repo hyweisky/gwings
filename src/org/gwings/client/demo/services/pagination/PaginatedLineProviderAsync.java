@@ -11,12 +11,11 @@ import org.gwings.client.table.pagination.model.Page;
 import org.gwings.client.table.pagination.model.PageConfig;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
  * @author USER
  */
-public interface PaginatedLineProviderAsync extends RemoteService {
+public interface PaginatedLineProviderAsync {
 
     public void getItems(Map<String,? extends Serializable> params, PageConfig cfg,
                          AsyncCallback<Page<LinePlotable>> callback);
