@@ -1,0 +1,1 @@
+Imagine how easy would be if you could develop in GWT with the classes you already know in swing. How easy it is to keep the things the way you like. This is what GWings is like. Give wings to your imagination.
